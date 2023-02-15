@@ -1,0 +1,15 @@
+{
+  "name": "vet-clinic.backend",
+  "version": "1.0.0",
+  "description": "server side of vetclinic web-site",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Iskhakov A.I.",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
