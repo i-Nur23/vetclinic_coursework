@@ -4,9 +4,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {RouterProvider, createBrowserRouter} from "react-router-dom";
 import './index.css'
+import Home from "./views/Home";
 
 const router = createBrowserRouter([
-    {path: '/', element: <App/>}
+    {path: '/', element: <Home/>}
 ])
 
 const root = ReactDOM.createRoot(
@@ -14,9 +15,9 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+    <App>
+      <RouterProvider router={router} />
+    </App>
 );
 
 

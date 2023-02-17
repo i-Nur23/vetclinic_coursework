@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {JSXElementConstructor} from 'react';
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-function App() {
+
+const App = ({children} : any) => {
   return (
-    <div className="App">
-      <div className="container bg-red-400">
-          <div className="flex justify-between">
-              <div className="border-4">Hello tailwind</div>
-          </div>
-      </div>
+    <div>
+      <Navbar/>
+      {children}
+      <Footer/>
     </div>
   );
 }
