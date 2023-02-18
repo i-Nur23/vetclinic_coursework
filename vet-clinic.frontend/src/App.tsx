@@ -1,11 +1,11 @@
 import React, {JSXElementConstructor} from 'react';
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 
 
 const App = ({children} : any) => {
   return (
-    <div>
+    <div className=''>
       <Navbar/>
       {children}
       <Footer/>
