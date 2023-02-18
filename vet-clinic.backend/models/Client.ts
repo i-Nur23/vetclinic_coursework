@@ -9,4 +9,4 @@ var ClientSchema = new Schema({
   pets: [{type: Schema.Types.ObjectId, ref: 'Pet'}]
 })
 
-export const Client = mongoose.model('Doctor', ClientSchema)
+export const Client = mongoose.model('Client', ClientSchema)
