@@ -13,7 +13,7 @@ const Navbar = () => {
                 <div className='flex align-middle' style={{height: "50px"}}>
                   <img src={logo} alt='logo' style={{maxHeight: "100%"}}/>
                   <div className='m-auto ml-4'>
-                    <div className='pt-2 text-lg text-center align-middle font-rus text-black'>Облачко</div>
+                    <div className='pt-2 text-lg text-center align-middle font-rus text-black'>Название</div>
                   </div>      
                 </div>
               </a>

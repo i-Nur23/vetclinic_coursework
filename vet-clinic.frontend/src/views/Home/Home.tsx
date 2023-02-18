@@ -2,10 +2,13 @@ import React from "react";
 
 const Home = () => {
   return(
-    <h1>
-      It's home page
-
-    </h1>
+    <div className="container px-9">
+      <div className="flex justify-center">
+        <h2 className="align-middle text-3xl">
+          Добро пожаловать в ветеринарную клинику Название
+        </h2>
+      </div>
+    </div>
   )
 }
 
