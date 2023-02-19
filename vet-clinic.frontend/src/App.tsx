@@ -7,7 +7,9 @@ const App = ({children} : any) => {
   return (
     <div className=''>
       <Navbar/>
-      {children}
+      <div className="pb-20">
+        {children}
+      </div>
       <Footer/>
     </div>
   );

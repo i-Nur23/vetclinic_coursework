@@ -9,7 +9,8 @@ module.exports = {
     extend: {
       fontFamily: {
         russo : ['Russo One', 'sans-serif'],
-        rus: ['Ruslan Display', 'cursive']
+        rus: ['Ruslan Display', 'cursive'],
+        serif : ['Roboto Slab', 'serif']
       },
     },
   },

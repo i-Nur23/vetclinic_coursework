@@ -2,5 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        @apply font-serif tracking-wide;
+    }
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ruslan+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');

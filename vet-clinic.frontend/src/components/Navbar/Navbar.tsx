@@ -13,7 +13,7 @@ const Navbar = () => {
                 <div className='flex align-middle' style={{height: "50px"}}>
                   <img src={logo} alt='logo' style={{maxHeight: "100%"}}/>
                   <div className='m-auto ml-4'>
-                    <div className='pt-2 text-lg text-center align-middle font-rus text-black'>Название</div>
+                    <div className='pt-2 text-lg text-center align-middle font-rus text-black'>Питомец</div>
                   </div>      
                 </div>
               </a>
@@ -63,10 +63,10 @@ const Navbar = () => {
               </ul>
             </div>
             <div>
-              <button className="rounded-lg bg-white p-2 mr-3 shadow shadow-zinc-400">
+              <button className="rounded-lg bg-white p-2 mr-3 ">
                 Войти
               </button>
-              <button className="rounded-lg bg-blue-500 p-2 shadow shadow-zinc-400">
+              <button className="rounded-lg bg-blue-500 p-2">
                 Зарегистрироваться
               </button>
             </div>
