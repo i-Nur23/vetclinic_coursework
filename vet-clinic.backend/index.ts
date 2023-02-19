@@ -1,4 +1,6 @@
-import {clientRepositry} from "./repositories/clientRepository";
+import {ClientRepositry} from "./repositories/ClientRepository";
+import {ClientService} from "./services/ClientService";
+import {ClientController} from "./controllers/ClientController";
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -16,7 +18,12 @@ var db = mongoose.connection;
 // Привязать подключение к событию ошибки  (получать сообщения об ошибках подключения)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));*/
 
-var clientRepo = new clientRepositry(mongoDB)
+var clientRepo = new ClientRepositry(mongoDB);
+
+var clientService = new ClientService(clientRepo);
+
+var clientController = new ClientController(clientService);
+
 var arr = async () => {
     var alls = await clientRepo.getAll();
     console.log(alls);
@@ -27,9 +34,7 @@ arr()
 
 
 
-app.get('/', (req : any, res : any) => {
-    res.send('Hello Word!')
-})
+app.get('/', (req : any, res : any) => clientController.get(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

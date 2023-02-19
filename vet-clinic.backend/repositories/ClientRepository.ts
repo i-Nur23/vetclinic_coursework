@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 import {Client} from "../models/Client";
 import {Pet, IPet} from "../models/Pet";
+import IClientRepository from "./interfaces/IClientRepository";
 
-export class clientRepositry{
+export class ClientRepositry implements IClientRepository{
   mongoDb : string
 
   constructor(db : string) {
@@ -18,12 +19,12 @@ export class clientRepositry{
       // Привязать подключение к событию ошибки  (получать сообщения об ошибках подключения)
     db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-    var clients = await Client
+    var clients = Client
       .find()
       .populate<{pets:IPet[]}>({path:'pets', model: Pet})
       .exec();
 
-    console.log(clients[0].pets[0].breed)
+    //console.log(clients[0].pets[0].breed)
 
     return clients;
   }
