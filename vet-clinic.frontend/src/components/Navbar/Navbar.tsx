@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
-import {NavLink} from "react-router-dom";
+import {Link, NavLink, redirect} from "react-router-dom";
 import logo from '../../assets/images/homepage/logo.png'
 
 const Navbar = () => {
     const [navbarOpen, setNavbarOpen] = useState(false);
     return (
       <>
-        <nav className="relative flex flex-wrap items-center justify-between bg-blue-200 px-2 bg py-3 mb-3">
+        <nav className="z-50 flex flex-wrap items-center justify-between bg-blue-200 px-2 bg py-3 mb-3 sticky top-0">
           <div className="container px-7 mx-auto flex flex-wrap items-center justify-between">
             <div>
               <a href='\'>
@@ -63,10 +63,12 @@ const Navbar = () => {
               </ul>
             </div>
             <div>
-              <button className="rounded-lg bg-white p-2 mr-3 ">
-                Войти
-              </button>
-              <button className="rounded-lg bg-blue-500 p-2">
+              <a href="\auth">
+                <button className="rounded-lg bg-white p-2 mr-3">
+                  Войти
+                </button>
+              </a>
+              <button className="rounded-lg bg-blue-500 p-2" onClick={() => redirect('/auth')}>
                 Зарегистрироваться
               </button>
             </div>

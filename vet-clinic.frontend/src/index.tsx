@@ -2,14 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {RouterProvider, createBrowserRouter} from "react-router-dom";
+import {RouterProvider, createBrowserRouter, Router} from "react-router-dom";
 import './index.css'
 import Home from "./views/Home";
+import Authentification from "./views/Authentification";
 import {store} from "./store/store";
 import {Provider} from "react-redux";
 
 const router = createBrowserRouter([
-    {path: '/', element: <Home/>}
+    {path: '/', element: <Home/>},
+    {path: '/auth', element: <Authentification/>}
 ])
 
 const root = ReactDOM.createRoot(
