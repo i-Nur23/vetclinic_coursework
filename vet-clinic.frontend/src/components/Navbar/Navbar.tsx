@@ -9,14 +9,14 @@ const Navbar = () => {
         <nav className="z-50 flex flex-wrap items-center justify-between bg-blue-200 px-2 bg py-3 mb-3 sticky top-0">
           <div className="container px-7 mx-auto flex flex-wrap items-center justify-between">
             <div>
-              <a href='\'>
+              <Link to="/">
                 <div className='flex align-middle' style={{height: "50px"}}>
                   <img src={logo} alt='logo' style={{maxHeight: "100%"}}/>
                   <div className='m-auto ml-4'>
                     <div className='pt-2 text-lg text-center align-middle font-rus text-black'>Питомец</div>
                   </div>      
                 </div>
-              </a>
+              </Link>
             </div>
             <div
               className={
@@ -63,14 +63,16 @@ const Navbar = () => {
               </ul>
             </div>
             <div>
-              <a href="\auth">
+              <Link to="/auth" state={{login: true}}>
                 <button className="rounded-lg bg-white p-2 mr-3">
                   Войти
                 </button>
-              </a>
-              <button className="rounded-lg bg-blue-500 p-2" onClick={() => redirect('/auth')}>
-                Зарегистрироваться
-              </button>
+              </Link>
+              <Link to="/auth" state={{login: false}}>
+                <button className="rounded-lg bg-blue-500 p-2" onClick={() => redirect('/auth')}>
+                  Зарегистрироваться
+                </button>
+              </Link>
             </div>
           </div>
         </nav>

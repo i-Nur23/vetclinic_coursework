@@ -10,7 +10,7 @@ const Home = () => {
       <div className="container">
         <div>
           <div className="relative w-100" style={{marginTop:'-0.75rem'}}>
-            <img src={dogWithVet}/>
+            <img className="m-auto" src={dogWithVet}/>
             <h2 className="text-center text-3xl absolute top-1/2" style={{width:"100%"}}>
               Добро пожаловать в ветеринарную клинику "Питомец"
             </h2>
