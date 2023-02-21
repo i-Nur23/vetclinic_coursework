@@ -3,7 +3,7 @@ import {Client} from "../models/Client";
 import {Pet, IPet} from "../models/Pet";
 import IClientRepository from "./interfaces/IClientRepository";
 
-export class ClientRepositry implements IClientRepository{
+export class ClientRepository implements IClientRepository{
   mongoDb : string
 
   constructor(db : string) {
@@ -28,8 +28,4 @@ export class ClientRepositry implements IClientRepository{
 
     return clients;
   }
-
-
-
-
 }

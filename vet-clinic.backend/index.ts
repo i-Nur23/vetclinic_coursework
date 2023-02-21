@@ -1,40 +1,36 @@
-import {ClientRepositry} from "./repositories/ClientRepository";
+import {ClientRepository} from "./repositories/ClientRepository";
+import {AccountRepository} from "./repositories/AccountRepository";
+
 import {ClientService} from "./services/ClientService";
+import {AccountService} from "./services/AccountService";
+
 import {ClientController} from "./controllers/ClientController";
+import {AccountController} from "./controllers/AccountController";
 
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors')
 
 
 const app = express()
 const port = 3000
 
 var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
-/*mongoose.connect(mongoDB);
-// Позволим Mongoose использовать глобальную библиотеку промисов
-mongoose.Promise = global.Promise;
-// Получение подключения по умолчанию
-var db = mongoose.connection;
-// Привязать подключение к событию ошибки  (получать сообщения об ошибках подключения)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));*/
 
-var clientRepo = new ClientRepositry(mongoDB);
+var clientRepo = new ClientRepository(mongoDB);
+var accountRepo = new AccountRepository(mongoDB);
 
 var clientService = new ClientService(clientRepo);
+var accountService = new AccountService(accountRepo);
 
 var clientController = new ClientController(clientService);
+var accountController = new AccountController(accountService);
 
-var arr = async () => {
-    var alls = await clientRepo.getAll();
-    console.log(alls);
-}
-
-arr()
-
-
+app.use(cors())
 
 
 app.get('/', (req : any, res : any) => clientController.get(req, res))
+app.get('/account', (req : any, res : any) => accountController.find(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

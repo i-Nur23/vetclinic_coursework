@@ -9,4 +9,11 @@ var DoctorSchema = new Schema({
   spec: String
 })
 
+export interface IDoctor{
+  name: string,
+  surName: string,
+  birthDate: Date,
+  spec: string
+}
+
 export const Doctor = mongoose.model('Doctor', DoctorSchema)

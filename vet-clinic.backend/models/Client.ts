@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+//import {IPet} from "./Pet";
 
 var Schema = mongoose.Schema;
 
@@ -8,5 +9,12 @@ var ClientSchema = new Schema({
   birthDate: Date,
   pets: [{type: Schema.Types.ObjectId, ref: 'Pet'}]
 })
+
+export interface IClient{
+  name: string,
+  surName: string,
+  birthDate: Date,
+  pets: [string]
+}
 
 export const Client = mongoose.model('Client', ClientSchema)
