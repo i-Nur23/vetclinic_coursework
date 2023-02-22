@@ -63,6 +63,7 @@ export const LoginForm = ({onChange} : any) => {
     <input
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Пароль"
+      value={password}
       type="password"
       onChange={e => setValue(e, setPassword)}
       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}

@@ -30,8 +30,22 @@ export class AccountController{
       res.json({isFound : false})
       return;
     }
-
     res.json({isFound : true, role: account.type, id: account.userId})
+  }
 
+  create = (req: any, res:any) => {
+    var login = req.query.login;
+    var password = req.query.password;
+    var name = req.query.name;
+    var surName = req.query.surName;
+    var email = req.query.email;
+    var role = req.query.role;
+
+    if (login == 'admin'){
+      res.json({ok: false, data: null});
+      return;
+    }
+
+    res.json(this.accountService.createAccount(login,password,name,surName,email, role))
   }
 }

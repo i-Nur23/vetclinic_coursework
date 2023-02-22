@@ -1,19 +1,16 @@
 import mongoose from "mongoose";
 import IAccountRepository from "./interfaces/IAccountRepository";
 import {Account} from "../models/Account";
+import {BaseRepository} from "./BaseRepository";
 
-export class AccountRepository implements IAccountRepository{
-  mongoDb : string
+export class AccountRepository extends BaseRepository implements IAccountRepository{
 
   constructor(db : string) {
-    this.mongoDb = db;
+    super(db);
   }
 
   getByLoginPassword = async (login : string, password : string) => {
-    mongoose.connect(this.mongoDb);
-    mongoose.Promise = global.Promise;
-    var db = mongoose.connection;
-    db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+    this.connect();
 
     var account = Account
       .findOne({'login': login, 'password': password})
@@ -22,5 +19,26 @@ export class AccountRepository implements IAccountRepository{
     console.log(`${login} ${password}`)
 
     return account
+  }
+
+  isLoginExists = (login: string) => {
+    this.connect()
+
+    var account = Account
+      .findOne({'login': login})
+      .exec()
+
+    return  ( account != null )
+  }
+
+  createAccount = async (login: string, password: string, type: string, userId: string) => {
+    this.connect();
+
+    var newAccount = new Account({login: login, password: password, type: type, userId: userId})
+
+    await newAccount.save();
+
+    return newAccount.id;
+
   }
 }
