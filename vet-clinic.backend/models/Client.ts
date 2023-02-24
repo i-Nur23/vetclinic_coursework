@@ -6,14 +6,14 @@ var Schema = mongoose.Schema;
 var ClientSchema = new Schema({
   name: String,
   surName: String,
-  email: Date,
+  email: String,
   pets: [{type: Schema.Types.ObjectId, ref: 'Pet'}]
 })
 
 export interface IClient{
   name: string,
   surName: string,
-  email: Date,
+  email: string,
   pets: [string]
 }
 

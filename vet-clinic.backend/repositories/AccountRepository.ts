@@ -21,14 +21,28 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
     return account
   }
 
-  isLoginExists = (login: string) => {
+  isLoginExists = async (login: string) => {
     this.connect()
 
-    var account = Account
+    var account = await Account
+      .findOne({'login':login})
+      .exec();
+
+    console.log(account)
+    console.log('That was account')
+
+    return account != null;
+
+
+    /*const account = Account
       .findOne({'login': login})
       .exec()
+      .then(account => {
+        return account;
+      })
 
-    return  ( account != null )
+    return resolve(account)*/
+
   }
 
   createAccount = async (login: string, password: string, type: string, userId: string) => {

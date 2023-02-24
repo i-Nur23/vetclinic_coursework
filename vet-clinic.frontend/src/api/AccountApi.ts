@@ -4,7 +4,6 @@ export class AccountApi extends Base{
   static isExists = async (login : string, password : string) : Promise<any> => {
     var url = `${this.baseURL}/account?login=${login}&password=${password}`;
     var response = await fetch(url, {
-      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -19,7 +18,9 @@ export class AccountApi extends Base{
 
   static createAccount = async(login: string, password : string, name: string, surName : string, email : string, role: string) : Promise<any> => {
     var url = `${this.baseURL}/account?login=${login}&password=${password}&name=${name}&surName=${surName}&email=${email}&role=${role}`;
-    var response = await fetch(url, {headers: {
+    var response = await fetch(url,{
+      method: 'POST',
+      headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       'Access-Control-Allow-Origin':'*'

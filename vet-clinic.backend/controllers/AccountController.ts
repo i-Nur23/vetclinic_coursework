@@ -34,6 +34,8 @@ export class AccountController{
   }
 
   create = (req: any, res:any) => {
+    console.log('Here')
+
     var login = req.query.login;
     var password = req.query.password;
     var name = req.query.name;
@@ -42,10 +44,12 @@ export class AccountController{
     var role = req.query.role;
 
     if (login == 'admin'){
-      res.json({ok: false, data: null});
+      res.json({ok: false, message: 'Вы не можете создать аккаунт с таким логином'});
       return;
     }
 
-    res.json(this.accountService.createAccount(login,password,name,surName,email, role))
+    var result = this.accountService.createAccount(login,password,name,surName,email, role)
+
+    result.then(json => res.json(json))
   }
 }

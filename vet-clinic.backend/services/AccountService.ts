@@ -19,7 +19,7 @@ export class AccountService implements IAccountService{
   }
 
   createAccount = async (login: string, password : string, name: string, surName : string, email : string, role: string) => {
-    if (this.accountRepository.isLoginExists(login)){
+    if (await this.accountRepository.isLoginExists(login)){
       return {ok: false, message: 'Логин занят'}
     }
 

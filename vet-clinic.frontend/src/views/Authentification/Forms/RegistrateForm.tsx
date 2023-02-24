@@ -7,7 +7,7 @@ export const RegistrateForm = ({onChange} : any) => {
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
   const [password, setPassword] = useState< string >('')
-  const [name, setName] = useState< string >(' ')
+  const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
   const [email, setEmail] = useState< string >('')
 
@@ -31,9 +31,10 @@ export const RegistrateForm = ({onChange} : any) => {
     var inputs = document.getElementsByClassName('required');
     Array.prototype.slice.call(inputs)
       .forEach((input) => {
-        if (input.value === '')
-        (input as HTMLInputElement).setCustomValidity('Это обязательное поле')
-        isStop = true
+        if (input.value === ''){
+          (input as HTMLInputElement).setCustomValidity('Это обязательное поле')
+          isStop = true
+        }
       }
     );
 
@@ -42,7 +43,7 @@ export const RegistrateForm = ({onChange} : any) => {
       return;
     }
 
-    var answer = await AccountApi.isExists(login, password);
+    var answer = await AccountApi.createAccount(login, password, name, surName, email, 'client');
     if (answer.ok){
       navigate('/')
     } else {
@@ -57,24 +58,28 @@ export const RegistrateForm = ({onChange} : any) => {
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Имя"
       onChange={e => setValue(e, setName)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
     <input
       value={surName}
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Фамилия"
       onChange={e => setValue(e, setSurName)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
     <input
       value={email}
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Почта"
       onChange={e => setValue(e, setEmail)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
     <input
       value={login}
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Логин"
       onChange={e => setValue(e, setLogin)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
     <input
       value={password}
@@ -82,6 +87,7 @@ export const RegistrateForm = ({onChange} : any) => {
       type="password"
       placeholder="Пароль"
       onChange={e => setValue(e, setPassword)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
 
     <button className="bg-gray-200 rounded-lg p-4" onClick={() => Handle()}>
