@@ -11,7 +11,7 @@ export class AccountController{
     var login = req.query.login;
     var password = req.query.password;
     if (login == '' || password == ''){
-      res.json({isFound : false})
+      res.json({isFound : false, data: null})
       return;
     }
 
@@ -30,7 +30,7 @@ export class AccountController{
       res.json({isFound : false})
       return;
     }
-    res.json({isFound : true, role: account.type, id: account.userId})
+    res.json({isFound : true, data: { role: account.type, id: account.userId} })
   }
 
   create = (req: any, res:any) => {

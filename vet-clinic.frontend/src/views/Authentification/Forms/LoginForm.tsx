@@ -2,8 +2,14 @@ import React, {FormEvent, useState} from "react";
 import '@tailwindcss/forms'
 import {AccountApi} from "../../../api/AccountApi";
 import {useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../store/store";
+import {authorize} from "../../../store/slicers/authSlice";
+import {Level} from "../../../utils/Level";
 
 export const LoginForm = ({onChange} : any) => {
+
+  const dispatch = useDispatch<AppDispatch>()
 
   const navigate = useNavigate();
 
@@ -19,9 +25,10 @@ export const LoginForm = ({onChange} : any) => {
     var inputs = document.getElementsByClassName('required');
     Array.prototype.slice.call(inputs)
       .forEach((input) => {
-        if (input.value === '')
-        (input as HTMLInputElement).setCustomValidity('Это обязательное поле')
-        isStop = true
+        if (input.value === '') {
+          (input as HTMLInputElement).setCustomValidity('Это обязательное поле')
+          isStop = true
+        }
       }
     );
 
@@ -30,9 +37,11 @@ export const LoginForm = ({onChange} : any) => {
       return;
     }
 
-    var answer = await AccountApi.isExists(login, password);
+    var answer = await AccountApi.getAccount(login, password);
     if (answer.isFound){
-      navigate('/')
+      console.log(answer.data)
+      dispatch(authorize( {level: Level.Client, id: answer.data.id}))
+      //navigate('/')
     } else {
       setMessage("Аккаунт не найден")
     }

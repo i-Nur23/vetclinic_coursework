@@ -1,11 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit'
 import AuthReducer from './slicers/authSlice'
+import storage from 'redux-persist/lib/storage';
+import { persistReducer, persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
+
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
+const persistedReducer = persistReducer(persistConfig, AuthReducer)
 
 export const store = configureStore({
-  reducer: {
-    auth: AuthReducer
-  },
+  reducer: persistedReducer,
+  middleware: [thunk]
 })
+
+export const persistor = persistStore(store)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

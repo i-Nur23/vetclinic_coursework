@@ -1,14 +1,18 @@
 import React, {useState} from 'react'
 import {Link, NavLink, redirect} from "react-router-dom";
 import logo from '../../assets/images/homepage/logo.png'
+import {useSelector} from "react-redux";
+import {RootState} from "../../store/store";
+import {Level} from "../../utils/Level";
+import {AuthorizedControls, UnauthorizedControls} from "./AccountControls";
 
 const Navbar = () => {
-    const [navbarOpen, setNavbarOpen] = useState(false);
+    const authLevel = useSelector((state: RootState) => state.level)
     return (
       <>
         <nav className="z-50 flex flex-wrap items-center justify-between bg-blue-200 px-2 bg py-3 mb-3 sticky top-0">
           <div className="container px-7 mx-auto flex flex-wrap items-center justify-between">
-            <div>
+            <div style={{width: '25%'}}>
               <Link to="/">
                 <div className='flex align-middle' style={{height: "50px"}}>
                   <img src={logo} alt='logo' style={{maxHeight: "100%"}}/>
@@ -19,11 +23,9 @@ const Navbar = () => {
               </Link>
             </div>
             <div
-              className={
-              "lg:flex flex-grow items-center" +
-                (navbarOpen ? " flex" : " hidden")
-              }
+              className="flex"
               id="example-navbar-danger"
+              style={{width: '50%'}}
             >
               <ul className="flex flex-col lg:flex-row list-none lg:m-auto">
                 <li className="nav-item ">
@@ -37,7 +39,7 @@ const Navbar = () => {
                 <li className="/">
                   <a
                     className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-                    href="#pablo"
+                    href="/doctors"
                   >
                     <i className="leading-lg text-black opacity-75"></i><span className="">Наши специалисты</span>
                   </a>
@@ -62,17 +64,8 @@ const Navbar = () => {
                 </li>
               </ul>
             </div>
-            <div>
-              <Link to="/auth" state={{login: true}}>
-                <button className="rounded-lg bg-white p-2 mr-3">
-                  Войти
-                </button>
-              </Link>
-              <Link to="/auth" state={{login: false}}>
-                <button className="rounded-lg bg-blue-500 p-2" onClick={() => redirect('/auth')}>
-                  Зарегистрироваться
-                </button>
-              </Link>
+            <div className="flex justify-end" style={{width: '25%'}}>
+              {authLevel == Level.Unauthozized ? <UnauthorizedControls/> : <AuthorizedControls/>}
             </div>
           </div>
         </nav>

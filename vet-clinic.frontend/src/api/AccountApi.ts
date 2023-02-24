@@ -1,7 +1,7 @@
 import {Base} from "./Base";
 
 export class AccountApi extends Base{
-  static isExists = async (login : string, password : string) : Promise<any> => {
+  static getAccount = async (login : string, password : string) : Promise<any> => {
     var url = `${this.baseURL}/account?login=${login}&password=${password}`;
     var response = await fetch(url, {
       headers: {
@@ -10,7 +10,7 @@ export class AccountApi extends Base{
         'Access-Control-Allow-Origin':'*'
       }});
     if (response.status != 200){
-      return {isFound : false}
+      return {isFound : false, data: null}
     }
     var answer = await response.json();
     return answer;

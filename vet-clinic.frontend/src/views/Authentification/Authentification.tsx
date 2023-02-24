@@ -7,7 +7,7 @@ import {LoginForm} from "./Forms/LoginForm";
 import {RegistrateForm} from "./Forms/RegistrateForm";
 
 export const Authentification = () => {
-  const authLevel = useSelector((state: RootState) => state.auth.level)
+  const authLevel = useSelector((state: RootState) => state.level)
   const navigate = useNavigate()
   const location = useLocation()
   const [isLogin, setIsLogin] = useState(true)
