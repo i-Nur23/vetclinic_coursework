@@ -7,6 +7,15 @@ export class ClientController{
    }
 
    get = async (req : any, res : any) => {
-    res.json(await this.clientService.getAll())
+    var id = req.params.id;
+    var client = await this.clientService.getClient(id)
+
+    if (client == null){
+     res.json({ok : false, data : null})
+    } else {
+     res.json({ok: true, data : client})
+    }
+
+
    }
 }

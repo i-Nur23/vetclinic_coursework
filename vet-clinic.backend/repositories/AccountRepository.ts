@@ -55,4 +55,18 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
     return newAccount.id;
 
   }
+
+  getById = async (id: string) => {
+    try {
+      this.connect();
+
+      var account = await Account
+        .findById(id)
+        .exec();
+
+      return account;
+    } catch{
+      return null;
+    }
+  }
 }

@@ -20,7 +20,7 @@ var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
 var clientRepo = new ClientRepository(mongoDB);
 var accountRepo = new AccountRepository(mongoDB);
 
-var clientService = new ClientService(clientRepo);
+var clientService = new ClientService(clientRepo, accountRepo);
 var accountService = new AccountService(accountRepo, clientRepo);
 
 var clientController = new ClientController(clientService);
@@ -29,7 +29,7 @@ var accountController = new AccountController(accountService);
 app.use(cors())
 
 
-app.get('/', (req : any, res : any) => clientController.get(req, res))
+app.get('/client/:id', (req : any, res : any) => clientController.get(req, res))
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
 

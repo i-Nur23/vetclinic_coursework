@@ -31,4 +31,15 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
     return newClient._id;
     
   }
+
+  getById = async (id : string) => {
+    this.connect();
+
+    var client = await Client
+      .findById(id)
+      .populate<{pets:IPet[]}>({path:'pets', model: Pet})
+      .exec();
+
+    return client;
+  }
 }
