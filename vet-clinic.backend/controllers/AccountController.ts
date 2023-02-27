@@ -17,7 +17,7 @@ export class AccountController{
 
     if (login == 'admin' && password == 'admin'){
       console.log('It\'s admin');
-      res.json({isFound : true, role: 'admin'})
+      res.json({isFound : true, data: {role: 'admin', id:'0'} })
       return;
     }
 

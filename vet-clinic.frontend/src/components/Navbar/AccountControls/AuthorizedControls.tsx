@@ -1,16 +1,23 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch} from "../../../store/store";
-import {unauthorize} from "../../../store/slicers/authSlice";
-
-
-function classNames(...classes : any) {
-  return classes.filter(Boolean).join(' ')
-}
+import { Fragment} from 'react'
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import { ExitItem } from "./MenuItems";
+import {Level} from "../../../utils/Level";
+import {AdminActions, ClientActions, DoctorActions} from "./ActionsLists";
 
 export const AuthorizedControls = () => {
-  const dispatch = useDispatch<AppDispatch>()
+  const authLevel = useSelector((state: RootState) => state.level)
+
+  const ChosenItem = () => {
+    if (authLevel == Level.Client){
+      return <ClientActions/>;
+    } else if (authLevel == Level.Doctor){
+      return <DoctorActions/>
+    }
+
+    return <AdminActions/>
+  }
 
   return(
     <div className="flex justify-between gap-6">
@@ -38,63 +45,8 @@ export const AuthorizedControls = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 z-10 mt-2 divide-y divide-gray-200 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <div className="py-1">
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Account settings
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    Support
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={classNames(
-                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                      'block px-4 py-2 text-sm'
-                    )}
-                  >
-                    License
-                  </a>
-                )}
-              </Menu.Item>
-            </div>
-            <div className="py-1">
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      type="submit"
-                      className={classNames(
-                        active ? 'bg-gray-100' : '',
-                        'text-red-700 block w-full px-4 py-2 text-left text-sm'
-                      )}
-                      onClick={() => dispatch(unauthorize())}
-                    >
-                      Выйти
-                    </button>
-                  )}
-                </Menu.Item>
-            </div>
+            <ChosenItem/>
+            <ExitItem/>
           </Menu.Items>
         </Transition>
       </Menu>

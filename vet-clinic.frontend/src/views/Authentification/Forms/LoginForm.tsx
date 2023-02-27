@@ -40,8 +40,16 @@ export const LoginForm = ({onChange} : any) => {
     var answer = await AccountApi.getAccount(login, password);
     if (answer.isFound){
       console.log(answer.data)
-      dispatch(authorize( {level: Level.Client, id: answer.data.id}))
-      //navigate('/')
+      if (answer.data.role == 'admin'){
+        dispatch(authorize( {level: Level.Admin, id: answer.data.id}))
+      }
+      else if (answer.data.role == 'doctor'){
+        dispatch(authorize( {level: Level.Doctor, id: answer.data.id}))
+      }
+      else {
+        dispatch(authorize( {level: Level.Client, id: answer.data.id}))
+      }
+      navigate('/')
     } else {
       setMessage("Аккаунт не найден")
     }
