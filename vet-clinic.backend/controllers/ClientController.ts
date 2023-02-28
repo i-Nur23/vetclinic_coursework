@@ -18,4 +18,16 @@ export class ClientController{
 
 
    }
+
+ changeInfo = async (req: any, res: any) => {
+  var id = req.params.id
+  var login = req.query.login;
+  var name = req.query.name;
+  var surName = req.query.surName;
+  var email = req.query.email;
+
+  var isSuccess = await this.clientService.changeInfo(id ,login, name, surName, email);
+
+  res.json(isSuccess);
+ }
 }

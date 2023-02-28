@@ -28,20 +28,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
       .findOne({'login':login})
       .exec();
 
-    console.log(account)
-    console.log('That was account')
-
     return account != null;
-
-
-    /*const account = Account
-      .findOne({'login': login})
-      .exec()
-      .then(account => {
-        return account;
-      })
-
-    return resolve(account)*/
 
   }
 
@@ -67,6 +54,25 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
       return account;
     } catch{
       return null;
+    }
+  }
+
+  changeLogin = async (id: string, login: string) => {
+    try{
+      this.connect();
+
+      var updatedAccount = await Account
+        .updateOne({_id : id}, {login : login})
+        .exec()
+
+      if (updatedAccount != null){
+        return true;
+      }
+
+      return false;
+
+    } catch {
+      return false;
     }
   }
 }

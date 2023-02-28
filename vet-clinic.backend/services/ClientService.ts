@@ -32,4 +32,28 @@ export class ClientService implements IClientService{
       pets : client.pets
     }
   }
+
+  changeInfo = async (id : string ,login: string, name: string, surName: string, email: string) => {
+    var accountById = await this.accountRepository.getById(id);
+
+    if (accountById.login != login){
+      if (await this.accountRepository.isLoginExists(login)){
+        return {ok:false, message: 'Логин занят'};
+      }
+
+      var isLoginChanged = await this.accountRepository.changeLogin(id, login);
+
+      if (!isLoginChanged){
+        return {ok :false, message: 'Ошибка при изменении логина'};
+      }
+
+      var isInfoChanged = await this.clientRepository.changeInfo(accountById.userId, name, surName, email);
+
+      if (!isInfoChanged){
+        return {ok : false, message: 'Ошибка при изменении информации'};
+      }
+
+      return {ok: true};
+    }
+  }
 }

@@ -30,6 +30,7 @@ app.use(cors())
 
 
 app.get('/client/:id', (req : any, res : any) => clientController.get(req, res))
+app.patch('/client/:id', (req : any, res : any) => clientController.changeInfo(req, res))
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
 
