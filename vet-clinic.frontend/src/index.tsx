@@ -2,13 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {RouterProvider, createBrowserRouter, Router, createRoutesFromElements, Route} from "react-router-dom";
+import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import './index.css'
 import Home from "./views/Home";
 import Authentification from "./views/Authentification";
 import {Provider} from "react-redux";
-import { persistor, store } from './store/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import {persistor, store} from './store/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import {ProtectedRoutes} from "./utils/ProtectedRoutes";
+import {Level} from "./utils/Level";
+import {Profile} from './views/Client/Profile'
 
 /*const router = createBrowserRouter([
   {path: '/', element: <App/>, children:
@@ -22,6 +25,9 @@ const router = createBrowserRouter(
     <Route path="/" element={<App/>}>
       <Route index element={<Home/>}/>
       <Route path="auth" element={<Authentification/>}/>
+        <Route path='client' element={<ProtectedRoutes role={Level.Client}/>}>
+          <Route path='profile' element={<Profile/>}/>
+        </Route>
     </Route>
   ))
 

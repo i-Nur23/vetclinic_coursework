@@ -23,14 +23,12 @@ export class AccountController{
 
     var account = await this.accountService.findAccount(login, password)
 
-    console.log(account)
-
     if (account == null){
       console.log('Account wasn\'t found')
       res.json({isFound : false})
       return;
     }
-    res.json({isFound : true, data: { role: account.type, id: account.userId} })
+    res.json({isFound : true, data: { role: account.type, id: account.id} })
   }
 
   create = (req: any, res:any) => {

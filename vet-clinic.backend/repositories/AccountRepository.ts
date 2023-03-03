@@ -52,7 +52,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
         .exec();
 
       return account;
-    } catch{
+    } catch {
       return null;
     }
   }

@@ -6,7 +6,6 @@ import {AccountApi} from "../../../api/AccountApi";
 
 export const Profile = () => {
   const userId = useSelector((state : RootState) => state.id);
-
   const [message, setMessage] = useState< string >(' ')
   const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
@@ -16,10 +15,12 @@ export const Profile = () => {
   const [isDisabled, setIsDisabled] = useState< boolean >(true)
 
 
-  useEffect(() => {
+  useEffect( () => {
     (
       async () => {
+
         var response = await ClientApi.getClient(userId);
+        console.log(response)
         if (response.ok){
           var client = response.data;
 
@@ -67,7 +68,7 @@ export const Profile = () => {
       return;
     }
 
-    var answer = await AccountApi.createAccount(login, password, name, surName, email, 'client');
+    var answer = await ClientApi.changeClient(userId,login, name, surName, email);
     if (answer.ok){
 
     } else {
@@ -77,35 +78,54 @@ export const Profile = () => {
 
   return(<div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
     <p className='text-center text-2xl'>Профиль</p>
-    <input
-      value={login}
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      placeholder="Логин"
-      onChange={e => setValue(e, setLogin)}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
-    <input
-      value={name}
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      placeholder="Имя"
-      onChange={e => setValue(e, setName)}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
-    <input
-      value={surName}
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      disabled={true}
-      placeholder="Фамилия"
-      onChange={e => setValue(e, setSurName)}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
-    <input
-      value={email}
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      placeholder="Почта"
-      onChange={e => setValue(e, setEmail)}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
+    <div className='flex'>
+      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
+        Логин
+      </span>
+      <input
+        value={login}
+        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
+        onChange={e => setValue(e, setLogin)}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+        disabled={isDisabled}
+      />
+    </div>
+    <div className='flex'>
+      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
+        Имя
+      </span>
+      <input
+        value={name}
+        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
+        onChange={e => setValue(e, setName)}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+        disabled={isDisabled}
+      />
+    </div>
+    <div className='flex'>
+      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
+        Фамилия
+      </span>
+      <input
+        value={surName}
+        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
+        onChange={e => setValue(e, setSurName)}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+        disabled={isDisabled}
+      />
+    </div>
+    <div className='flex'>
+      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
+        Почта
+      </span>
+      <input
+        value={email}
+        className="bg-transparent form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
+        onChange={e => setValue(e, setEmail)}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+        disabled={isDisabled}
+      />
+    </div>
     <div>
       <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
         {message}
@@ -113,14 +133,14 @@ export const Profile = () => {
     </div>
     {isDisabled ?
       <button className="bg-gray-200 rounded-lg p-4" onClick={() => changeDisability()}>
-        Войти
+        Редактировать
       </button>
       :
-      <div className="flex justify-between gap-6">
-        <button className="bg-gray-200 rounded-lg p-4" onClick={() => changeDisability()}>
+      <div className="flex justify-between gap-2">
+        <button className="bg-gray-200 rounded-lg p-4 w-1/2" onClick={() => changeDisability()}>
           Отмена
         </button>
-        <button className="bg-black rounded-lg p-4" onClick={() => Handle()}>
+        <button className="bg-black rounded-lg p-4 w-1/2 text-white" onClick={() => Handle()}>
           Сохранить
         </button>
       </div>

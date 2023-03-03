@@ -36,10 +36,16 @@ export class ClientService implements IClientService{
   changeInfo = async (id : string ,login: string, name: string, surName: string, email: string) => {
     var accountById = await this.accountRepository.getById(id);
 
-    if (accountById.login != login){
-      if (await this.accountRepository.isLoginExists(login)){
-        return {ok:false, message: 'Логин занят'};
+    if (login == 'admin'){
+      return {ok:false, message: 'Логин занят'};
+    }
+
+    if (accountById.login !== login) {
+      if (await this.accountRepository.isLoginExists(login)) {
+        return {ok: false, message: 'Логин занят'};
       }
+    }
+
 
       var isLoginChanged = await this.accountRepository.changeLogin(id, login);
 
@@ -54,6 +60,5 @@ export class ClientService implements IClientService{
       }
 
       return {ok: true};
-    }
   }
 }

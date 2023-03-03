@@ -17,7 +17,6 @@ export const LoginForm = ({onChange} : any) => {
   const [login, setLogin] = useState< string >('')
   const [password, setPassword] = useState< string >('')
 
-
   const Handle = async () => {
 
     var isStop = false;
