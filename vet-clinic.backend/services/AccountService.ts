@@ -32,7 +32,7 @@ export class AccountService implements IAccountService{
     }
 
     await this.accountRepository.createAccount(login, password, role, insertedId);
-    return {ok: true, message: 'Аккаунт создан'}
+    return {ok: true, id: insertedId}
 
   }
 

@@ -12,6 +12,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import {ProtectedRoutes} from "./utils/ProtectedRoutes";
 import {Level} from "./utils/Level";
 import {Profile} from './views/Client/Profile'
+import {Pets} from "./views/Client/Pets";
 
 /*const router = createBrowserRouter([
   {path: '/', element: <App/>, children:
@@ -25,8 +26,11 @@ const router = createBrowserRouter(
     <Route path="/" element={<App/>}>
       <Route index element={<Home/>}/>
       <Route path="auth" element={<Authentification/>}/>
-        <Route path='client' element={<ProtectedRoutes role={Level.Client}/>}>
-          <Route path='profile' element={<Profile/>}/>
+        <Route element={<ProtectedRoutes role={Level.Client}/>}>
+          <Route path='client'>
+            <Route path='profile' element={<Profile/>}/>
+            <Route path='pets' element={<Pets/>}/>
+          </Route>
         </Route>
     </Route>
   ))
