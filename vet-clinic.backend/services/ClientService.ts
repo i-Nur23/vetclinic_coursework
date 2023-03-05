@@ -61,4 +61,16 @@ export class ClientService implements IClientService{
 
       return {ok: true};
   }
+
+  getPets = async (id: any) => {
+    var account = await this.accountRepository.getById(id);
+
+    if (account == null) return {ok:false, message: 'Аккаунт не найден'};
+
+    var client = await this.clientRepository.getById(account.userId)
+
+    var result = (client == null || client.pets.length == 0) ? {ok:false, message: 'Животных не найдено'} : {ok: true, data: client.pets}
+
+    return result;
+  }
 }

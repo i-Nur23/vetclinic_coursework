@@ -27,4 +27,12 @@ export class ClientController{
 
   res.json(result);
  }
+
+  getPets = async (req: any, res: any) => {
+    var id = req.params.id;
+
+    var result = await this.clientService.getPets(id);
+
+    res.json(result)
+  }
 }

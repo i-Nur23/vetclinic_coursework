@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 
 var Schema = mongoose.Schema;
 
@@ -15,6 +15,10 @@ var PetSchema = new Schema({
     type: Number,
     min: 0,
     max: 60
+  },
+  image:{
+    data: Buffer,
+    type: String
   }
 })
 

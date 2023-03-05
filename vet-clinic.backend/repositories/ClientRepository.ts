@@ -5,9 +5,9 @@ import IClientRepository from "./interfaces/IClientRepository";
 import {BaseRepository} from "./BaseRepository";
 import {Account} from "../models/Account";
 
-export class ClientRepository extends BaseRepository implements IClientRepository{
+export class ClientRepository extends BaseRepository implements IClientRepository {
 
-  constructor(db : string) {
+  constructor(db: string) {
     super(db);
   }
 
@@ -16,43 +16,42 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
 
     var clients = Client
       .find()
-      .populate<{pets:IPet[]}>({path:'pets', model: Pet})
+      .populate<{ pets: IPet[] }>({path: 'pets', model: Pet})
       .exec();
 
     return clients;
   }
 
-  createClient = async (name: string, surName : string, email : string) => {
+  createClient = async (name: string, surName: string, email: string) => {
     this.connect();
 
-    var newClient = new Client({name:name, surName : surName, email:email})
+    var newClient = new Client({name: name, surName: surName, email: email})
 
     newClient.save();
 
     return newClient._id;
-    
   }
 
-  getById = async (id : string) => {
+  getById = async (id: string) => {
     this.connect();
 
     var client = await Client
       .findById(id)
-      .populate<{pets:IPet[]}>({path:'pets', model: Pet})
+      .populate<{ pets: IPet[] }>({path: 'pets', model: Pet})
       .exec();
 
     return client;
   }
 
   changeInfo = async (userId: string, name: string, surName: string, email: string) => {
-    try{
+    try {
       this.connect();
 
       var updatedClient = await Client
-        .updateOne({_id : userId}, {name : name, surName: surName, email : email})
+        .updateOne({_id: userId}, {name: name, surName: surName, email: email})
         .exec()
 
-      if (updatedClient != null){
+      if (updatedClient != null) {
         return true;
       }
 
@@ -60,6 +59,22 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
 
     } catch {
       return false;
+    }
+  }
+
+  getPets = async (id: any) => {
+    try {
+      this.connect();
+
+      var client = Client
+        .findById(id)
+        .populate<{ pets: IPet[] }>({path: 'pets', model: Pet})
+        .exec();
+
+      return client;
+
+    } catch {
+      return null;
     }
   }
 }
