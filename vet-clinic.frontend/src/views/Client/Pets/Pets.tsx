@@ -13,8 +13,6 @@ export const Pets = () => {
 
   const clientId = useSelector((state: RootState) => state.id)
 
-  const ref = useRef(null);
-
   useEffect(() => {
     (
       async () => {
@@ -94,7 +92,7 @@ export const Pets = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               ><div>
-                <AddingDialog setAddOpen={setAddOpen}/>
+                <AddingDialog setAddOpen={setAddOpen} id={clientId}/>
               </div>
               </Transition.Child>
             </div>

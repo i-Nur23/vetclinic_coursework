@@ -2,16 +2,21 @@ import React, {FormEvent, Fragment, useState} from "react";
 import { Dialog, Transition } from '@headlessui/react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
+import 'react-datepicker/dist/react-datepicker-cssmodules.css';
+import {ClientApi} from "../../../api/ClientApi";
+
 
 export const AddingDialog = (props:any) => {
   const [type, setType] = useState<string>('')
   const [breed, setBreed] = useState<string>('')
   const [name, setName] = useState<string>('')
-  const [birthDate, setBirthDate] = useState<Date | null>(new Date())
-  const [message, setMessage] = useState<string>(' ')
+  const [birthDate, setBirthDate] = useState<Date | null>(null)
+  const [image, setImage] = useState<File | null>(null)
+  const [message, setMessage] = useState<string>('')
 
 
-  const Handle = async () => {
+
+  const HandleAdding = async () => {
 
     var isStop = false;
 
@@ -28,6 +33,13 @@ export const AddingDialog = (props:any) => {
     if (isStop){
       setMessage('Это поля обязательны к заполнению')
       return;
+    }
+
+    var response = await ClientApi.AddPet(props.id, type, breed, name, birthDate, image);
+    if (!response.ok){
+      setMessage(response.message);
+    } else {
+      props.setAddOpen(false);
     }
   }
 
@@ -79,9 +91,20 @@ export const AddingDialog = (props:any) => {
           onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
           onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
         />
-        <DatePicker selected={birthDate} onChange={date => setBirthDate(date)}/>
+        <div>
+          <p className='mx-3 mb-2'>Дата рождения:</p>
+          <DatePicker selected={birthDate} onChange={(date) => setBirthDate(date)} className='mx-2 w-11/12'/>
+        </div>
+        <div>
+          <p className='mx-3 mb-2'>Фото:</p>
+            <input type='file' className='mx-2 focus:ring-0' onChange={e => setImage(e.target.files ? e.target.files[0] : null)}/>
+        </div>
       </div>
-
+      <div>
+        <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
+          {message}
+        </p>
+      </div>
       <div className="flex justify-between gap-2 mt-4">
         <button
           type="button"
@@ -93,7 +116,7 @@ export const AddingDialog = (props:any) => {
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          onClick={() => props.setAddOpen(false)}
+          onClick={() => HandleAdding()}
         >
           Добавить
         </button>

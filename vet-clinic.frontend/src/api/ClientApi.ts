@@ -48,4 +48,29 @@ export class ClientApi extends Base{
     var answer = await response.json();
     return answer;
   }
+
+  static AddPet = async (id : string,type : string, breed : string, name : string, birthDate : Date | null, image : File | null) => {
+
+    const formatData : any = new FormData();
+    formatData.append('type', type)
+    formatData.append('breed', breed)
+    formatData.append('name', name)
+    formatData.append('birthDate', birthDate?.toISOString() ?? '')
+    formatData.append('image', image)
+    var url = `${this.baseURL}/client/${id}/pets?type=${type}&breed=${breed}&name=${name}&birthDate=${birthDate}&image=${image}`;
+
+    var response = await fetch(url, {
+      method : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      }});
+    if (!response.ok){
+      return {ok : false, message : 'Ошибка запроса'}
+    }
+
+    var answer = await response.json();
+    return answer;
+  }
 }
