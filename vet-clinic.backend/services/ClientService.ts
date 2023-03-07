@@ -2,13 +2,20 @@ import IClientService from './interfaces/IClientService'
 import IClientRepository from "../repositories/interfaces/IClientRepository";
 import IAccountRepository from "../repositories/interfaces/IAccountRepository";
 
-export class ClientService implements IClientService{
-  clientRepository : IClientRepository
-  accountRepository : IAccountRepository
+import { IPet } from '../models/Pet';
+import IPetRepository from "../repositories/interfaces/IPetRepository";
 
-  constructor(clientRepository : IClientRepository, accountRepository : IAccountRepository) {
+export class ClientService implements IClientService {
+  clientRepository: IClientRepository
+  accountRepository: IAccountRepository
+  petRepository : IPetRepository
+
+  constructor(clientRepository: IClientRepository,
+              accountRepository: IAccountRepository,
+              petRepository : IPetRepository) {
     this.clientRepository = clientRepository;
     this.accountRepository = accountRepository;
+    this.petRepository = petRepository
   }
 
   getAll = async () => {
@@ -72,5 +79,14 @@ export class ClientService implements IClientService{
     var result = (client == null || client.pets.length == 0) ? {ok:false, message: 'Животных не найдено'} : {ok: true, data: client.pets}
 
     return result;
+  }
+
+  addPet = async (id: string, pet: IPet, image: File) => {
+
+    pet.cardNumber = await this.petRepository.getMaxCardNumber();
+
+    var petId = await this.petRepository.addPet(pet);
+
+    return this.clientRepository.addPet(id, petId)
   }
 }

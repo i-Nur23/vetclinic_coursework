@@ -1,4 +1,7 @@
+import {Request, Response} from "express";
+
 import IClientService from "../services/interfaces/IClientService";
+import {IPet} from "../models/Pet";
 
 export class ClientController{
   clientService : IClientService
@@ -34,5 +37,30 @@ export class ClientController{
     var result = await this.clientService.getPets(id);
 
     res.json(result)
+  }
+
+  addPet = async (req : any, res : any) => {
+   var id = req.params.id;
+   var filename = req.file.filename
+
+   var pet : IPet = {
+    type : req.body.type,
+    breed : req.body.breed,
+    nickname : req.body.name,
+    birthDate : req.body.birthDate,
+    image: filename,
+    cardNumber: -1
+   };
+
+   var response = await this.clientService.addPet(id ,pet, req.body.image);
+
+   if (!response) {
+    res.json({ok : false, message : 'Ошибка добавления'})
+   } else {
+    res.json({ok : true})
+   }
+
+
+
   }
 }

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 import {Client} from "../models/Client";
 import {Pet, IPet} from "../models/Pet";
 import IClientRepository from "./interfaces/IClientRepository";
@@ -76,5 +76,14 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
     } catch {
       return null;
     }
+  }
+
+  addPet = async (id: string, petId : Types.ObjectId) => {
+    this.connect();
+
+    return Client
+      .findById(id)
+      .exec()
+      .then(client => client?.pets.push(petId))
   }
 }

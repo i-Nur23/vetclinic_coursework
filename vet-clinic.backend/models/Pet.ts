@@ -10,7 +10,7 @@ var PetSchema = new Schema({
   },
   type: String,
   breed: String,
-  ncikname: String,
+  nickname: String,
   birthDate: Date,
   image:{
     data: Buffer,
@@ -22,8 +22,9 @@ export interface IPet{
   cardNumber: Number,
   type: String,
   breed: String,
-  ncikname: String,
+  nickname: String,
   birthDate: Date
+  image: String
 }
 
 export const Pet = mongoose.model('Pet', PetSchema)
