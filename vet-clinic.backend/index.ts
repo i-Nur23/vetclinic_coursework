@@ -62,10 +62,8 @@ var uploadPet = multer({
 app.get('/client/:id', (req : any, res : any) => clientController.get(req, res))
 app.patch('/client/:id', (req : any, res : any) => clientController.changeInfo(req, res))
 app.get('/client/:id/pets', (req : any, res : any) => clientController.getPets(req, res))
-app.post('/client/:id/pets', uploadPet.single('image'), (req : any, res : any) =>{
-    console.log(req.file)
-    clientController.addPet(req, res)
-})
+app.post('/client/:id/pets', uploadPet.single('image'), (req : any, res : any) => clientController.addPet(req, res))
+app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientController.removePet(req, res))
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
 

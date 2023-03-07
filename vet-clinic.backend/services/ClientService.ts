@@ -4,6 +4,9 @@ import IAccountRepository from "../repositories/interfaces/IAccountRepository";
 
 import { IPet } from '../models/Pet';
 import IPetRepository from "../repositories/interfaces/IPetRepository";
+import {Schema, Types} from "mongoose";
+
+const fs = require('fs')
 
 export class ClientService implements IClientService {
   clientRepository: IClientRepository
@@ -90,5 +93,20 @@ export class ClientService implements IClientService {
     var userId = (await this.accountRepository.getById(id)).userId;
 
     this.clientRepository.addPet(userId, petId)
+  }
+
+  removePet = async (userId: string, petId: Types.ObjectId) => {
+    var clientId = (await this.accountRepository.getById(userId)).userId;
+
+    var filepath = await this.petRepository.getPathToImage(petId);
+
+    console.log(filepath)
+
+    fs.unlink('public/pets/'+filepath, (err:any) => console.log(err));
+
+    await this.clientRepository.removePet(clientId, petId);
+
+    await this.petRepository.remove(petId);
+
   }
 }

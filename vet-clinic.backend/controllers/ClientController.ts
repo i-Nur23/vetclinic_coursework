@@ -61,4 +61,12 @@ export class ClientController{
     res.json({ok : false, message : 'Ошибка добавления'})
    }
   }
+
+ removePet = async (req: any, res: any) => {
+   var userId = req.params.userId;
+   var petId = req.params.petId;
+
+   await this.clientService.removePet(userId, petId);
+
+ }
 }

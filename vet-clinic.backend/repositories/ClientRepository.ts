@@ -87,4 +87,15 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
       )
       .exec();
   }
+
+  removePet = async (clientId: string, petId : Types.ObjectId) => {
+    this.connect();
+
+    Client
+      .findOneAndUpdate(
+        { _id: clientId },
+        { $pull: { pets: petId } }
+      )
+      .exec();
+  }
 }

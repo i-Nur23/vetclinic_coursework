@@ -2,6 +2,7 @@ import {BaseRepository} from "./BaseRepository";
 import IAccountRepository from "./interfaces/IAccountRepository";
 import IPetRepository from "./interfaces/IPetRepository";
 import {IPet, Pet} from "../models/Pet";
+import {Types} from "mongoose";
 
 export class PetRepository extends BaseRepository implements IPetRepository{
 
@@ -39,6 +40,23 @@ export class PetRepository extends BaseRepository implements IPetRepository{
     newPet.save();
 
     return newPet._id;
+  }
+
+  remove = async (petId: Types.ObjectId) => {
+    this.connect()
+
+    Pet
+      .findByIdAndDelete(petId)
+      .exec()
+  }
+
+  getPathToImage = (petId: Types.ObjectId) => {
+    var path = Pet
+      .findById(petId)
+      .exec()
+      .then(pet => {return pet?.image})
+
+    return path
   }
 
 

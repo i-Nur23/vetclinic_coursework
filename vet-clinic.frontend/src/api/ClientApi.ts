@@ -50,13 +50,13 @@ export class ClientApi extends Base{
     return answer;
   }
 
-  static AddPet = async (id : string,type : string, breed : string, name : string, birthDate : Date | null, image : File | null) => {
+  static AddPet = async (id : string,type : string, breed : string, name : string, birthDate : string, image : File | null) => {
 
     const formatData : any = new FormData();
     formatData.append('type', type)
     formatData.append('breed', breed)
     formatData.append('name', name)
-    formatData.append('birthDate', birthDate?.toISOString() ?? '')
+    formatData.append('birthDate', birthDate)
     formatData.append('image', image)
 
     var url = `${this.baseURL}/client/${id}/pets`;
@@ -75,5 +75,12 @@ export class ClientApi extends Base{
 
     var answer = await response.data;
     return answer;
+  }
+
+  static DeletePet = async (userId: string, petId: string) => {
+    var url = `${this.baseURL}/client/${userId}/pets/${petId}`;
+
+    axios.delete(url);
+
   }
 }

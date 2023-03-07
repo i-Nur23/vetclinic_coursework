@@ -10,7 +10,7 @@ export const AddingDialog = (props:any) => {
   const [type, setType] = useState<string>('')
   const [breed, setBreed] = useState<string>('')
   const [name, setName] = useState<string>('')
-  const [birthDate, setBirthDate] = useState<Date | null>(null)
+  const [birthDate, setBirthDate] = useState<string>(new Date().toISOString())
   const [image, setImage] = useState<File | null>(null)
   const [message, setMessage] = useState<string>('')
 
@@ -93,7 +93,17 @@ export const AddingDialog = (props:any) => {
         />
         <div>
           <p className='mx-3 mb-2'>Дата рождения:</p>
-          <DatePicker selected={birthDate} onChange={(date) => setBirthDate(date)} className='mx-2 w-11/12'/>
+          {/*<DatePicker selected={birthDate} onChange={(date) => setBirthDate(date)} className='mx-2 w-11/12'/>*/}
+          <input
+            value={birthDate}
+            type='date'
+            className="form-input ml-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
+            placeholder="Кличка"
+            onChange={e => setValue(e, setBirthDate)}
+            onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
+            onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+            style={{width: '95%'}}
+          />
         </div>
         <div>
           <p className='mx-3 mb-2'>Фото:</p>
