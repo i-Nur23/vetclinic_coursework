@@ -25,6 +25,8 @@ app.use(bodyParser.urlencoded({
 }));*/
 
 app.use(express.json({extended : true}))
+app.use('/public',express.static('public'));
+
 
 
 var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
