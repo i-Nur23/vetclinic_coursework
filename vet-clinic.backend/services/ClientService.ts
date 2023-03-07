@@ -81,12 +81,14 @@ export class ClientService implements IClientService {
     return result;
   }
 
-  addPet = async (id: string, pet: IPet, image: File) => {
+  addPet = async (id: string, pet: IPet) => {
 
     pet.cardNumber = await this.petRepository.getMaxCardNumber();
 
     var petId = await this.petRepository.addPet(pet);
 
-    return this.clientRepository.addPet(id, petId)
+    var userId = (await this.accountRepository.getById(id)).userId;
+
+    this.clientRepository.addPet(userId, petId)
   }
 }

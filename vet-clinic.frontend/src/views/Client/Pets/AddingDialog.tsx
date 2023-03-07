@@ -39,7 +39,7 @@ export const AddingDialog = (props:any) => {
     if (!response.ok){
       setMessage(response.message);
     } else {
-      props.setAddOpen(false);
+      props.close();
     }
   }
 
@@ -66,7 +66,7 @@ export const AddingDialog = (props:any) => {
         Добавление питомца
       </Dialog.Title>
 
-      <div className="mt-2 flex flex-col gap-6 p-2 justify-between">
+      <form className="mt-2 flex flex-col gap-6 p-2 justify-between">
         <input
           value={type}
           className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
@@ -97,9 +97,13 @@ export const AddingDialog = (props:any) => {
         </div>
         <div>
           <p className='mx-3 mb-2'>Фото:</p>
-            <input type='file' className='mx-2 focus:ring-0' onChange={e => setImage(e.target.files ? e.target.files[0] : null)}/>
+            <input
+              name='image'
+              type='file'
+              className='mx-2 focus:ring-0'
+              onChange={e => setImage(e.target.files ? e.target.files[0] : null)}/>
         </div>
-      </div>
+      </form>
       <div>
         <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
           {message}
@@ -109,12 +113,12 @@ export const AddingDialog = (props:any) => {
         <button
           type="button"
           className="inline-flex justify-center rounded-md border border-transparent bg-gray-100 px-4 py-2 text-sm font-medium text-black hover:bg-gray-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          onClick={() => props.setAddOpen(false)}
+          onClick={() => props.close()}
         >
           Отмена
         </button>
         <button
-          type="button"
+          type="submit"
           className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           onClick={() => HandleAdding()}
         >

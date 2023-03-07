@@ -1,4 +1,5 @@
 import {Base} from './Base';
+import axios from "axios";
 
 export class ClientApi extends Base{
   static getClient = async (id: string | null) => {
@@ -57,20 +58,22 @@ export class ClientApi extends Base{
     formatData.append('name', name)
     formatData.append('birthDate', birthDate?.toISOString() ?? '')
     formatData.append('image', image)
-    var url = `${this.baseURL}/client/${id}/pets?type=${type}&breed=${breed}&name=${name}&birthDate=${birthDate}&image=${image}`;
 
-    var response = await fetch(url, {
-      method : 'POST',
+    var url = `${this.baseURL}/client/${id}/pets`;
+
+    var response = await axios.post( url, formatData,{
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data; boundary=dsasfd',
         'Accept': 'application/json',
         'Access-Control-Allow-Origin':'*'
-      }});
-    if (!response.ok){
+      }
+    })
+
+    if (response.statusText != 'OK'){
       return {ok : false, message : 'Ошибка запроса'}
     }
 
-    var answer = await response.json();
+    var answer = await response.data;
     return answer;
   }
 }

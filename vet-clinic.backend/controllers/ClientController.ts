@@ -40,27 +40,25 @@ export class ClientController{
   }
 
   addPet = async (req : any, res : any) => {
-   var id = req.params.id;
-   var filename = req.file.filename
+   try {
+    var id = req.params.id;
+    var filename = req.file.filename
 
-   var pet : IPet = {
-    type : req.body.type,
-    breed : req.body.breed,
-    nickname : req.body.name,
-    birthDate : req.body.birthDate,
-    image: filename,
-    cardNumber: -1
-   };
+    var pet: IPet = {
+     type: req.body.type,
+     breed: req.body.breed,
+     nickname: req.body.name,
+     birthDate: req.body.birthDate,
+     image: filename,
+     cardNumber: -1
+    };
 
-   var response = await this.clientService.addPet(id ,pet, req.body.image);
+    await this.clientService.addPet(id, pet);
 
-   if (!response) {
-    res.json({ok : false, message : 'Ошибка добавления'})
-   } else {
     res.json({ok : true})
+
+   } catch (e) {
+    res.json({ok : false, message : 'Ошибка добавления'})
    }
-
-
-
   }
 }

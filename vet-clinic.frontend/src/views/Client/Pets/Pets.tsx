@@ -5,22 +5,27 @@ import {RootState} from "../../../store/store";
 import {AddingDialog} from "./AddingDialog";
 import {Dialog, Transition} from "@headlessui/react";
 import './style.css'
+import {AgeCalculator} from "../../../utils/AgeCalculator";
 
 export const Pets = () => {
   const [pets, setPets] = useState<any[]>([]);
   const [isAddOpen, setAddOpen] = useState<boolean>(false)
   const [isEditOpen, setEditOpen] = useState<boolean>(false)
+  const [isDelOpen, setDelOpen] = useState<boolean>(false)
 
   const clientId = useSelector((state: RootState) => state.id)
 
+  const fetchPets = async () => {
+    var response = await ClientApi.getPets(clientId);
+    if (response.ok){
+      setPets(response.data)
+    }
+  }
+
+
   useEffect(() => {
     (
-      async () => {
-        var response = await ClientApi.getPets(clientId);
-        if (response.ok){
-          setPets(response.data)
-        }
-      }
+      fetchPets
     )()
   },[])
 
@@ -39,7 +44,7 @@ export const Pets = () => {
                   <p>Карточка №: {pet.cardNumber}</p>
                   <p>Вид: {pet.type}</p>
                   <p>Порода: {pet.breed}</p>
-                  <p>Возраст: {pet.age}</p>
+                  <p>Возраст (в годах): {AgeCalculator(pet.birthDate)}</p>
                   <p>Кличка: {pet.nickname}</p>
                 </div>
                 <div className='flex flex-col gap-2 justify-between'>
@@ -68,7 +73,7 @@ export const Pets = () => {
       </div>
 
       <Transition.Root appear show={isAddOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={() => setAddOpen(false)}>
+        <Dialog as="div" className="relative z-50" onClose={async () => { setAddOpen(false) }}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -92,7 +97,7 @@ export const Pets = () => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               ><div>
-                <AddingDialog setAddOpen={setAddOpen} id={clientId}/>
+                <AddingDialog close={() => { setAddOpen(false); fetchPets() }} id={clientId}/>
               </div>
               </Transition.Child>
             </div>

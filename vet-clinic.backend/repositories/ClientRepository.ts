@@ -3,7 +3,6 @@ import {Client} from "../models/Client";
 import {Pet, IPet} from "../models/Pet";
 import IClientRepository from "./interfaces/IClientRepository";
 import {BaseRepository} from "./BaseRepository";
-import {Account} from "../models/Account";
 
 export class ClientRepository extends BaseRepository implements IClientRepository {
 
@@ -81,9 +80,11 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   addPet = async (id: string, petId : Types.ObjectId) => {
     this.connect();
 
-    return Client
-      .findById(id)
-      .exec()
-      .then(client => client?.pets.push(petId))
+    Client
+      .findOneAndUpdate(
+      { _id: id },
+      { $push: { pets: petId } }
+      )
+      .exec();
   }
 }

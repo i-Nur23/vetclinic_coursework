@@ -19,9 +19,7 @@ export class PetRepository extends BaseRepository implements IPetRepository{
       .sort('-cardNumber')
       .exec()
 
-    maxNum.then( data =>
-      number = data?.cardNumber ?? -1
-    )
+    var number = await maxNum.then(data => {return  data?.cardNumber ?? 0})
 
     return number + 1;
   }
