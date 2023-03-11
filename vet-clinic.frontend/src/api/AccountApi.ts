@@ -16,8 +16,8 @@ export class AccountApi extends Base{
     return answer;
   }
 
-  static createAccount = async(login: string, password : string, name: string, surName : string, email : string, role: string) : Promise<any> => {
-    var url = `${this.baseURL}/account?login=${login}&password=${password}&name=${name}&surName=${surName}&email=${email}&role=${role}`;
+  static createAccount = async(login: string, password : string, name: string, surName : string, email : string, phone : string, role: string) : Promise<any> => {
+    var url = `${this.baseURL}/account?login=${login}&password=${password}&name=${name}&surName=${surName}&email=${email}&role=${role}&phone=${phone}`;
     var response = await fetch(url,{
       method: 'POST',
       headers: {

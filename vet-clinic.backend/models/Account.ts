@@ -7,7 +7,7 @@ var AccountSchema = new Schema({
   password: String,
   type: {
     type: Schema.Types.String,
-    enum:['client','doctor','applicant']},
+    enum:['Клиент','Врач','Регистратор','Менеджер']},
   userId: {type: Schema.Types.ObjectId}
 })
 

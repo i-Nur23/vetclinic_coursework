@@ -21,10 +21,10 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
     return clients;
   }
 
-  createClient = async (name: string, surName: string, email: string) => {
+  createClient = async (name: string, surName: string, email: string, phone : string) => {
     this.connect();
 
-    var newClient = new Client({name: name, surName: surName, email: email})
+    var newClient = new Client({name: name, surName: surName, email: email, phone : phone})
 
     newClient.save();
 

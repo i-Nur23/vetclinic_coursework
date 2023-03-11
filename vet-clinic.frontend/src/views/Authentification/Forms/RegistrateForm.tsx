@@ -14,6 +14,7 @@ export const RegistrateForm = ({onChange} : any) => {
   const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
   const [email, setEmail] = useState< string >('')
+  const [phone, setPhone] = useState<string>('')
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -49,7 +50,7 @@ export const RegistrateForm = ({onChange} : any) => {
       return;
     }
 
-    var answer = await AccountApi.createAccount(login, password, name, surName, email, 'client');
+    var answer = await AccountApi.createAccount(login, password, name, surName, email,phone, 'Клиент');
     if (answer.ok){
       dispatch(authorize( {level: Level.Client, id: answer.id}))
       navigate('/')
@@ -79,6 +80,13 @@ export const RegistrateForm = ({onChange} : any) => {
       className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
       placeholder="Почта"
       onChange={e => setValue(e, setEmail)}
+      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+    />
+    <input
+      value={phone}
+      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
+      placeholder="Телефон"
+      onChange={e => setValue(e, setPhone)}
       onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
     />
     <input

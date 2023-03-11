@@ -7,6 +7,7 @@ var ClientSchema = new Schema({
   name: String,
   surName: String,
   email: String,
+  phone: String,
   pets: [{type: Schema.Types.ObjectId, ref: 'Pet'}]
 })
 
@@ -14,6 +15,7 @@ export interface IClient{
   name: string,
   surName: string,
   email: string,
+  phone: string,
   pets: [string]
 }
 

@@ -1,10 +1,11 @@
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../store/store";
 import {useNavigate} from "react-router-dom";
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import {AccountApi} from "../../api/AccountApi";
 import {authorize} from "../../store/slicers/authSlice";
 import {Level} from "../../utils/Level";
+import {ClientApi} from "../../api/ClientApi";
 
 export const WorkerLogin = () =>{
   const dispatch = useDispatch<AppDispatch>()
@@ -14,6 +15,29 @@ export const WorkerLogin = () =>{
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
   const [password, setPassword] = useState< string >('')
+  const level = useSelector((state : RootState) => state.level);
+
+  useEffect( () => {
+        (
+          async () => {
+            if (level > 2){
+              switch (level){
+                case(Level.Admin):
+                  navigate('admin/home')
+                  break;
+                case(Level.Register):
+                  navigate('register/home')
+                  break;
+                case(Level.Manager):
+                  navigate('manager/home')
+                  break;
+              }
+            }
+
+          }
+        )();
+      },[]);
+
 
   const Handle = async () => {
 

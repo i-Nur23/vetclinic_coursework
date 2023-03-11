@@ -14,7 +14,7 @@ export const Authentification = () => {
 
 
   useEffect(() => {
-    if (authLevel !== Level.Unauthozized){
+    if (authLevel == Level.Client){
       navigate("/")
     }
     setIsLogin(location.state.login)

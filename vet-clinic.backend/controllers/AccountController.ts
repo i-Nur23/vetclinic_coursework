@@ -39,6 +39,7 @@ export class AccountController{
     var name = req.query.name;
     var surName = req.query.surName;
     var email = req.query.email;
+    var phone = req.query.phone;
     var role = req.query.role;
 
     if (login == 'admin'){
@@ -46,7 +47,7 @@ export class AccountController{
       return;
     }
 
-    var result = this.accountService.createAccount(login,password,name,surName,email, role)
+    var result = this.accountService.createAccount(login,password,name,surName,email,phone,role)
 
     result.then(json => res.json(json))
   }

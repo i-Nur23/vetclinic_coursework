@@ -12,6 +12,11 @@ const express = require('express');
 const cors = require('cors')
 const multer = require('multer')
 import { v4 as uuidv4 } from 'uuid';
+import {DoctorRepository} from "./repositories/DoctorRepository";
+import {ManagerRepository} from "./repositories/ManagerRepository";
+import {RegisterRepository} from "./repositories/RegisterRepository";
+import {DoctorService} from "./services/DoctorService";
+import {DoctorController} from "./controllers/DoctorController";
 const bodyParser = require('body-parser');
 
 
@@ -34,12 +39,17 @@ var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
 var clientRepo = new ClientRepository(mongoDB);
 var accountRepo = new AccountRepository(mongoDB);
 var petRepo = new PetRepository(mongoDB);
+var docRepo = new DoctorRepository(mongoDB);
+var manRepo = new ManagerRepository(mongoDB);
+var regRepo = new RegisterRepository(mongoDB);
 
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
-var accountService = new AccountService(accountRepo, clientRepo);
+var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo);
+var doctorService = new DoctorService(docRepo);
 
 var clientController = new ClientController(clientService);
 var accountController = new AccountController(accountService);
+var doctorController = new DoctorController(doctorService);
 
 app.use(cors())
 
@@ -56,6 +66,23 @@ var uploadPet = multer({
     storage: petStorage,
 });
 
+const docStorage = multer.diskStorage({
+    destination: (req : any, file  :any, cb : any) => {
+        cb(null, './public/doctors');
+    },
+    filename: (req : any, file : any, cb : any) => {
+        const fileName = file.originalname.toLowerCase().split(' ').join('-');
+        cb(null, uuidv4() + '-' + fileName)
+    }
+});
+var uploadPet = multer({
+    storage: petStorage,
+});
+
+var uploadDoc = multer({
+    storage: docStorage
+})
+
 
 
 
@@ -66,6 +93,7 @@ app.post('/client/:id/pets', uploadPet.single('image'), (req : any, res : any) =
 app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientController.removePet(req, res))
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
+app.post('/doctor/:id', uploadDoc.single('image'),(req : any, res : any) => doctorController.addInfo(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)
