@@ -1,7 +1,8 @@
 export enum Level {
   Unauthozized = 0,
   Client,
-  Applicant,
+  Register,
   Doctor,
-  Admin
+  Admin,
+  Manager
 }

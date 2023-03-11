@@ -9,7 +9,7 @@ import {AdminActions, ClientActions, DoctorActions} from "./ActionsLists";
 export const AuthorizedControls = () => {
   const authLevel = useSelector((state: RootState) => state.level)
 
-  const ChosenItem = () => {
+  /*const ChosenItem = () => {
     if (authLevel == Level.Client){
       return <ClientActions/>;
     } else if (authLevel == Level.Doctor){
@@ -17,7 +17,7 @@ export const AuthorizedControls = () => {
     }
 
     return <AdminActions/>
-  }
+  }*/
 
   return(
     <div className="flex justify-between gap-6">
@@ -45,7 +45,7 @@ export const AuthorizedControls = () => {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-0 z-10 mt-2 divide-y divide-gray-200 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <ChosenItem/>
+            <ClientActions/>
             <ExitItem/>
           </Menu.Items>
         </Transition>

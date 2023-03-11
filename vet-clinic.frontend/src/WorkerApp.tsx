@@ -2,12 +2,13 @@ import React, {JSXElementConstructor} from 'react';
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer/Footer";
 import {Outlet} from "react-router-dom";
+import {WorkerNavbar} from "./components/WorkerNavbar";
 
-const App = ({children} : any) => {
+const ClientApp = ({children} : any) => {
   return (
     <div className='flex flex-col min-h-screen justify-between'>
       <div className='flex flex-col'>
-        <Navbar/>
+        <WorkerNavbar/>
         <div className="pb-20">
           <Outlet/>
         </div>
@@ -17,4 +18,4 @@ const App = ({children} : any) => {
   );
 }
 
-export default App;
+export default ClientApp;

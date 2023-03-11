@@ -58,14 +58,14 @@ const Navbar = () => {
                     className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
                     href="#pablo"
                   >
-                    <i className="leading-lg text-black opacity-75"></i><span className="">Вакансии</span>
+                    <i className="leading-lg text-black opacity-75"></i><span className="">Отзывы</span>
                     <div className=""></div>
                   </a>
                 </li>
               </ul>
             </div>
             <div className="flex justify-end" style={{width: '25%'}}>
-              {authLevel == Level.Unauthozized ? <UnauthorizedControls/> : <AuthorizedControls/>}
+              {authLevel != Level.Client ? <UnauthorizedControls/> : <AuthorizedControls/>}
             </div>
           </div>
         </nav>

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import ClientApp from './ClientApp';
 import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import './index.css'
@@ -13,26 +13,42 @@ import {ProtectedRoutes} from "./utils/ProtectedRoutes";
 import {Level} from "./utils/Level";
 import {Profile} from './views/Client/Profile'
 import {Pets} from "./views/Client/Pets";
+import WorkerApp from "./WorkerApp";
+import {WorkerLogin} from "./views/Worker/WorkerLogin";
+import {AddUsers, AdminCatalog, AdminHome} from "./views/Admin";
 
 /*const router = createBrowserRouter([
-  {path: '/', element: <App/>, children:
-      [ {index: true, element: <Home/>},
+  {path: '/', element: <ClientApp/>, children:
+      [ {index: true, element: <AdminHome/>},
         {path: 'auth', element: <Authentification/>}]
   },
 ])*/
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App/>}>
-      <Route index element={<Home/>}/>
-      <Route path="auth" element={<Authentification/>}/>
-        <Route element={<ProtectedRoutes role={Level.Client}/>}>
-          <Route path='client'>
-            <Route path='profile' element={<Profile/>}/>
-            <Route path='pets' element={<Pets/>}/>
+    <Route>
+      <Route path="/" element={<ClientApp/>}>
+        <Route index element={<Home/>}/>
+        <Route path="auth" element={<Authentification/>}/>
+          <Route element={<ProtectedRoutes role={Level.Client}/>}>
+            <Route path='client'>
+              <Route path='profile' element={<Profile/>}/>
+              <Route path='pets' element={<Pets/>}/>
+            </Route>
+          </Route>
+      </Route>
+      <Route path="workers" element={<WorkerApp/>}>
+        <Route index element={<WorkerLogin/>}/>
+        <Route element={<ProtectedRoutes role={Level.Admin}/>}>
+          <Route path='admin'>
+            <Route path='home' element={<AdminHome/>}/>
+            <Route path='addusers' element={<AddUsers/>}/>
+            <Route path='catalog' element={<AdminCatalog/>}/>
           </Route>
         </Route>
+      </Route>
     </Route>
+
   ))
 
 const root = ReactDOM.createRoot(
