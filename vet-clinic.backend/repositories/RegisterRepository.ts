@@ -16,4 +16,15 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
 
     return newReg._id;
   }
+
+  getById = async (id: string) => {
+    this.connect()
+
+    var register = Register
+      .findById(id)
+      .exec()
+      .then(register => register);
+
+    return register;
+  }
 }

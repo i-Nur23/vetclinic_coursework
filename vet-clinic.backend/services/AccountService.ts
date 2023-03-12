@@ -52,4 +52,40 @@ export class AccountService implements IAccountService{
 
   }
 
+  getWorkerByRole = async (user : any) => {
+    var worker;
+
+    if (user.type == 'Регистратор')
+        worker = await this.registerRepository.getById(user.userId);
+    else if (user.type == 'Менеджер')
+        worker = this.managerRepository.getById(user.userId).then(x => {return x});
+    else if (user.type == 'Врач')
+        worker = this.doctorRepository.getById(user.userId).then(x => x);
+
+    return worker;
+  }
+
+  getAllWorkers = async () => {
+    var users = await this.accountRepository.getAllWorkers();
+
+    users = users.filter((x : any) => x.type != 'Клиент')
+
+    var workers = await Promise.all(users.map( async  (user : any) => {
+
+      var worker = await this.getWorkerByRole(user);
+
+      var item =
+      {
+          'account' : user,
+          'info' : worker
+      }
+
+      return item;
+    }))
+
+    console.log(workers)
+
+    return workers;
+  }
+
 }

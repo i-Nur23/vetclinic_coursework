@@ -94,6 +94,8 @@ app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientContro
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
 app.post('/doctor/:id', uploadDoc.single('image'),(req : any, res : any) => doctorController.addInfo(req, res))
+app.get('/workers', (req :any, res : any) => accountController.getWorkers(req, res))
+
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

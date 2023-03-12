@@ -25,4 +25,12 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
       .updateOne({_id : id}, {spec : spec, image : image})
       .exec();
   }
+
+  getById(id: string): Promise<any> {
+    this.connect()
+
+    return Doctor
+      .findById(id)
+      .exec();
+  }
 }

@@ -51,4 +51,12 @@ export class AccountController{
 
     result.then(json => res.json(json))
   }
+
+  getWorkers = async (req: any, res: any) => {
+    var answer = this.accountService.getAllWorkers();
+
+    answer.then(answer => res.json(answer))
+
+
+  }
 }

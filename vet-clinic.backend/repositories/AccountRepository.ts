@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 import IAccountRepository from "./interfaces/IAccountRepository";
 import {Account} from "../models/Account";
 import {BaseRepository} from "./BaseRepository";
+import {Client, IClient} from "../models/Client";
+import {Manager, IManager} from "../models/Manager";
+import {Register, IRegister} from "../models/Register";
 
 export class AccountRepository extends BaseRepository implements IAccountRepository{
 
@@ -73,6 +76,21 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
 
     } catch {
       return false;
+    }
+  }
+
+  getAllWorkers = async () => {
+    try {
+      this.connect();
+
+      var accounts = Account
+        .find()
+        .exec();
+
+      return accounts;
+
+    } catch {
+      return null;
     }
   }
 }

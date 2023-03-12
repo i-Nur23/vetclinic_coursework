@@ -16,4 +16,14 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
 
     return newMan._id;
   }
+
+  getById = async (id: string) => {
+    this.connect();
+
+    var manager = Manager
+      .findById(id)
+      .exec();
+
+    return manager;
+  }
 }
