@@ -15,7 +15,7 @@ import {Profile} from './views/Client/Profile'
 import {Pets} from "./views/Client/Pets";
 import WorkerApp from "./WorkerApp";
 import {WorkerLogin} from "./views/Worker/WorkerLogin";
-import {AddUsers, AdminCatalog, AdminHome} from "./views/Admin";
+import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
 
 /*const router = createBrowserRouter([
   {path: '/', element: <ClientApp/>, children:
@@ -44,6 +44,7 @@ const router = createBrowserRouter(
             <Route path='home' element={<AdminHome/>}/>
             <Route path='addusers' element={<AddUsers/>}/>
             <Route path='catalog' element={<AdminCatalog/>}/>
+            <Route path='users' element={<UsersList/>}/>
           </Route>
         </Route>
       </Route>

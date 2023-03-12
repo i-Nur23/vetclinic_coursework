@@ -83,8 +83,6 @@ export class AccountService implements IAccountService{
       return item;
     }))
 
-    console.log(workers)
-
     return workers;
   }
 

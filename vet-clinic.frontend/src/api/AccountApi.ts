@@ -1,4 +1,5 @@
 import {Base} from "./Base";
+import axios from "axios";
 
 export class AccountApi extends Base{
   static getAccount = async (login : string, password : string) : Promise<any> => {
@@ -32,5 +33,11 @@ export class AccountApi extends Base{
     var answer = await response.json();
     return answer;
 
+  }
+
+  static GetAllWorkers = async () => {
+    var url = `${this.baseURL}/workers`
+    var response = await axios.get(url);
+    return response.data;
   }
 }
