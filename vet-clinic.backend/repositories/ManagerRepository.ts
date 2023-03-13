@@ -26,4 +26,31 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
 
     return manager;
   }
+
+  changeInfo = async (id: string, name: string, surName: string, email: string, phone: string) => {
+    try {
+      this.connect();
+
+      var updatedManager = await Manager
+        .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone})
+        .exec()
+
+      if (updatedManager != null) {
+        return true;
+      }
+
+      return false;
+
+    } catch {
+      return false;
+    }
+  }
+
+  delete = async (userId: any) => {
+    this.connect()
+
+    await Manager
+      .findByIdAndDelete(userId)
+      .exec();
+  }
 }

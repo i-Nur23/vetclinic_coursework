@@ -4,6 +4,7 @@ import IClientRepository from "../repositories/interfaces/IClientRepository";
 import IDoctorRepository from "../repositories/interfaces/IDoctorRepository";
 import IRegisterRepository from "../repositories/interfaces/IRegisterRepository";
 import IManagerRepository from "../repositories/interfaces/IManagerRepository";
+import fs from "fs";
 
 export class AccountService implements IAccountService{
   accountRepository : IAccountRepository
@@ -86,4 +87,82 @@ export class AccountService implements IAccountService{
     return workers;
   }
 
+  changeWorkerInfo = async (accId : string,
+                            userId : string,
+                            login : string,
+                            password : string,
+                            name : string,
+                            surName : string,
+                            email : string,
+                            phone : string,
+                            role : string) => {
+    var isAccChangeOk;
+    var isInfoChangeOk;
+
+    var accountById = await this.accountRepository.getById(accId);
+
+    if (login == 'admin'){
+      return {ok:false, message: 'Логин занят'};
+    }
+
+    if (accountById.login !== login) {
+      if (await this.accountRepository.isLoginExists(login)) {
+        return {ok: false, message: 'Логин занят'};
+      }
+    }
+
+    if (role == 'Регистратор') {
+
+      isAccChangeOk = await this.accountRepository.changeLoginAndPassword(accId, login, password);
+
+      if (!isAccChangeOk) {
+        return {ok : false, message: 'Не удалось обновить логин или пароль'}
+      }
+
+      isInfoChangeOk = await this.registerRepository.changeInfo(userId, name, surName, email, phone)
+
+      if (!isInfoChangeOk) {
+        return {ok : false, message: 'Не удалось обновить информацию'}
+      }
+
+      return {ok : true}
+    }
+
+    else if (role == 'Менеджер') {
+      isAccChangeOk = await this.accountRepository.changeLoginAndPassword(accId, login, password);
+
+      if (!isAccChangeOk) {
+        return {ok : false, message: 'Не удалось обновить логин или пароль'}
+      }
+
+      isInfoChangeOk = await this.managerRepository.changeInfo(userId, name, surName, email, phone)
+
+      if (!isInfoChangeOk) {
+        return {ok : false, message: 'Не удалось обновить информацию'}
+      }
+
+      return {ok : true}
+    }
+  }
+
+  deleteAccount = async (accId: any) => {
+    var account = await this.accountRepository.getById(accId);
+
+    var userId = account.userId;
+
+    if (account.type == 'Врач'){
+      var filepath = await this.doctorRepository.getPathToImage(account.userId);
+      fs.unlink('public/doctors/'+filepath, (err:any) => console.log(err));
+      await this.doctorRepository.delete(userId);
+    } else if (account.type == 'Регистратор') {
+      await this.registerRepository.delete(userId);
+    } else if (account.type == 'Менеджер') {
+      await this.managerRepository.delete(userId);
+    }
+
+    await this.accountRepository.deleteAccount(accId);
+
+
+
+  }
 }

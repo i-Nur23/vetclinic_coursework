@@ -1,17 +1,22 @@
 import React, {FormEvent, Fragment, useEffect, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {CustomListbox} from "../../../components/Listbox";
+import {WorkerApi} from "../../../api/WorkerApi";
 
 export const UserDeleteDialog = (props : any) => {
 
+  const [id, setId] = useState('')
+
+  useEffect(() => {
+      var account = props.user.account;
+      setId(account._id)
+    }, [])
+
   const HandleDeleting = async () => {
 
-    /*var response = await ClientApi.AddPet(props.id, type, breed, name, birthDate, image);
-    if (!response.ok){
-      setMessage(response.message);
-    } else {
-      props.close();
-    }*/
+    await WorkerApi.Delete(id);
+
+    props.close();
   }
 
   return(
@@ -56,7 +61,7 @@ export const UserDeleteDialog = (props : any) => {
       </button>
       <button
       type="submit"
-      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+      className="inline-flex justify-center rounded-md border border-transparent bg-red-100 px-4 py-2 text-sm font-medium text-red-900 hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2"
       onClick={() => HandleDeleting()}
     >
       Удалить

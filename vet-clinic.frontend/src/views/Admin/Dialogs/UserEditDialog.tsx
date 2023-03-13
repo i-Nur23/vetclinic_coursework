@@ -1,6 +1,7 @@
 import React, {FormEvent, Fragment, useEffect, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {CustomListbox} from "../../../components/Listbox";
+import {WorkerApi} from "../../../api/WorkerApi";
 
 export const UserEditDialog = (props : any) => {
 
@@ -14,6 +15,7 @@ export const UserEditDialog = (props : any) => {
   ]
 
   const [message, setMessage] = useState< string >(' ')
+  const [acc, setAcc] = useState(Object)
   const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
   const [login, setLogin] = useState< string >('')
@@ -24,7 +26,7 @@ export const UserEditDialog = (props : any) => {
   const [image, setImage] = useState < null | File >(null)
 
 
-  const HandleAdding = async () => {
+  const HandleEditing = async () => {
 
     var isStop = false;
 
@@ -43,12 +45,22 @@ export const UserEditDialog = (props : any) => {
       return;
     }
 
-    /*var response = await ClientApi.AddPet(props.id, type, breed, name, birthDate, image);
+    var response;
+
+    var user = props.user;
+
+    if (user.account.type != 'Врач'){
+      response = await WorkerApi.ChangeWorkerInfo(acc._id, acc.userId, login, password, name, surName, email, phone, acc.type)
+    } else if (image == null){
+      response = await WorkerApi.ChangeDocInfo(acc._id, acc.userId, login, password, name, surName, email, phone, spec)
+    } else {
+      response = await WorkerApi.ChangeDocInfoAndPhoto(acc._id, acc.userId, login, password, name, surName, email, phone, spec, image)
+    }
     if (!response.ok){
       setMessage(response.message);
     } else {
       props.close();
-    }*/
+    }
   }
 
   const setValue = (e : FormEvent, action : any) => {
@@ -72,6 +84,11 @@ export const UserEditDialog = (props : any) => {
     setPhone(user.info.phone);
     setLogin(user.account.login);
     setPassword(user.account.password);
+    setAcc(user.account);
+
+    if (user.account.type == 'Врач'){
+      setSpec(user.info.spec);
+    }
 
   }, [])
 
@@ -108,7 +125,7 @@ export const UserEditDialog = (props : any) => {
                     Редактирование информации
                   </Dialog.Title>
                   <form className="mt-2 flex flex-col gap-6 p-2 justify-between">
-                      { props.user.account.type  == 'Врач' ?
+                      { acc.type  == 'Врач' ?
                         <div className='flex flex-col gap-6 justify-between'>
                           <div>
                             <p className='mx-3 mb-2'>Фото:</p>
@@ -135,7 +152,7 @@ export const UserEditDialog = (props : any) => {
                     />
                     <input
                       value={password}
-                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700"
+                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
                       placeholder="Пароль"
                       onChange={e => setValue(e, setPassword)}
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
@@ -151,7 +168,7 @@ export const UserEditDialog = (props : any) => {
                     />
                     <input
                       value={surName}
-                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700"
+                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
                       placeholder="Фамилия"
                       onChange={e => setValue(e, setSurName)}
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
@@ -159,7 +176,7 @@ export const UserEditDialog = (props : any) => {
                     />
                     <input
                       value={email}
-                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700"
+                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
                       placeholder="Email"
                       onChange={e => setValue(e, setEmail)}
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
@@ -167,7 +184,7 @@ export const UserEditDialog = (props : any) => {
                     />
                     <input
                       value={phone}
-                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700"
+                      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
                       placeholder="Телефон"
                       onChange={e => setValue(e, setPassword)}
                       onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
@@ -175,7 +192,7 @@ export const UserEditDialog = (props : any) => {
                     />
                   </form>
                   <div>
-                    <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
+                    <p className="text-red-700 font-light text-center" style={{minHeight:'2em'}}>
                       {message}
                     </p>
                   </div>
@@ -190,7 +207,7 @@ export const UserEditDialog = (props : any) => {
                     <button
                       type="submit"
                       className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={() => HandleAdding()}
+                      onClick={() => HandleEditing()}
                     >
                       Сохранить
                     </button>

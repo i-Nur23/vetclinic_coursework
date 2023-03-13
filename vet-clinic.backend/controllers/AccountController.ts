@@ -57,6 +57,32 @@ export class AccountController{
 
     answer.then(answer => res.json(answer))
 
+  }
 
+  changeWorkersInfo = async (req: any, res: any) => {
+    var accId = req.params.id;
+    var userId = req.body.userId;
+    var login = req.body.login;
+    var password = req.body.password;
+    var name = req.body.name;
+    var surName = req.body.surName;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var role = req.body.role;
+
+    console.log(req.body)
+
+    var response = await this.accountService.changeWorkerInfo(accId, userId, login, password, name, surName, email, phone, role)
+
+    res.json(response)
+  }
+
+  deleteWorker = async (req : any, res  : any) => {
+
+    var accId = req.params.id;
+
+    await this.accountService.deleteAccount(accId);
+
+    res.json({ok : true})
   }
 }

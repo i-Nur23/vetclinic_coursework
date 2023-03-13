@@ -1,11 +1,8 @@
 import {CustomListbox} from "../../components/Listbox";
 import React, {FormEvent, Fragment, useEffect, useState} from "react";
-import {Level} from "../../utils/Level";
 import {AccountApi} from "../../api/AccountApi";
-import {AgeCalculator} from "../../utils/AgeCalculator";
 import './style.css';
-import {Dialog, Transition} from "@headlessui/react";
-import {AddingDialog} from "../Client/Pets/AddingDialog";
+import {Transition} from "@headlessui/react";
 import {UserDeleteDialog, UserEditDialog} from "./Dialogs";
 
 export const UsersList = () => {
@@ -30,18 +27,28 @@ export const UsersList = () => {
         var workers = await AccountApi.GetAllWorkers();
         setAllWorkers(workers);
         setSelectedWorkers(workers);
-        setSelectedUser(workers[0])
-
+        setSelectedUser(workers[0]);
       }
     )();
   },[]);
+
+  /*useEffect( () => {
+    (
+      async () => {
+        var workers = await AccountApi.GetAllWorkers();
+        setAllWorkers(workers);
+        setSelectedWorkers(workers);
+        searchChange()
+      }
+    )();
+  },[isEditOpen]);*/
 
   useEffect( () => {
       searchChange();
   },[selectedRole, text]);
 
   const searchChange = () => {
-    var list = null;
+    var list;
 
     if (selectedRole != 'Все'){
       list = allWorkers.filter(w => w.account.type == selectedRole)
@@ -60,6 +67,32 @@ export const UsersList = () => {
 
     setSelectedWorkers(list);
 
+  }
+
+  const fetchList = () => {
+    AccountApi.GetAllWorkers().then(
+      workers => {
+        setAllWorkers(workers);
+        var list;
+
+        if (selectedRole != 'Все'){
+          list = workers.filter((w : any) => w.account.type == selectedRole)
+        } else {
+          list = workers;
+        }
+
+        if (text != ''){
+          list = list.filter((w : any) => (
+            w.info.name.indexOf(text) != -1 ||
+            w.info.surName.indexOf(text) != -1 ||
+            w.info.email.indexOf(text) != -1 ||
+            w.info.phone.indexOf(text) != -1
+          ))
+        }
+
+        setSelectedWorkers(list);
+      }
+    );
   }
 
   return(
@@ -91,6 +124,7 @@ export const UsersList = () => {
                 <button className='hover:bg-blue-300 rounded-lg p-4 ease-in-out duration-200'
                         onClick={() => {
                           setSelectedUser(w);
+                          console.log(w)
                           setIsEditOpen(true);
                         }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-6 h-6 control">
@@ -115,15 +149,14 @@ export const UsersList = () => {
       {/*Диалог с изменением информации*/}
       <Transition.Root appear show={isEditOpen} as={Fragment}>
         <div>
-          <UserEditDialog close={() => setIsEditOpen(false)} user={selectedUser}/>
+          <UserEditDialog close={() => {setIsEditOpen(false); fetchList(); searchChange()}}  user={selectedUser}/>
         </div>
       </Transition.Root>
-
 
       {/*Диалог с удалением*/}
       <Transition.Root appear show={isDeleteOpen} as={Fragment}>
         <div>
-          <UserDeleteDialog close={() => setIsDeleteOpen(false)} user={selectedUser}/>
+          <UserDeleteDialog close={() => {setIsDeleteOpen(false); fetchList(); searchChange()}} user={selectedUser}/>
         </div>
       </Transition.Root>
 

@@ -45,7 +45,7 @@ var regRepo = new RegisterRepository(mongoDB);
 
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
 var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo);
-var doctorService = new DoctorService(docRepo);
+var doctorService = new DoctorService(docRepo, accountRepo);
 
 var clientController = new ClientController(clientService);
 var accountController = new AccountController(accountService);
@@ -94,8 +94,11 @@ app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientContro
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
 app.post('/doctor/:id', uploadDoc.single('image'),(req : any, res : any) => doctorController.addInfo(req, res))
+app.patch('/doctor/:id', (req : any, res : any) => doctorController.changeInfo(req, res))
+app.patch('/doctor/withphoto/:id', uploadDoc.single('image'),(req : any, res : any) => doctorController.changeInfoAndPhoto(req, res))
 app.get('/workers', (req :any, res : any) => accountController.getWorkers(req, res))
-
+app.patch('/workers/:id', (req : any, res : any) => accountController.changeWorkersInfo(req, res))
+app.delete('/accounts/:id', (req : any, res : any) => accountController.deleteWorker(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

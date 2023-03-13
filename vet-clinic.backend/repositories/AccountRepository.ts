@@ -79,6 +79,25 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
     }
   }
 
+  changeLoginAndPassword = async (id: string, login: string, password : string) => {
+    try{
+      this.connect();
+
+      var updatedAccount = await Account
+        .updateOne({_id : id}, {login : login, password : password})
+        .exec()
+
+      if (updatedAccount != null){
+        return true;
+      }
+
+      return false;
+
+    } catch {
+      return false;
+    }
+  }
+
   getAllWorkers = async () => {
     try {
       this.connect();
@@ -92,5 +111,13 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
     } catch {
       return null;
     }
+  }
+
+  deleteAccount = async (accId: any) => {
+    this.connect();
+
+    await Account
+      .findByIdAndDelete(accId)
+      .exec();
   }
 }

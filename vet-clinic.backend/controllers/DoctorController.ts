@@ -17,4 +17,39 @@ export class DoctorController{
     res.json({ok : true})
 
   }
+
+  changeInfo = async (req  :any, res : any) => {
+    var accId = req.params.id;
+    var userId = req.body.userId;
+    var login = req.body.login;
+    var password = req.body.password;
+    var name = req.body.name;
+    var surName = req.body.surName;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var spec = req.body.spec;
+
+
+    var response = await this.doctorService.changeDocInfo(accId, userId, login, password, name, surName, email, phone, spec)
+
+    res.json(response)
+  }
+
+  changeInfoAndPhoto = async (req  :any, res : any) => {
+    var accId = req.params.id;
+    var image = req.file.filename;
+    var userId = req.body.userId;
+    var login = req.body.login;
+    var password = req.body.password;
+    var name = req.body.name;
+    var surName = req.body.surName;
+    var email = req.body.email;
+    var phone = req.body.phone;
+    var spec = req.body.spec;
+
+
+    var response = await this.doctorService.changeDocInfoAndPhoto(accId, userId, login, password, name, surName, email, phone, spec, image)
+
+    res.json(response)
+  }
 }
