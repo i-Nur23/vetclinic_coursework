@@ -1,8 +1,7 @@
 import {BaseRepository} from "./BaseRepository";
 import {AnimalType} from "../models/AnimalType";
-import {IPet, Pet} from "../models/Pet";
 import {Breed, IBreed} from "../models/Breed";
-import {Client} from "../models/Client";
+import { Schema, Types } from "mongoose";
 
 export class AnimalRepository extends BaseRepository{
 
@@ -28,10 +27,12 @@ export class AnimalRepository extends BaseRepository{
       name: name
     })
 
+    newBreed.save();
+
     return newBreed._id;
   }
 
-  addBreedToType = async (typeId : string, breedId : string) => {
+  addBreedToType = async (typeId : string, breedId : Types.ObjectId) => {
     this.connect();
 
     AnimalType
@@ -40,6 +41,29 @@ export class AnimalRepository extends BaseRepository{
         { $push: { breeds: breedId } }
       )
       .exec();
+  }
+
+  addType = async (name : string) => {
+    this.connect
+
+
+    var newAnimalType = new AnimalType({
+      type : name,
+      breeds : []
+    })
+
+    newAnimalType.save()
+
+    return newAnimalType._id;
+
+  }
+
+  findType = async (name : string) => {
+    this.connect()
+
+    return AnimalType
+      .find({name : name})
+      .exec()
   }
 
   findBreed = async (name : string) => {
@@ -66,7 +90,7 @@ export class AnimalRepository extends BaseRepository{
       .exec();
   }
 
-  deleteBreed = async (breedId) => {
+  deleteBreed = async (breedId : Types.ObjectId) => {
     this.connect();
 
     Breed
@@ -74,18 +98,20 @@ export class AnimalRepository extends BaseRepository{
       .exec();
   }
 
-  deleteType = async (typeId) => {
+  deleteType = async (typeId : string) => {
     this.connect()
 
     var animalType = await AnimalType
       .findById(typeId)
       .exec()
 
-    animalType.breeds.forEach(breedId => await this.deleteBreed(breedId))
+      if (animalType != null){
+        animalType.breeds.forEach(async breedId => await this.deleteBreed(breedId))
 
-    AnimalType
-      .findByIdAndDelete(typeId);
-      .exec()
+        AnimalType
+          .findByIdAndDelete(typeId)
+          .exec()
+      }
 
   }
 }
