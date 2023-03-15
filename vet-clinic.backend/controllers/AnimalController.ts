@@ -29,9 +29,10 @@ export class AnimalController {
 
     changeBreed = async (req : any, res : any) => {
         var id = req.params.id;
+        var typeId = req.query.typeId;
         var name = req.query.name;
 
-        res.json(await this.AnimalService.changeBreed(id, name))
+        res.json(await this.AnimalService.changeBreed(typeId, id, name))
     }
 
     changeType = async (req : any, res : any) => {

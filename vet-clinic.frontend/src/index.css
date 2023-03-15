@@ -6,8 +6,16 @@
     html {
         @apply font-serif tracking-wide;
     }
+
+    .material-symbols-outlined {
+     font-variation-settings: 'FILL' 0,
+     'wght' 400,
+     'GRAD' 0,
+     'opsz' 48
+    }
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@1,800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ruslan+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');

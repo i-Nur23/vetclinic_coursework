@@ -44,7 +44,7 @@ export class AnimalRepository extends BaseRepository{
   }
 
   addType = async (name : string) => {
-    this.connect
+    this.connect()
 
 
     var newAnimalType = new AnimalType({
@@ -61,17 +61,53 @@ export class AnimalRepository extends BaseRepository{
   findType = async (name : string) => {
     this.connect()
 
-    return AnimalType
-      .find({name : name})
+    var type =  AnimalType
+      .findOne({type : name})
       .exec()
+
+    return type;
   }
 
-  findBreed = async (name : string) => {
+  findTypeById = async (id : string) => {
     this.connect()
 
-    return Breed
+    var type =  AnimalType
+      .findById(id)
+      .exec()
+
+    return type;
+  }
+
+  findBreed = async (typeId : string, name : string) => {
+    this.connect()
+
+    var type = await this.findTypeById(typeId);
+
+    if (type == null){
+      return null
+    }
+
+    var breeds = await Breed
       .find({name : name})
       .exec()
+
+    if (breeds.length == 0){
+      return null;
+    }
+
+    var valueToReturn = null;
+
+    if (type != null){
+      breeds.every(breed => {
+
+        if (type?.breeds.indexOf(breed._id) != -1){
+          valueToReturn = breed;
+          return false;
+        }
+      })
+    }
+
+    return valueToReturn;
   }
 
   changeTypeName = async (typeId : string, newName : string) => {

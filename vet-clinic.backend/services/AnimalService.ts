@@ -12,12 +12,12 @@ export class AnimalService {
         return await this.AnimalRepository.getAll();
     }
 
-
     addType = async (typeName : string) => {
-        if ((await this.AnimalRepository.findType(typeName)) != null){
+        var typeInDb = await this.AnimalRepository.findType(typeName);
+
+        if (typeInDb != null){
             return {ok : false, message : 'Такой вид уже существует'}
         }
-
 
         await this.AnimalRepository.addType(typeName)
 
@@ -26,7 +26,7 @@ export class AnimalService {
 
     addBreed = async (typeId : string, breedName : string) => {
 
-        if ((await this.AnimalRepository.findBreed(breedName)) != null){
+        if ((await this.AnimalRepository.findBreed(typeId, breedName)) != null){
             return {ok : false, message : 'Такая порода уже существует'}
         }
 
@@ -48,8 +48,8 @@ export class AnimalService {
         return {ok : true}
     }
 
-    changeBreed = async (breedId : string, breedName : string) => {
-        if ((await this.AnimalRepository.findBreed(breedName)) != null){
+    changeBreed = async (typeId : string, breedId : string, breedName : string) => {
+        if ((await this.AnimalRepository.findBreed(typeId, breedName)) != null){
             return {ok : false, message : 'Такая порода уже существует'}
         }
 

@@ -1,4 +1,5 @@
 button:hover .control{
     stroke: white;
+    fill: white;
     transition: 1ms ease-in-out;
 }
