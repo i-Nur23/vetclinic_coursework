@@ -44,13 +44,15 @@ export class AnimalController {
 
     deleteType = async (req : any, res : any) => {
         var id = req.params.id;
-
         await this.AnimalService.deleteType(id);
+        res.json();
     }
 
     deleteBreed = async (req : any, res : any) => {
         var id = req.params.id;
-        await this.AnimalService.deleteBreed(id);
+        var typeId = req.query.typeId;
+        await this.AnimalService.deleteBreed(typeId, id);
+        res.json();
     }
 
 }

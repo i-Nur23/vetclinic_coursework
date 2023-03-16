@@ -18,11 +18,25 @@ export const AdminCatalog = () => {
   useEffect( () => {
     (
       async () => {
-        var animals = await AnimalApi.getAll();
-        setTypesList(animals);
+        await refreshTypeList();
       }
     )();
   },[]);
+
+  const refreshTypeList = async () => {
+    var animals = await AnimalApi.getAll();
+    console.log(animals)
+    setTypesList(animals);
+  }
+
+  const refreshBreedList = async () => {
+    var animals = await AnimalApi.getAll();
+    setTypesList(animals);
+
+    var prevSelectedType = animals.find((animal : any) => animal._id == selectedType._id); 
+
+    setBreedsList(prevSelectedType.breeds);
+  }
 
   const setValue = (e : FormEvent, action : any) => {
     e.preventDefault()
@@ -96,7 +110,17 @@ export const AdminCatalog = () => {
             {
               typesList.map((animal : any) => (
                 <li className='hover:bg-gray-50' onClick={(e : FormEvent) => handleTypeChoosing(animal)}>
-                    <TypeCard animal = {animal}/>
+                    <TypeCard 
+                      animal = {animal} 
+                      refresh={
+                        async () => await refreshTypeList()} 
+                      showMessage={
+                        (mes : string) => {
+                          setMessage(mes);
+                          setDialog(true);
+                        }
+                      }
+                    />
                 </li>
               )
               )
@@ -125,7 +149,18 @@ export const AdminCatalog = () => {
                   {
                     breedsList.map((breed : any) => (
                         <li>
-                            <BreedCard breed = {breed}/>
+                            <BreedCard 
+                              typeId = {selectedType._id}
+                              breed = {breed} 
+                              refresh={
+                                async () => await refreshBreedList()} 
+                              showMessage={
+                                (mes : string) => {
+                                  setMessage(mes);
+                                  setDialog(true);
+                                }
+                              }
+                            />
                         </li>
                       )
                     )

@@ -1,4 +1,5 @@
 import React, {FormEvent, useEffect, useState} from "react";
+import { AnimalApi } from "../../../api/AnimalApi";
 
 export const BreedCard = (props : any) => {
   const [breed, setBreed] = useState('')
@@ -8,8 +9,20 @@ export const BreedCard = (props : any) => {
     setBreed(props.breed)
   },[])
 
-  const handleBreedEditing = async (type : any) => {
+  const handleBreedEditing = async (breed : any) => {
+    var response = await AnimalApi.changeBreed(props.typeId, breed._id, value)
 
+    if (!response.ok){
+      props.showMessage(response.message);
+    } else {
+      props.refresh();
+    }
+  }
+
+  const handleBreedDeleting = async (breed : any) => {
+    await AnimalApi.deleteBreed(props.typeId, breed._id)
+
+    props.refresh()
   }
 
   return(
@@ -29,7 +42,7 @@ export const BreedCard = (props : any) => {
           </svg>
         </button>
         <button className='hover:bg-red-300 rounded-lg p-4 ease-in-out duration-200'
-                onClick={() => {}}>
+                onClick={() => handleBreedDeleting(breed)}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-6 h-6 control">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           </svg>

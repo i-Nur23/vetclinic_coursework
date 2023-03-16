@@ -122,16 +122,22 @@ export class AnimalRepository extends BaseRepository{
     this.connect();
 
     Breed
-      .findByIdAndUpdate(breedId, {type : newName})
+      .findByIdAndUpdate(breedId, {name : newName})
       .exec();
   }
 
-  deleteBreed = async (breedId : Types.ObjectId) => {
+  deleteBreed = async (typeId  : Types.ObjectId, breedId : Types.ObjectId) => {
     this.connect();
 
     Breed
       .findByIdAndDelete(breedId)
       .exec();
+
+      AnimalType
+      .updateOne({_id : typeId}, 
+        {$pull : { breeds : breedId}}
+      )
+      .exec()
   }
 
   deleteType = async (typeId : string) => {
@@ -142,7 +148,7 @@ export class AnimalRepository extends BaseRepository{
       .exec()
 
       if (animalType != null){
-        animalType.breeds.forEach(async breedId => await this.deleteBreed(breedId))
+        animalType.breeds.forEach(async breedId => await this.deleteBreed(animalType!._id ?? null, breedId))
 
         AnimalType
           .findByIdAndDelete(typeId)

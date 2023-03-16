@@ -1,2 +1,5 @@
 /vet-clinic.backend/node_modules/
+/vet-clinic.backend/public/doctors/
+/vet-clinic.backend/public/pets/
 /vet-clinic.frontend/node_modules/
+/.vscode

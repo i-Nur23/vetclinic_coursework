@@ -62,7 +62,7 @@ export class AnimalService {
         await this.AnimalRepository.deleteType(typeId);
     }
 
-    deleteBreed = async (breedId : Types.ObjectId) => {
-        await this.AnimalRepository.deleteBreed(breedId);
+    deleteBreed = async (typeId : Types.ObjectId, breedId : Types.ObjectId) => {
+        await this.AnimalRepository.deleteBreed(typeId, breedId);
     }
 }

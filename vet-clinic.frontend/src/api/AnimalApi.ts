@@ -51,8 +51,8 @@ export class AnimalApi extends Base{
     return response.data
   }
 
-  static deleteBreed = async (breedId : string) => {
-    var url = `${this.baseURL}/breeds/${breedId}`
+  static deleteBreed = async (typeId : string, breedId : string) => {
+    var url = `${this.baseURL}/breeds/${breedId}?typeId=${typeId}`
 
     var response = await axios.delete(url);
 
