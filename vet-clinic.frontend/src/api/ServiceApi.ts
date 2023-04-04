@@ -9,4 +9,12 @@ export class ServiceApi extends Base {
 
     return response.data
   }
+
+  static getAllServices = async () => {
+    var url = `${this.baseURL}/services`;
+
+    var response = await axios.get(url);
+
+    return response.data
+  }
 }

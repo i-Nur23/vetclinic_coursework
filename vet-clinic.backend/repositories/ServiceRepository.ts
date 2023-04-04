@@ -18,4 +18,14 @@ export class ServiceRepository extends BaseRepository {
 
     return types_arr;
   }
+
+  getAll = async () => {
+    this.connect();
+
+    var types = await Service
+      .find()
+      .exec();
+
+    return types;
+  }
 }

@@ -13,4 +13,10 @@ export class ServiceController {
     res.json(types);
   }
 
+  getAll = async (req : any, res : any) => {
+    var types = await this.serviceRepository.getAll();
+
+    res.json(types);
+  }
+
 }

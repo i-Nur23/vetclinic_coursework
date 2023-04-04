@@ -6,7 +6,8 @@ var ServiceSchema = new Schema({
   type: String,
   services_list: [{
     name: String,
-    price: Number
+    price: Number,
+    isActive : Boolean
   }]
 })
 
@@ -14,7 +15,8 @@ export interface IService{
   type: string,
   services_list: [{
     name: string,
-    price: number
+    price: number,
+    isActive: boolean
   }]
 }
 

@@ -8,7 +8,7 @@ export const ManagerHome = () => {
         <li className="nav-item ">
           <a
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="addusers"
+            href="services"
           >
             <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">Перечень услуг</span>
           </a>
@@ -16,7 +16,7 @@ export const ManagerHome = () => {
         <li>
           <a
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="catalog"
+            href="schedule"
           >
             <i className="leading-lg text-black opacity-75"></i><span className="">Составление расписания</span>
           </a>
