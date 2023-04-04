@@ -59,19 +59,19 @@ export const WorkerLogin = () =>{
     }
 
     var answer = await AccountApi.getAccount(login, password);
-    if (answer.isFound && answer.data.role != 'client'){
+    if (answer.isFound && answer.data.role != 'Клиент'){
       console.log(answer.data)
       if (answer.data.role == 'admin'){
         dispatch(authorize( {level: Level.Admin, id: answer.data.id}))
         navigate('admin/home')
       }
-      else if (answer.data.role == 'doctor'){
+      else if (answer.data.role == 'Врач'){
         dispatch(authorize( {level: Level.Doctor, id: answer.data.id}))
-        navigate('/doctor/home')
+        navigate('doctor/home')
       }
-      else if (answer.data.role == 'manager') {
+      else if (answer.data.role == 'Менеджер') {
         dispatch(authorize( {level: Level.Manager, id: answer.data.id}))
-        navigate('/manager/home')
+        navigate('manager/home')
       }
     } else {
       setMessage("Аккаунт не найден")

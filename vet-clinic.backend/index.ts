@@ -20,6 +20,8 @@ import {DoctorController} from "./controllers/DoctorController";
 import { AnimalRepository } from "./repositories/AnimalRepository";
 import { AnimalService } from "./services/AnimalService";
 import { AnimalController } from "./controllers/AnimalController";
+import {ServiceRepository} from "./repositories/ServiceRepository";
+import {ServiceController} from "./controllers/ServiceController";
 const bodyParser = require('body-parser');
 
 
@@ -46,6 +48,7 @@ var docRepo = new DoctorRepository(mongoDB);
 var manRepo = new ManagerRepository(mongoDB);
 var regRepo = new RegisterRepository(mongoDB);
 var animalRepo = new AnimalRepository(mongoDB);
+var serviceRepo = new ServiceRepository(mongoDB);
 
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
 var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo);
@@ -56,6 +59,7 @@ var clientController = new ClientController(clientService);
 var accountController = new AccountController(accountService);
 var doctorController = new DoctorController(doctorService);
 var animalController = new AnimalController(animalService);
+var serviceController = new ServiceController(serviceRepo);
 
 app.use(cors())
 
@@ -116,6 +120,8 @@ app.patch('/animals/:id', (req :any, res : any) => animalController.changeType(r
 app.patch('/breeds/:id', (req :any, res : any) => animalController.changeBreed(req, res))
 app.delete('/animals/:id', (req :any, res : any) => animalController.deleteType(req, res))
 app.delete('/breeds/:id', (req :any, res : any) => animalController.deleteBreed(req, res))
+
+app.get('/services/types', (req :any, res : any) => serviceController.getTypes(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

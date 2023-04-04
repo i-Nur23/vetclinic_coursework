@@ -5,7 +5,7 @@ import { AdminControls, RegisterControls, DoctorControls, ManagerControls } from
 export const WorkerControls = (props : any) => {
   const level = props.role;
 
-  const renderSwitch = (param : Level) => {
+  const renderSwitch = () => {
     switch (level) {
       case Level.Admin:
         return <AdminControls/>
@@ -27,7 +27,7 @@ export const WorkerControls = (props : any) => {
       className="flex"
       style={{width: '50%'}}
     >
-      {renderSwitch(level)}
+      {renderSwitch()}
     </div>
   )
 }

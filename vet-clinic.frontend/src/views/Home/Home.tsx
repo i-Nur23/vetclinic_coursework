@@ -1,10 +1,24 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import dogWithVet from "../../assets/images/homepage/doghome.jpg"
 import vets from "../../assets/images/homepage/veterinarians-holding-dog.jpg"
 import {Link, animateScroll} from 'react-scroll';
 import {SpecIcons} from "./SpecIcons";
+import {ServiceApi} from "../../api/ServiceApi";
 
 const Home = () => {
+
+  const [types, setTypes] = useState([]);
+
+  useEffect(() => {
+    (
+     async () => {
+        var data = await ServiceApi.getServiceTypes();
+        console.log(data);
+        setTypes(data);
+      }
+    )()
+  },[])
+
   return(
     <div className="container px-9">
       <div className="container">
@@ -43,14 +57,11 @@ const Home = () => {
         <div className="mt-24">
           <p className="text-center text-3xl mb-10">Наши <a className="text-gray-700 hover:text-black hover:underline">услуги</a></p>
           <div className="grid grid-cols-4 gap-4">
-            <SpecIcons>Терапия</SpecIcons>
-            <SpecIcons>Лабораторные исследования</SpecIcons>
-            <SpecIcons>Прививки</SpecIcons>
-            <SpecIcons>Офтальмология</SpecIcons>
-            <SpecIcons>Стоматология</SpecIcons>
-            <SpecIcons>Хирургия</SpecIcons>
-            <SpecIcons>Акушерство</SpecIcons>
-            <SpecIcons>Груминг</SpecIcons>
+            {
+              types.map( (type : string) => (
+                <SpecIcons>{type}</SpecIcons>
+              ))
+            }
           </div>
         </div>
       </div>
