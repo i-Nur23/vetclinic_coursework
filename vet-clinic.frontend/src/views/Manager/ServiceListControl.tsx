@@ -34,7 +34,7 @@ export const ServiceListControl = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 text-gray-500">
-                  {service_group.services_list.map((service : any) => <ServicePanel service={service}/>)}
+                  {service_group.services_list.map((service : any) => <ServicePanel service={service} typeId={service_group._id}/>)}
                 </Disclosure.Panel>
               </div>
             )}

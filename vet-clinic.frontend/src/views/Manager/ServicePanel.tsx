@@ -1,22 +1,47 @@
 import {CheckIcon, XMarkIcon} from "@heroicons/react/24/solid";
 import {ChangeEvent, useEffect, useState} from "react";
+import {ServiceApi} from "../../api/ServiceApi";
 
-export const ServicePanel = (props : {service : any}) => {
+export const ServicePanel = (props : {service : any, typeId : string}) => {
 
-  const [name, setName] = useState<string>();
-  const [price, setPrice] = useState<number>();
+  const [name, setName] = useState<string>('');
+  const [price, setPrice] = useState<number>(0);
   const [isActive, setActivity] = useState<boolean>()
+  const [id, setId] = useState<string>('');
+  const [typeId, setTypeId] = useState<string>('');
 
   useEffect(() => {
     setName(props.service.name);
     setPrice(props.service.price);
     setActivity(props.service.isActive);
+    setId(props.service._id);
+    setTypeId(props.typeId);
   },[])
 
   const onPriceChange = (e : ChangeEvent) => {
     var text = Number((e.target as HTMLInputElement).value);
     if (!isNaN(text)){
       setPrice(text);
+    }
+  }
+
+  const handleChanging = async () => {
+    var data = await ServiceApi.ChangeInfo(typeId, id, name, price);
+    console.log(data.ok);
+  }
+
+  const handleArchiving = async () => {
+    var data = await ServiceApi.Archive(typeId, id);
+    console.log(data.ok);
+    if (data.ok){
+      setActivity(!isActive);
+    }
+  }
+
+  const handleUnarchiving = async () => {
+    var data = await ServiceApi.Unarchive(typeId, id);
+    if (data.ok){
+      setActivity(!isActive);
     }
   }
 
@@ -35,18 +60,18 @@ export const ServicePanel = (props : {service : any}) => {
         />
       </div>
       <div className='flex gap-6'>
-        <button className='hover:text-green-600'>
+        <button className='hover:text-green-600' onClick={handleChanging}>
           <CheckIcon className='h-6 w-6'/>
         </button>
         {
           isActive ?
-            <button className='hover:text-red-600 flex flex-col justify-center'>
+            <button className='hover:text-red-600 flex flex-col justify-center' onClick={handleArchiving}>
               <span className="material-symbols-outlined h-6 w-6">
                 archive
               </span>
             </button>
             :
-            <button className='hover:text-purple-600 flex flex-col justify-center'>
+            <button className='hover:text-purple-600 flex flex-col justify-center' onClick={handleUnarchiving}>
               <span className="material-symbols-outlined h-6 w-6">
                 unarchive
               </span>

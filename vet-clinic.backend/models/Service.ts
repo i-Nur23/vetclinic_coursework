@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 
 var Schema = mongoose.Schema;
 
 var ServiceSchema = new Schema({
   type: String,
   services_list: [{
+    _id: Types.ObjectId,
     name: String,
     price: Number,
     isActive : Boolean

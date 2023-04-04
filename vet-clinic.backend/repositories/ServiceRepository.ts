@@ -1,5 +1,6 @@
 import {BaseRepository} from "./BaseRepository";
 import {Service} from "../models/Service";
+import {Schema, Types} from "mongoose";
 
 export class ServiceRepository extends BaseRepository {
   constructor(db : string) {
@@ -27,5 +28,52 @@ export class ServiceRepository extends BaseRepository {
       .exec();
 
     return types;
+  }
+
+  changeService = async (typeId : Types.ObjectId, serviceId : Types.ObjectId, name : string, price : number) => {
+    this.connect();
+
+    var updatedServiceType = await Service
+      .findById(typeId)
+      .exec();
+
+    if (!updatedServiceType){
+      return false;
+    }
+
+    var updatedService = updatedServiceType.services_list.find(ser => ser._id == serviceId);
+    var ServiceWithSameName = updatedServiceType.services_list.find(ser => ser.name == name);
+
+    console.log(ServiceWithSameName);
+
+    if (!updatedService || updatedService != ServiceWithSameName && ServiceWithSameName){
+      return false;
+    }
+
+    try {
+      await Service.update({_id : typeId, 'services_list._id' : serviceId}, {'$set' : {
+          'services_list.$.name' : name,
+          'services_list.$.price' : price
+        }}).exec()
+    } catch {
+      return false;
+    }
+
+    return true;
+
+  }
+
+  changeIsActive = async (serviceId : Types.ObjectId, isActive : boolean) => {
+    this.connect();
+
+    try {
+      await Service.update({'services_list._id' : serviceId}, {'$set' : {
+          'services_list.$.isActive' : isActive
+        }}).exec()
+    } catch {
+      return false;
+    }
+
+    return true;
   }
 }
