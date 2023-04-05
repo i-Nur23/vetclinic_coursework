@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 
 var ServiceSchema = new Schema({
   type: String,
+  spec : String,
   services_list: [{
     _id: Types.ObjectId,
     name: String,

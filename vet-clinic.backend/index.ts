@@ -122,6 +122,7 @@ app.delete('/animals/:id', (req :any, res : any) => animalController.deleteType(
 app.delete('/breeds/:id', (req :any, res : any) => animalController.deleteBreed(req, res))
 
 app.get('/services/types', (req :any, res : any) => serviceController.getTypes(req, res))
+app.get('/services/specs', (req :any, res : any) => serviceController.getSpecs(req, res))
 app.get('/services', (req :any, res : any) => serviceController.getAll(req, res))
 
 app.patch('/services/:typeId/:id/archive', (req : any, res : any) => serviceController.changeIsActive(false,req, res))

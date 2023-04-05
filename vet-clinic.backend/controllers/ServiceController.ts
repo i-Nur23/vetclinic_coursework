@@ -48,4 +48,10 @@ export class ServiceController {
 
     res.json({ok : ok})
   }
+
+  getSpecs = async (req: any, res: any) => {
+    var specs = await this.serviceRepository.getAllSpecs();
+
+    res.json(specs);
+  }
 }

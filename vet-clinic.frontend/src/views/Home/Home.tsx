@@ -58,8 +58,8 @@ const Home = () => {
           <p className="text-center text-3xl mb-10">Наши <a className="text-gray-700 hover:text-black hover:underline">услуги</a></p>
           <div className="grid grid-cols-4 gap-4">
             {
-              types.map( (type : string) => (
-                <SpecIcons>{type}</SpecIcons>
+              types.map( (type : any) => (
+                <SpecIcons typeId = {type._id} >{type.type}</SpecIcons>
               ))
             }
           </div>

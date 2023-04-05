@@ -6,7 +6,7 @@ import {ServicePanel} from "./ServicePanel";
 
 export const ServiceListControl = () => {
 
-  const [servcies, setServices] = useState([]);
+  const [services, setServices] = useState([]);
   const [name, setName] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
   const [message, setMessage] = useState<string>('')
@@ -44,7 +44,7 @@ export const ServiceListControl = () => {
   return(
     <div className='container px-20'>
       {
-        servcies.map((service_group : any) => (
+        services.map((service_group : any) => (
           <Disclosure>
             {({ open }) => (
               <div className='text-center'>

@@ -12,12 +12,21 @@ export class ServiceRepository extends BaseRepository {
 
     var types = await Service
       .find()
-      .select('-_id type')
+      .select('type')
       .exec();
 
-    var types_arr = types.map(x => x.type);
+    return types;
+  }
 
-    return types_arr;
+  getAllSpecs = async () => {
+    this.connect();
+
+    var types = await Service
+      .find()
+      .select('spec')
+      .exec();
+
+    return types.filter((type : any) => type.spec != undefined);
   }
 
   getAll = async () => {
@@ -94,8 +103,6 @@ export class ServiceRepository extends BaseRepository {
       return false;
     }
 
-    console.log('herte')
-
     try {
       var id = new Types.ObjectId();
 
@@ -112,5 +119,6 @@ export class ServiceRepository extends BaseRepository {
     }
 
     return true;
+
   }
 }

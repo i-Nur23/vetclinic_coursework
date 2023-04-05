@@ -17,13 +17,7 @@ import WorkerApp from "./WorkerApp";
 import {WorkerLogin} from "./views/Worker/WorkerLogin";
 import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
 import {ManagerHome, ScheduleBuilder, ServiceListControl} from "./views/Manager";
-
-/*const router = createBrowserRouter([
-  {path: '/', element: <ClientApp/>, children:
-      [ {index: true, element: <AdminHome/>},
-        {path: 'auth', element: <Authentification/>}]
-  },
-])*/
+import {ServicesList} from "./views/Services";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,6 +31,7 @@ const router = createBrowserRouter(
               <Route path='pets' element={<Pets/>}/>
             </Route>
           </Route>
+        <Route path="services" element={<ServicesList/>}/>
       </Route>
       <Route path="workers" element={<WorkerApp/>}>
         <Route index element={<WorkerLogin/>}/>

@@ -1,8 +1,9 @@
-import React, {FormEvent, useState, Fragment} from "react";
+import React, {FormEvent, useState, Fragment, useEffect} from "react";
 import {AccountApi} from "../../api/AccountApi";
 import {Dialog, Transition} from '@headlessui/react'
 import {CustomListbox} from "../../components/Listbox";
 import {DoctorApi} from "../../api/DoctorApi";
+import {ServiceApi} from "../../api/ServiceApi";
 
 export const AddUsers = () => {
   const roles = [
@@ -11,16 +12,16 @@ export const AddUsers = () => {
     'Менеджер'
   ]
 
-  const specs = [
+  /*const specs = [
     'Терапевт',
     'Лаборант',
     'Офтальмолог',
     'Стоматолог',
     'Дерматолог',
-    'Грумер'
-  ]
+    'Грумер',
+  ]*/
 
-
+  const [specs, setSpecs] = useState([])
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
   const [password, setPassword] = useState< string >('')
@@ -32,6 +33,16 @@ export const AddUsers = () => {
   const [spec, setSpec] = useState<string>(specs[0])
   const [image, setImage] = useState<File | null>(null)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    (
+      async () => {
+        var serviceSpecs = await ServiceApi.getServiceSpecs()
+        setSpecs(serviceSpecs);
+        setSpec(serviceSpecs[0].spec)
+      }
+    )()
+  },[])
 
   const setValue = (e : FormEvent, action : any) => {
     var inputs = document.getElementsByClassName('required');
@@ -84,7 +95,7 @@ export const AddUsers = () => {
     </div>
     {role == 'Врач' ?
       <div>
-        <CustomListbox value={spec} action={setSpec} list={specs}/>
+        <CustomListbox value={spec} action={setSpec} list={specs.map((spec : any) => spec.spec)}/>
         <div>
           <p className='mx-4 mt-3 mb-2'>Фото:</p>
           <input
