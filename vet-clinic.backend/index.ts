@@ -127,6 +127,7 @@ app.get('/services', (req :any, res : any) => serviceController.getAll(req, res)
 app.patch('/services/:typeId/:id/archive', (req : any, res : any) => serviceController.changeIsActive(false,req, res))
 app.patch('/services/:typeId/:id/unarchive', (req : any, res : any) => serviceController.changeIsActive(true,req, res))
 app.put('/services/:typeId/:id', (req : any, res : any) => serviceController.changeServiceInfo(req, res))
+app.post('/services/:typeId', (req : any, res : any) => serviceController.AddService(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

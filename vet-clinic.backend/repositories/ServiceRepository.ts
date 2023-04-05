@@ -76,4 +76,41 @@ export class ServiceRepository extends BaseRepository {
 
     return true;
   }
+
+  AddService = async (typeId: Types.ObjectId, name: string, price: number) => {
+    this.connect();
+
+    var updatedServiceType = await Service
+      .findById(typeId)
+      .exec();
+
+    if (!updatedServiceType){
+      return false;
+    }
+
+    var ServiceWithSameName = updatedServiceType.services_list.find(ser => ser.name == name);
+
+    if (ServiceWithSameName){
+      return false;
+    }
+
+    console.log('herte')
+
+    try {
+      var id = new Types.ObjectId();
+
+      await Service.update({_id : typeId}, {'$push' : {
+          services_list : {
+            name : name,
+            price : price,
+            isActive : true,
+            _id : id
+          }
+        }}).exec()
+    } catch {
+      return false;
+    }
+
+    return true;
+  }
 }

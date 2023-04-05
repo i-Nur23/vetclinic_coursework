@@ -47,7 +47,7 @@ export const ServicePanel = (props : {service : any, typeId : string}) => {
 
   return(
     <div className='flex justify-between py-6 border-b'>
-      <div className='flex gap-6'>
+      <div className='flex gap-6 text-middle'>
         <input
           className='p-2 border rounded-lg focus:outline-none'
           value={name}
@@ -58,6 +58,9 @@ export const ServicePanel = (props : {service : any, typeId : string}) => {
           value={price}
           onChange={e => onPriceChange(e)}
         />
+        {
+          !isActive ? <p className='text-red-600 my-auto'>в архиве</p> : null
+        }
       </div>
       <div className='flex gap-6'>
         <button className='hover:text-green-600' onClick={handleChanging}>

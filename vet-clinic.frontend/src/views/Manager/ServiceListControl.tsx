@@ -1,12 +1,15 @@
 import { Disclosure } from "@headlessui/react";
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import {ServiceApi} from "../../api/ServiceApi";
-import {ChevronDownIcon} from "@heroicons/react/24/solid";
+import {CheckIcon, ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
 import {ServicePanel} from "./ServicePanel";
 
 export const ServiceListControl = () => {
 
   const [servcies, setServices] = useState([]);
+  const [name, setName] = useState<string>('');
+  const [price, setPrice] = useState<number>(0);
+  const [message, setMessage] = useState<string>('')
 
   useEffect(() => {
     (
@@ -17,6 +20,26 @@ export const ServiceListControl = () => {
       }
     )()
   },[])
+
+  const onPriceChange = (e : ChangeEvent) => {
+    var text = (e.target as HTMLInputElement).value;
+    if (!text.match(/[a-zA-Z]/g)){
+      var number = Number(text);
+      setPrice(number);
+    }
+  }
+
+  const handleAdd = async (typeId : string) => {
+    var data = await ServiceApi.AddService(typeId, name, price);
+    if (data.ok) {
+      var services = await ServiceApi.getAllServices();
+      setServices(services)
+      setPrice(0);
+      setName('')
+    } else {
+      setMessage('Ошибка при добавлении')
+    }
+  }
 
   return(
     <div className='container px-20'>
@@ -34,7 +57,38 @@ export const ServiceListControl = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 text-gray-500">
-                  {service_group.services_list.map((service : any) => <ServicePanel service={service} typeId={service_group._id}/>)}
+                  <ul>
+                    {service_group.services_list.map((service : any) => <li><ServicePanel service={service} typeId={service_group._id}/></li>)}
+                    <li className='py-6 border-b'>
+                      <div className='flex justify-between'>
+                        <div>
+                          <p className='text-start mb-3 pl-2'>
+                            Новая услуга
+                          </p>
+                          <div className='flex gap-6 text-middle'>
+                            <input
+                              className='p-2 border rounded-lg focus:outline-none'
+                              value={name}
+                              onChange={e => {setMessage(''); setName(e.target.value)}}
+                            />
+                            <input
+                              className='p-2 border rounded-lg focus:outline-none w-14'
+                              value={price}
+                              onChange={e => onPriceChange(e)}
+                            />
+                          </div>
+                        </div>
+                        <div className='flex gap-6'>
+                          <button className='hover:text-blue-500 flex flex-col justify-center' onClick={() => {setMessage(''); handleAdd(service_group._id)}}>
+                            <PlusIcon className='w-6 h-6'/>
+                          </button>
+                        </div>
+                      </div>
+                      <p className='text-pink-400'>
+                        {message}
+                      </p>
+                    </li>
+                  </ul>
                 </Disclosure.Panel>
               </div>
             )}

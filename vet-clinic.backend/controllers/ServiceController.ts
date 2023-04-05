@@ -39,8 +39,13 @@ export class ServiceController {
     res.json({ok : ok})
   }
 
-  addService = async (req : any, res : any) => {
+  AddService = async (req: any, res: any) => {
+    var typeId = req.params.typeId;
+    var name = req.body.name;
+    var price = req.body.price;
 
+    var ok = await this.serviceRepository.AddService(typeId, name, price);
+
+    res.json({ok : ok})
   }
-
 }

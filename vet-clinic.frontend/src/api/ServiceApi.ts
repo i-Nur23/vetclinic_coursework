@@ -49,4 +49,18 @@ export class ServiceApi extends Base {
 
     return (response.data)
   }
+
+  static AddService = async (typeId : string, name : string, price : number) => {
+    var body : any = new FormData();
+    body.append('name', name);
+    body.append('price', price);
+
+    var url = `${this.baseURL}/services/${typeId}`;
+
+    var response = await axios.post(url, body, {headers :
+        {'Content-Type' : 'application/json'}
+    });
+
+    return (response.data)
+  }
 }
