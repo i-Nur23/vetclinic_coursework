@@ -17,4 +17,13 @@ export class DoctorApi extends Base{
         }
       })
   }
+
+  static GetAll = async () => {
+    var url = `${this.baseURL}/doctors`;
+
+    var response = await axios.get(url);
+
+    return response.data;
+
+  }
 }

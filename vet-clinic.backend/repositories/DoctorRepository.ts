@@ -65,7 +65,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   getById(id: string): Promise<any> {
-    this.connect()
+    //this.connect()
 
     return Doctor
       .findById(id)
@@ -87,5 +87,14 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
     await Doctor
       .findByIdAndDelete(userId)
       .exec();
+  }
+
+  getAll = async () => {
+    var doctors = Doctor
+      .find()
+      .select('name surName image spec')
+      .exec()
+
+    return doctors;
   }
 }

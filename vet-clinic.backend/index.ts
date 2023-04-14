@@ -29,15 +29,8 @@ const bodyParser = require('body-parser');
 const app = express()
 const port = 3000
 
-/*app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: false
-}));*/
-
 app.use(express.json({extended : true}))
 app.use('/public',express.static('public'));
-
-
 
 var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
 
@@ -129,6 +122,8 @@ app.patch('/services/:typeId/:id/archive', (req : any, res : any) => serviceCont
 app.patch('/services/:typeId/:id/unarchive', (req : any, res : any) => serviceController.changeIsActive(true,req, res))
 app.put('/services/:typeId/:id', (req : any, res : any) => serviceController.changeServiceInfo(req, res))
 app.post('/services/:typeId', (req : any, res : any) => serviceController.AddService(req, res))
+
+app.get('/doctors', (req : any, res : any) => doctorController.GetAllDoctors(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

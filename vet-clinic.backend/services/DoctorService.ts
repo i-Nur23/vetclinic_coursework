@@ -14,6 +14,10 @@ export class DoctorService implements IDoctorService {
     this.accountRepository = accountRepository
   }
 
+  getAll = async () => {
+        return await this.doctorRepository.getAll();
+    }
+
   addDocInfo = async (id : string, spec: string, image: string) => {
     await this.doctorRepository.addDocInfo(id, spec, image)
   }

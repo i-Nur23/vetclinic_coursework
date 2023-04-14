@@ -52,4 +52,10 @@ export class DoctorController{
 
     res.json(response)
   }
+
+  GetAllDoctors = async (req: any, res: any) => {
+    var doctors = await this.doctorService.getAll();
+    res.json(doctors)
+  }
+
 }

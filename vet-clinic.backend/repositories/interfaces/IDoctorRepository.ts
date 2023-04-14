@@ -6,4 +6,5 @@ export default interface IDoctorRepository{
   changeInfoAndPhoto (id : string, name : string, surName : string, email : string, phone : string, spec : string, image : string) : Promise<any>
   getPathToImage(userId: string): Promise<any>;
   delete(userId: any): Promise<any>;
+  getAll() : Promise<any>;
 }

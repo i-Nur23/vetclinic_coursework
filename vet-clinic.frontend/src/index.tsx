@@ -18,6 +18,7 @@ import {WorkerLogin} from "./views/Worker/WorkerLogin";
 import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
 import {ManagerHome, ScheduleBuilder, ServiceListControl} from "./views/Manager";
 import {ServicesList} from "./views/Services";
+import {AllDoctors} from "./views/Doctor";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,7 @@ const router = createBrowserRouter(
             </Route>
           </Route>
         <Route path="services" element={<ServicesList/>}/>
+        <Route path="doctors" element={<AllDoctors/>}/>
       </Route>
       <Route path="workers" element={<WorkerApp/>}>
         <Route index element={<WorkerLogin/>}/>
