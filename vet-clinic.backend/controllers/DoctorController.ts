@@ -58,4 +58,8 @@ export class DoctorController{
     res.json(doctors)
   }
 
+  GetAllDoctorsWithTime = async (req: any, res: any) => {
+    var doctors = await this.doctorService.getAllWithTimes();
+    res.json(doctors)
+  }
 }

@@ -97,4 +97,13 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
 
     return doctors;
   }
+
+  getAllWithTimes = async () => {
+    var doctors = Doctor
+      .find()
+      .select('name surName spec workHours')
+      .exec()
+
+    return doctors;
+  }
 }

@@ -124,6 +124,8 @@ app.put('/services/:typeId/:id', (req : any, res : any) => serviceController.cha
 app.post('/services/:typeId', (req : any, res : any) => serviceController.AddService(req, res))
 
 app.get('/doctors', (req : any, res : any) => doctorController.GetAllDoctors(req, res))
+app.get('/doctors/times', (req : any, res : any) => doctorController.GetAllDoctorsWithTime(req, res))
+
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

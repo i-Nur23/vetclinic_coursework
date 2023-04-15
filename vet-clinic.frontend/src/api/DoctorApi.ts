@@ -26,4 +26,13 @@ export class DoctorApi extends Base{
     return response.data;
 
   }
+
+  static GetAllForTimesheet = async () => {
+    var url = `${this.baseURL}/doctors/times`;
+
+    var response = await axios.get(url);
+
+    return response.data;
+
+  }
 }

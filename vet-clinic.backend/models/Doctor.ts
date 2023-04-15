@@ -8,7 +8,8 @@ var DoctorSchema = new Schema({
   phone: String,
   email: String,
   spec: String,
-  image: String
+  image: String,
+  workHours: [String]
 })
 
 export interface IDoctor{
@@ -17,7 +18,7 @@ export interface IDoctor{
   phone: string,
   email : string,
   spec: string,
-  iamge: string
+  image: string
 }
 
 export const Doctor = mongoose.model('Doctor', DoctorSchema)

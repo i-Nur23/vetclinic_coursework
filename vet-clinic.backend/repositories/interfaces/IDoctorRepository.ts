@@ -7,4 +7,5 @@ export default interface IDoctorRepository{
   getPathToImage(userId: string): Promise<any>;
   delete(userId: any): Promise<any>;
   getAll() : Promise<any>;
+  getAllWithTimes(): Promise<any>;
 }
