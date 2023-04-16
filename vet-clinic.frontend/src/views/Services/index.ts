@@ -1,3 +1,5 @@
 import {ServicesList} from "./ServicesList";
+import {BookingToProcedure} from "./BookingToProcedure";
+import {TimeChoice} from "./TimeChoice";
 
-export {ServicesList}
+export {ServicesList, BookingToProcedure, TimeChoice}

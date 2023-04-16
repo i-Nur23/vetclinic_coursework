@@ -57,7 +57,7 @@ export const DoctorTimetable = (props : {timesheet : Array<string | null>, id : 
               Изменения применены успешно
             </Alert>
           :
-            <Alert onClose={() => setOpen(false)} severity="success">
+            <Alert onClose={() => setOpen(false)} severity="error">
               Ошибка сохранения изменений
             </Alert>
         }

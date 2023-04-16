@@ -54,4 +54,10 @@ export class ServiceController {
 
     res.json(specs);
   }
+
+  getAvailable = async (req: any, res: any) => {
+    var services = await this.serviceRepository.getAvailable();
+
+    res.json(services);
+  }
 }

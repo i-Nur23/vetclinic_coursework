@@ -17,7 +17,7 @@ import WorkerApp from "./WorkerApp";
 import {WorkerLogin} from "./views/Worker/WorkerLogin";
 import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
 import {ManagerHome, ScheduleBuilder, ServiceListControl} from "./views/Manager";
-import {ServicesList} from "./views/Services";
+import {BookingToProcedure, ServicesList, TimeChoice} from "./views/Services";
 import {AllDoctors} from "./views/Doctor";
 
 const router = createBrowserRouter(
@@ -32,7 +32,11 @@ const router = createBrowserRouter(
               <Route path='pets' element={<Pets/>}/>
             </Route>
           </Route>
-        <Route path="services" element={<ServicesList/>}/>
+        <Route path="services">
+          <Route index element={<ServicesList/>}/>
+          <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
+          <Route path=':combinedId' element={<TimeChoice/>} />
+        </Route>
         <Route path="doctors" element={<AllDoctors/>}/>
       </Route>
       <Route path="workers" element={<WorkerApp/>}>

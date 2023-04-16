@@ -18,6 +18,14 @@ export class ServiceApi extends Base {
     return response.data
   }
 
+  static getAvailableServices = async () => {
+    var url = `${this.baseURL}/available_services`;
+
+    var response = await axios.get(url);
+
+    return response.data
+  }
+
   static Archive = async (typeId : string, id : string) => {
 
     var url = `${this.baseURL}/services/${typeId}/${id}/archive`;

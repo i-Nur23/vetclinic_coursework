@@ -120,4 +120,16 @@ export class ServiceRepository extends BaseRepository {
     return true;
 
   }
+
+  getAvailable = async () => {
+    var types = await Service
+      .find()
+      .exec();
+
+    types.forEach(type => {
+      type.services_list = type.services_list.filter(s => s.isActive)
+    })
+
+    return types;
+  }
 }

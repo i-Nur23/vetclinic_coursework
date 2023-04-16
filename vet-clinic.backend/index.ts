@@ -34,10 +34,10 @@ app.use(express.json({extended : true}))
 app.use('/public',express.static('public'));
 
 var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
-/*mongoose.connect(mongoDB);
+mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));*/
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 var clientRepo = new ClientRepository(mongoDB);
 var accountRepo = new AccountRepository(mongoDB);
@@ -122,6 +122,7 @@ app.delete('/breeds/:id', (req :any, res : any) => animalController.deleteBreed(
 app.get('/services/types', (req :any, res : any) => serviceController.getTypes(req, res))
 app.get('/services/specs', (req :any, res : any) => serviceController.getSpecs(req, res))
 app.get('/services', (req :any, res : any) => serviceController.getAll(req, res))
+app.get('/available_services', (req :any, res : any) => serviceController.getAvailable(req, res))
 
 app.patch('/services/:typeId/:id/archive', (req : any, res : any) => serviceController.changeIsActive(false,req, res))
 app.patch('/services/:typeId/:id/unarchive', (req : any, res : any) => serviceController.changeIsActive(true,req, res))

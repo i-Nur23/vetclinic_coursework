@@ -49,7 +49,7 @@ const Home = () => {
             <img src={vets} style={{width:"100%"}}/>
           </div>
           <p className="indent-4 text-4xl leading-normal">
-            В нащей клинике работают лучшие <a className="text-gray-700 hover:text-black hover:underline">врачи</a> с
+            В нащей клинике работают лучшие <a href='/doctors' className="text-gray-700 hover:text-black hover:underline">врачи</a> с
             многолетним опытом работы, которые с заботой отнесутся к вашим питомцам. Регулярно проводятся курсы повышения
             квалификации. Всё это делается для того, чтобы Вы остались довольный нашей клиникой
           </p>
