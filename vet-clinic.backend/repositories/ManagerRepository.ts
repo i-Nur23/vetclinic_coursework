@@ -8,7 +8,7 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
   }
 
   createManager = async (name: string, surName: string, email: string, phone: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var newMan = new Manager({name: name, surName: surName, email: email, phone : phone})
 
@@ -18,7 +18,7 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
   }
 
   getById = async (id: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var manager = Manager
       .findById(id)
@@ -29,7 +29,7 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
 
   changeInfo = async (id: string, name: string, surName: string, email: string, phone: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var updatedManager = await Manager
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone})
@@ -47,7 +47,7 @@ export class ManagerRepository extends BaseRepository implements IManagerReposit
   }
 
   delete = async (userId: any) => {
-    this.connect()
+    /*this.connect()*/
 
     await Manager
       .findByIdAndDelete(userId)

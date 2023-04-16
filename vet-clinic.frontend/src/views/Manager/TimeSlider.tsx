@@ -1,7 +1,8 @@
 import {Slider} from "@mui/material";
-import {useEffect, useState} from "react";
+import React, {useEffect, useImperativeHandle, useState} from "react";
+import {TimeHandler} from "../../utils/TimeHandler";
 
-export const TimeSlider = ({currentTime, index} : {currentTime : [String] | null, index : Number }) => {
+export const TimeSlider = React.forwardRef(({currentTime} : {currentTime : string | null}, ref) => {
 
   const marks = Array.from({length : 11}, (_, index) => {
     return({
@@ -17,29 +18,13 @@ export const TimeSlider = ({currentTime, index} : {currentTime : [String] | null
 
   useEffect(() => {
     if (currentTime != null){
-      var timeArray = currentTime?.map(ct => toTimeNumber(ct))
+      var timeArray = currentTime.split('-').map(ct => TimeHandler.toTimeNumber(ct))
       setTime(timeArray);
       setDisabled(false);
     }
-
   },[])
 
-  function valuetext(value: number) {
-
-  }
-
-  const toTimeString = (time : number) => {
-    var hours = Math.trunc(time);
-    var minutes = time.toString().split('.')[1] == '5' ? '30' : '00'
-    return `${hours}:${minutes}`
-  }
-
-  const toTimeNumber = (time : String) => {
-    var splittedTime = time.split(':');
-    var hours = parseInt(splittedTime[0]);
-    var minutes = splittedTime[1] == '00' ? 0 : 5;
-    return parseFloat(`${hours}.${minutes}`)
-  }
+  useImperativeHandle(ref, () => ({state: {time : time, disabled : disabled}}), [time, disabled]);
 
   function HandleChange(
     event: Event,
@@ -72,8 +57,8 @@ export const TimeSlider = ({currentTime, index} : {currentTime : [String] | null
           onChange = {HandleChange}
         />
       </div>
-      <p>Начало: {toTimeString(time[0])}</p>
-      <p>Конец:{toTimeString(time[1])}</p>
+      <p>Начало: {TimeHandler.toTimeString(time[0])}</p>
+      <p>Конец:{TimeHandler.toTimeString(time[1])}</p>
       <button
         className='bg-gray-100 hover:bg-gray-200 mt-4 p-2 rounded-lg'
         onClick={() => {setDisabled(!disabled)}}
@@ -82,4 +67,4 @@ export const TimeSlider = ({currentTime, index} : {currentTime : [String] | null
       </button>
     </div>
   )
-}
+})

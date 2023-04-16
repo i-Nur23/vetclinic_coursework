@@ -10,7 +10,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
 
   changeInfo = async (id: string, name: string, surName: string, email: string, phone: string, spec: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var updatedDoc = await Doctor
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone, spec : spec})
@@ -29,7 +29,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
 
   changeInfoAndPhoto = async (id: string, name: string, surName: string, email: string, phone: string, spec: string, image: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var updatedManager = await Doctor
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone, spec : spec, image : image})
@@ -47,7 +47,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   createDoc = async (name: string, surName: string, email: string, phone: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var newDoc = new Doctor({name: name, surName: surName, email: email, phone : phone})
 
@@ -57,7 +57,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   addDocInfo = async ( id : string , spec: string, image: string) => {
-    this.connect();
+    /*this.connect();*/
 
     Doctor
       .updateOne({_id : id}, {spec : spec, image : image})
@@ -82,7 +82,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   delete = async (userId: any) => {
-    this.connect()
+    /*this.connect()*/
 
     await Doctor
       .findByIdAndDelete(userId)
@@ -99,11 +99,27 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   getAllWithTimes = async () => {
+    this.connect();
     var doctors = Doctor
       .find()
       .select('name surName spec workHours')
       .exec()
 
     return doctors;
+  }
+
+  setTimeTable = async (id: string, timeTable: [string | null]) => {
+    try{
+      this.connect();
+      var doc = await Doctor
+        .updateOne({_id : id}, {workHours : timeTable}, {new : true})
+        .exec()
+
+      console.log(doc)
+
+      return (doc != null)
+    } catch {
+      return false;
+    }
   }
 }

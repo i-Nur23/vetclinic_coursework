@@ -13,7 +13,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
   }
 
   getByLoginPassword = async (login : string, password : string) => {
-    this.connect();
+    /*this.connect();*/
 
     var account = Account
       .findOne({'login': login, 'password': password})
@@ -25,7 +25,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
   }
 
   isLoginExists = async (login: string) => {
-    this.connect()
+    /*this.connect()*/
 
     var account = await Account
       .findOne({'login':login})
@@ -36,7 +36,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
   }
 
   createAccount = async (login: string, password: string, type: string, userId: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var newAccount = new Account({login: login, password: password, type: type, userId: userId})
 
@@ -48,7 +48,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
 
   getById = async (id: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var account = await Account
         .findById(id)
@@ -62,7 +62,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
 
   changeLogin = async (id: string, login: string) => {
     try{
-      this.connect();
+      /*this.connect();*/
 
       var updatedAccount = await Account
         .updateOne({_id : id}, {login : login})
@@ -81,7 +81,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
 
   changeLoginAndPassword = async (id: string, login: string, password : string) => {
     try{
-      this.connect();
+      /*this.connect();*/
 
       var updatedAccount = await Account
         .updateOne({_id : id}, {login : login, password : password})
@@ -100,7 +100,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
 
   getAllWorkers = async () => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var accounts = Account
         .find()
@@ -114,7 +114,7 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
   }
 
   deleteAccount = async (accId: any) => {
-    this.connect();
+    /*this.connect();*/
 
     await Account
       .findByIdAndDelete(accId)

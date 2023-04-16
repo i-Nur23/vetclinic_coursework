@@ -11,7 +11,7 @@ export class PetRepository extends BaseRepository implements IPetRepository{
   }
 
   getMaxCardNumber = async ()  => {
-    this.connect();
+   /*this.connect();*/
 
     var number = 0;
 
@@ -26,7 +26,7 @@ export class PetRepository extends BaseRepository implements IPetRepository{
   }
 
   addPet = async (pet: IPet) => {
-    this.connect();
+    /*this.connect();*/
 
     var newPet = new Pet({
       cardNumber: pet.cardNumber,
@@ -43,7 +43,7 @@ export class PetRepository extends BaseRepository implements IPetRepository{
   }
 
   remove = async (petId: Types.ObjectId) => {
-    this.connect()
+    /*this.connect()*/
 
     Pet
       .findByIdAndDelete(petId)

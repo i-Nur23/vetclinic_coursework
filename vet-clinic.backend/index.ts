@@ -22,6 +22,7 @@ import { AnimalService } from "./services/AnimalService";
 import { AnimalController } from "./controllers/AnimalController";
 import {ServiceRepository} from "./repositories/ServiceRepository";
 import {ServiceController} from "./controllers/ServiceController";
+import mongoose from "mongoose";
 const bodyParser = require('body-parser');
 
 
@@ -33,6 +34,10 @@ app.use(express.json({extended : true}))
 app.use('/public',express.static('public'));
 
 var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
+/*mongoose.connect(mongoDB);
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));*/
 
 var clientRepo = new ClientRepository(mongoDB);
 var accountRepo = new AccountRepository(mongoDB);
@@ -125,6 +130,7 @@ app.post('/services/:typeId', (req : any, res : any) => serviceController.AddSer
 
 app.get('/doctors', (req : any, res : any) => doctorController.GetAllDoctors(req, res))
 app.get('/doctors/times', (req : any, res : any) => doctorController.GetAllDoctorsWithTime(req, res))
+app.patch('/doctors/times/:id', (req : any, res : any) => doctorController.SetDoctorTime(req, res))
 
 
 app.listen(port, () => {

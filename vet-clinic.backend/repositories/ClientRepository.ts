@@ -11,7 +11,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   }
 
   getAll = async () => {
-    this.connect();
+    /*this.connect();*/
 
     var clients = Client
       .find()
@@ -22,7 +22,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   }
 
   createClient = async (name: string, surName: string, email: string, phone : string) => {
-    this.connect();
+    /*this.connect();*/
 
     var newClient = new Client({name: name, surName: surName, email: email, phone : phone})
 
@@ -32,7 +32,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   }
 
   getById = async (id: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var client = await Client
       .findById(id)
@@ -44,7 +44,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
 
   changeInfo = async (userId: string, name: string, surName: string, email: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var updatedClient = await Client
         .updateOne({_id: userId}, {name: name, surName: surName, email: email})
@@ -63,7 +63,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
 
   getPets = async (id: any) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var client = Client
         .findById(id)
@@ -78,7 +78,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   }
 
   addPet = async (id: string, petId : Types.ObjectId) => {
-    this.connect();
+    /*this.connect();*/
 
     Client
       .findOneAndUpdate(
@@ -89,7 +89,7 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   }
 
   removePet = async (clientId: string, petId : Types.ObjectId) => {
-    this.connect();
+    /*this.connect();*/
 
     Client
       .findOneAndUpdate(

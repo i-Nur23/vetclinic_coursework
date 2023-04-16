@@ -35,4 +35,16 @@ export class DoctorApi extends Base{
     return response.data;
 
   }
+
+  static SetTimeTable = async (id : string, timetable : Array<string | null>) => {
+    var url = `${this.baseURL}/doctors/times/${id}`;
+
+    var body = {timetable : timetable};
+
+    var response = await axios.patch(url, body, {headers : {
+      'Content-Type' : 'application/json'
+    }})
+
+    return response.data;
+  }
 }

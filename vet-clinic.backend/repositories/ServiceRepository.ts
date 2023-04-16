@@ -8,7 +8,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   getAllTypes = async () => {
-    this.connect();
+    /*this.connect();*/
 
     var types = await Service
       .find()
@@ -19,7 +19,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   getAllSpecs = async () => {
-    this.connect();
+    /*this.connect();*/
 
     var types = await Service
       .find()
@@ -30,7 +30,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   getAll = async () => {
-    this.connect();
+    /*this.connect();*/
 
     var types = await Service
       .find()
@@ -40,8 +40,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   changeService = async (typeId : Types.ObjectId, serviceId : Types.ObjectId, name : string, price : number) => {
-    this.connect();
-
+    /*this.connect();*/
     var updatedServiceType = await Service
       .findById(typeId)
       .exec();
@@ -73,7 +72,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   changeIsActive = async (serviceId : Types.ObjectId, isActive : boolean) => {
-    this.connect();
+    /*this.connect();*/
 
     try {
       await Service.update({'services_list._id' : serviceId}, {'$set' : {
@@ -87,7 +86,7 @@ export class ServiceRepository extends BaseRepository {
   }
 
   AddService = async (typeId: Types.ObjectId, name: string, price: number) => {
-    this.connect();
+    /*this.connect();*/
 
     var updatedServiceType = await Service
       .findById(typeId)

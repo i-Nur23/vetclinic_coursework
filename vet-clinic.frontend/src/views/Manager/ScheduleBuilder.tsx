@@ -1,6 +1,5 @@
 import {Disclosure} from "@headlessui/react";
 import {ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
-import {ServicePanel} from "./ServicePanel";
 import {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
 import {DoctorTimetable} from "./DoctorTimetable";
@@ -17,7 +16,15 @@ export const ScheduleBuilder = () => {
       }
     )()
   },[])
-  
+
+  const refresh = () => {
+    setTimeout(() => DoctorApi.GetAllForTimesheet().then(
+      docs => {
+        setDoctors(docs);
+        console.log(docs);
+      }
+    ), 1000);
+  }
   
   
   return(
@@ -36,7 +43,7 @@ export const ScheduleBuilder = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 text-gray-500">
-                  <DoctorTimetable timesheet={doc.workHours} id={doc._id}/>
+                  <DoctorTimetable timesheet={doc.workHours} id={doc._id} refresh={ () => {refresh() } }/>
                 </Disclosure.Panel>
               </div>
             )}

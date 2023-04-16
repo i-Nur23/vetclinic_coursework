@@ -14,6 +14,7 @@ export class DoctorService implements IDoctorService {
     this.accountRepository = accountRepository
   }
 
+
   getAllWithTimes = async  () => {
         return await this.doctorRepository.getAllWithTimes();
     }
@@ -95,5 +96,10 @@ export class DoctorService implements IDoctorService {
     }
 
     return {ok : true}
+  }
+
+  setTimeTable = async (id: string, timeTable: [string | null]) => {
+    var ok = await this.doctorRepository.setTimeTable(id, timeTable);
+    return {ok : ok}
   }
 }

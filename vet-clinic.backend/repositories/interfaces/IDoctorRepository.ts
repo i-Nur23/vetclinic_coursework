@@ -8,4 +8,5 @@ export default interface IDoctorRepository{
   delete(userId: any): Promise<any>;
   getAll() : Promise<any>;
   getAllWithTimes(): Promise<any>;
+  setTimeTable(id : string, timeTable : [string | null]): Promise<any>;
 }

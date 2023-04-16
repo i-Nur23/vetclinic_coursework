@@ -62,4 +62,12 @@ export class DoctorController{
     var doctors = await this.doctorService.getAllWithTimes();
     res.json(doctors)
   }
+
+  SetDoctorTime = async (req: any, res: any) => {
+    var id = req.params.id;
+    var timeTable = req.body.timetable;
+
+    var result = await this.doctorService.setTimeTable(id, timeTable);
+    res.json(result);
+  }
 }

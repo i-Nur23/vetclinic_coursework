@@ -10,7 +10,7 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
   }
 
   createRegister = async (name: string, surName: string, email: string, phone: string) => {
-    this.connect();
+    /*this.connect();*/
 
     var newReg = new Register({name: name, surName: surName, email: email, phone : phone})
 
@@ -20,7 +20,7 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
   }
 
   getById = async (id: string) => {
-    this.connect()
+    /*this.connect()*/
 
     var register = Register
       .findById(id)
@@ -32,7 +32,7 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
 
   changeInfo = async (id: string, name: string, surName: string, email: string, phone: string) => {
     try {
-      this.connect();
+      /*this.connect();*/
 
       var updatedRegister = await Register
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone})
@@ -50,7 +50,7 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
   }
 
   delete = async (userId: any) => {
-    this.connect()
+    /*this.connect()*/
 
     await Manager
       .findByIdAndDelete(userId)
