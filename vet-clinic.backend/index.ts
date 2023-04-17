@@ -23,6 +23,9 @@ import { AnimalController } from "./controllers/AnimalController";
 import {ServiceRepository} from "./repositories/ServiceRepository";
 import {ServiceController} from "./controllers/ServiceController";
 import mongoose from "mongoose";
+import {BookingRepository} from "./repositories/BookingRepository";
+import {BookingService} from "./services/BookingService";
+import {BookingController} from "./controllers/BookingController";
 const bodyParser = require('body-parser');
 
 
@@ -47,17 +50,20 @@ var manRepo = new ManagerRepository(mongoDB);
 var regRepo = new RegisterRepository(mongoDB);
 var animalRepo = new AnimalRepository(mongoDB);
 var serviceRepo = new ServiceRepository(mongoDB);
+var bookingRepo = new BookingRepository();
 
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
 var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo);
 var doctorService = new DoctorService(docRepo, accountRepo);
 var animalService = new AnimalService(animalRepo);
+var bookingService = new BookingService(accountRepo, bookingRepo, serviceRepo, clientRepo, docRepo);
 
 var clientController = new ClientController(clientService);
 var accountController = new AccountController(accountService);
 var doctorController = new DoctorController(doctorService);
 var animalController = new AnimalController(animalService);
 var serviceController = new ServiceController(serviceRepo);
+var bookingController = new BookingController(bookingService);
 
 app.use(cors())
 
@@ -133,6 +139,7 @@ app.get('/doctors', (req : any, res : any) => doctorController.GetAllDoctors(req
 app.get('/doctors/times', (req : any, res : any) => doctorController.GetAllDoctorsWithTime(req, res))
 app.patch('/doctors/times/:id', (req : any, res : any) => doctorController.SetDoctorTime(req, res))
 
+app.post('/bookings/procedure', (req : any, res : any) => bookingController.BookProcedure(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

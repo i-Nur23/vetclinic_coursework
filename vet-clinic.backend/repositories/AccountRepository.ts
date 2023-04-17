@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, {Types} from "mongoose";
 import IAccountRepository from "./interfaces/IAccountRepository";
 import {Account} from "../models/Account";
 import {BaseRepository} from "./BaseRepository";
@@ -119,5 +119,19 @@ export class AccountRepository extends BaseRepository implements IAccountReposit
     await Account
       .findByIdAndDelete(accId)
       .exec();
+  }
+
+  getClientId= async (userId: Types.ObjectId) => {
+    var client = await Account.findOne({_id : userId}).exec();
+
+    if (client == null){ return null; }
+
+
+    if (client.type == 'Клиент') {
+      return  client.userId;
+    }
+
+    return null;
+
   }
 }

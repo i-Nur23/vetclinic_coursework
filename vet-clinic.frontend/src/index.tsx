@@ -19,6 +19,7 @@ import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
 import {ManagerHome, ScheduleBuilder, ServiceListControl} from "./views/Manager";
 import {BookingToProcedure, ServicesList, TimeChoice} from "./views/Services";
 import {AllDoctors} from "./views/Doctor";
+import {Appointments} from "./views/Client/Appointments";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -30,12 +31,15 @@ const router = createBrowserRouter(
             <Route path='client'>
               <Route path='profile' element={<Profile/>}/>
               <Route path='pets' element={<Pets/>}/>
+              <Route path='bookings' element={<Appointments/>}/>
             </Route>
           </Route>
         <Route path="services">
           <Route index element={<ServicesList/>}/>
-          <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
-          <Route path=':combinedId' element={<TimeChoice/>} />
+          <Route element={<ProtectedRoutes role={Level.Client}/>}>
+            <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
+            <Route path=':combinedId' element={<TimeChoice/>} />
+          </Route>
         </Route>
         <Route path="doctors" element={<AllDoctors/>}/>
       </Route>
