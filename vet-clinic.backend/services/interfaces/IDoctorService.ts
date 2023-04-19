@@ -8,4 +8,6 @@ export default interface IDoctorService {
   getAll(): Promise<any>;
   getAllWithTimes(): Promise<any>;
   setTimeTable(id: any, timeTable: any): Promise<any>;
+  getAllBySpec(typeId : any) : Promise<any>;
+  getTimes(id: string): Promise<any>;
 }

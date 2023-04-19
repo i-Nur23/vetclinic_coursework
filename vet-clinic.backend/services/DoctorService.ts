@@ -2,16 +2,25 @@ import IDoctorService from "./interfaces/IDoctorService";
 import IDoctorRepository from "../repositories/interfaces/IDoctorRepository";
 import IAccountRepository from "../repositories/interfaces/IAccountRepository";
 import fs from "fs";
+import {ServiceRepository} from "../repositories/ServiceRepository";
+import {BookingRepository} from "../repositories/BookingRepository";
+import {DoctorRepository} from "../repositories/DoctorRepository";
 
 export class DoctorService implements IDoctorService {
 
   doctorRepository : IDoctorRepository
   accountRepository : IAccountRepository
+  serviceRepository : ServiceRepository
+  bookingRepository : BookingRepository
 
   constructor(doctorRepository : IDoctorRepository,
-              accountRepository : IAccountRepository) {
+              accountRepository : IAccountRepository,
+              serviceRepository : ServiceRepository,
+              bookingRepository : BookingRepository) {
     this.doctorRepository = doctorRepository
     this.accountRepository = accountRepository
+    this.serviceRepository = serviceRepository
+    this.bookingRepository = bookingRepository
   }
 
 
@@ -101,5 +110,33 @@ export class DoctorService implements IDoctorService {
   setTimeTable = async (id: string, timeTable: [string | null]) => {
     var ok = await this.doctorRepository.setTimeTable(id, timeTable);
     return {ok : ok}
+  }
+
+  getAllBySpec = async (typeId: any) => {
+    const type = await this.serviceRepository.getTypeById(typeId);
+    if (type == null || type.spec == undefined){
+      return {ok : false}
+    }
+
+    const docs = await this.doctorRepository.getBySpec(type.spec);
+    if (docs == null){
+      return {ok : false}
+    } else {
+      return {ok : true, doctors : docs}
+    }
+
+
+  }
+
+  getTimes = async (id: string) => {
+    const docTimes = await this.doctorRepository.GetDocTimes(id);
+    const docBookings = await this.bookingRepository.GetDoctorBookings(id);
+
+    if (docTimes == null){
+      return {ok : false}
+    }
+
+    return {ok : true, doctor : {_id : id, hours : docTimes, bookings : docBookings}}
+
   }
 }

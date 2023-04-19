@@ -122,4 +122,21 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
       return false;
     }
   }
+
+  getBySpec = async (spec: string) => {
+    const docs = Doctor
+      .find({spec : spec})
+      .select('name surName')
+      .exec();
+
+    return docs;
+  }
+
+  GetDocTimes = async (id: string) => {
+    return Doctor
+      .findById(id)
+      .select('-_id workHours')
+      .exec()
+
+  }
 }

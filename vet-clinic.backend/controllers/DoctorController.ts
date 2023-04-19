@@ -54,7 +54,15 @@ export class DoctorController{
   }
 
   GetAllDoctors = async (req: any, res: any) => {
-    var doctors = await this.doctorService.getAll();
+
+    const typeId = req.query.type;
+    let doctors;
+    if (typeId == null) {
+      doctors = await this.doctorService.getAll();
+    } else {
+      doctors = await this.doctorService.getAllBySpec(typeId);
+    }
+
     res.json(doctors)
   }
 
@@ -69,5 +77,13 @@ export class DoctorController{
 
     var result = await this.doctorService.setTimeTable(id, timeTable);
     res.json(result);
+  }
+
+  GetDoctorHours = async (req: any, res: any) => {
+    var id = req.params.id;
+
+    var result = await this.doctorService.getTimes(id);
+
+    res.json(result)
   }
 }

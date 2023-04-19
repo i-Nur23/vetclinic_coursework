@@ -9,4 +9,6 @@ export default interface IDoctorRepository{
   getAll() : Promise<any>;
   getAllWithTimes(): Promise<any>;
   setTimeTable(id : string, timeTable : [string | null]): Promise<any>;
+  getBySpec(spec: string): Promise<any>;
+  GetDocTimes(id: string): Promise<any>;
 }

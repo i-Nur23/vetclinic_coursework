@@ -47,4 +47,20 @@ export class DoctorApi extends Base{
 
     return response.data;
   }
+
+  static GetDoctorsBySpec = async (typeId : string) => {
+    var url = `${this.baseURL}/doctors?type=${typeId}`
+
+    var response = await axios.get(url);
+
+    return response.data;
+  }
+
+  static GetDoctorBookingTimes = async (docId : string) => {
+    var url = `${this.baseURL}/doctors/times/${docId}`
+
+    var response = await axios.get(url);
+
+    return response.data;
+  }
 }

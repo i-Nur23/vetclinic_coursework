@@ -57,4 +57,9 @@ export class BookingRepository{
 
   }
 
+  GetDoctorBookings = async (id: string) => {
+    return Booking
+      .find({doctorId : id})
+      .exec();
+  }
 }
