@@ -132,4 +132,12 @@ export class ServiceRepository extends BaseRepository {
 
     return types;
   }
+
+  getTypeById = async (id : string) => {
+    var type = Service
+      .findById(id)
+      .exec();
+
+    return type;
+  }
 }

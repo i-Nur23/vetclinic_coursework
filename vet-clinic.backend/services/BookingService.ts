@@ -4,6 +4,7 @@ import {ClientRepository} from "../repositories/ClientRepository";
 import {DoctorRepository} from "../repositories/DoctorRepository";
 import {Types} from "mongoose";
 import {AccountRepository} from "../repositories/AccountRepository";
+import {BookingExtended} from "../models/Booking";
 
 export class BookingService{
   private bookingRepository : BookingRepository;
@@ -39,8 +40,44 @@ export class BookingService{
     return {ok : (result != null)};
   }
 
+  private GetExtendedBookings = async (bookings : any) => {
+    const result = await bookings.map(async (book : any) => {
+      let _book : BookingExtended =
+        {
+          date : book.date,
+          _id : book._id,
+          clientId : book.clientId?.toString(),
+          doctorId : book.doctorId?.toString(),
+          typeId : book.typeId?.toString(),
+          serviceId : book.serviceId?.toString(),
+          doctor : undefined,
+          type : undefined,
+          service : undefined
+        }
+
+      if (book.doctorId != undefined){
+        const doc = await this.doctorRepository.getById(book.doctorId.toString())
+        _book.doctor = doc.name + ' ' + doc.surName;
+      }
+
+      if (book.serviceId != undefined && book.typeId != undefined){
+        const service = await this.serviceRepository.getTypeById(book.typeId.toString())
+        if (service != null){
+          _book.type = service.type;
+          const s = service.services_list.find(x => x._id?.toString() === book.serviceId?.toString())
+          _book.service = s?.name;
+        }
+      }
+
+      return _book;
+    })
+
+
+    return Promise.all(result)
+  }
+
   GetClientBookings = async (userId : Types.ObjectId) => {
-    const clientId = await this.accountRepository.getClientId(userId)
+    const clientId = await this.accountRepository.getClientId(userId);
 
     if (clientId == null){
       return {ok : false};
@@ -51,18 +88,20 @@ export class BookingService{
     const pastBookings  = await  this.bookingRepository.GetPastBookingsByClient(clientId, date);
     const upcomingBookings  = await  this.bookingRepository.GetUpcomingBookingsByClient(clientId, date);
 
+    const uBooks = await this.GetExtendedBookings(upcomingBookings);
+    const pBooks = await this.GetExtendedBookings(pastBookings);
+
+
     if (pastBookings.length != 0 || upcomingBookings.length !== null){
       return {ok : true, bookings :
           {
-            past : pastBookings,
-            upcoming : upcomingBookings
+            past : pBooks,
+            upcoming : uBooks
           }
       }
     }
 
     return {ok : false}
-
-
 
   }
 
