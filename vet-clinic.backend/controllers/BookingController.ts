@@ -13,6 +13,8 @@ export class BookingController{
     const serviceId = req.body.service;
     const date = req.body.date;
 
+    console.log(date);
+
     res.json(await this.bookingService.BookProcedure(clientId, typeId, serviceId, date))
   }
 

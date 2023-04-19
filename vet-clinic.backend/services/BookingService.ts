@@ -46,10 +46,18 @@ export class BookingService{
       return {ok : false};
     }
 
-    const result = await  this.bookingRepository.GetBookingsByClient(clientId)
+    const date = new Date();
 
-    if (result != null){
-      return {ok : true, bookings : result}
+    const pastBookings  = await  this.bookingRepository.GetPastBookingsByClient(clientId, date);
+    const upcomingBookings  = await  this.bookingRepository.GetUpcomingBookingsByClient(clientId, date);
+
+    if (pastBookings.length != 0 || upcomingBookings.length !== null){
+      return {ok : true, bookings :
+          {
+            past : pastBookings,
+            upcoming : upcomingBookings
+          }
+      }
     }
 
     return {ok : false}

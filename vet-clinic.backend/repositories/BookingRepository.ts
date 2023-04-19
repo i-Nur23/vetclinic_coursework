@@ -16,13 +16,44 @@ export class BookingRepository{
     return new_book._id;
   }
 
-  GetBookingsByClient = async (clientId : Types.ObjectId) => {
+  GetUpcomingBookingsByClient = async (clientId : Types.ObjectId, date : Date) => {
 
-    var bookings = Booking
-      .find({clientId : clientId})
+    const bookings = await Booking
+      .find({clientId : clientId, date : {$gt : date.getTime() + date.getTimezoneOffset() * 60000}})
+      .sort('date')
       .exec();
 
-    return bookings;
+    const bookingsLocalTime = bookings.map(booking =>
+    {
+      if (booking.date != undefined){
+        booking.date.setTime(booking.date.getTime() - booking.date.getTimezoneOffset() *
+          60000);
+      }
+      return booking;
+    })
+
+
+    return bookingsLocalTime;
+
+  }
+
+  GetPastBookingsByClient = async (clientId : Types.ObjectId, date : Date) => {
+
+    var bookings = await Booking
+      .find({clientId : clientId, date : {$lte : date.getTime() + date.getTimezoneOffset() * 60000}})
+      .sort('-date')
+      .exec();
+
+    const bookingsLocalTime = bookings.map(booking =>
+    {
+      if (booking.date != undefined){
+        booking.date.setTime(booking.date.getTime() -  booking.date.getTimezoneOffset() *
+          60000);
+      }
+      return booking;
+    })
+
+    return bookingsLocalTime;
 
   }
 
