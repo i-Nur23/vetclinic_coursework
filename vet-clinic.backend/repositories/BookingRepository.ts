@@ -15,4 +15,15 @@ export class BookingRepository{
 
     return new_book._id;
   }
+
+  GetBookingsByClient = async (clientId : Types.ObjectId) => {
+
+    var bookings = Booking
+      .find({clientId : clientId})
+      .exec();
+
+    return bookings;
+
+  }
+
 }

@@ -38,4 +38,24 @@ export class BookingService{
 
     return {ok : (result != null)};
   }
+
+  GetClientBookings = async (userId : Types.ObjectId) => {
+    const clientId = await this.accountRepository.getClientId(userId)
+
+    if (clientId == null){
+      return {ok : false};
+    }
+
+    const result = await  this.bookingRepository.GetBookingsByClient(clientId)
+
+    if (result != null){
+      return {ok : true, bookings : result}
+    }
+
+    return {ok : false}
+
+
+
+  }
+
 }

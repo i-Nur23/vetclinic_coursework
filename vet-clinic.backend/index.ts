@@ -140,6 +140,7 @@ app.get('/doctors/times', (req : any, res : any) => doctorController.GetAllDocto
 app.patch('/doctors/times/:id', (req : any, res : any) => doctorController.SetDoctorTime(req, res))
 
 app.post('/bookings/procedure', (req : any, res : any) => bookingController.BookProcedure(req, res))
+app.get('/bookings/:id', (req : any, res : any) => bookingController.GetClientBookings(req, res))
 
 app.listen(port, () => {
     console.log(`Server working on http://localhost:${port}`)

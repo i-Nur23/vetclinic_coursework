@@ -28,6 +28,7 @@ export const BookingToProcedure = () => {
 
   const handleBooking = async (date: Date) => {
     if (id != null){
+      date.setHours(23, 59, 59);
       const response = await BookingAPI.BookProcedure(id , typeId, serviceId, date);
 
       if (response.ok){
@@ -59,4 +60,5 @@ export const BookingToProcedure = () => {
       </Snackbar>
     </div>
   )
+
 }

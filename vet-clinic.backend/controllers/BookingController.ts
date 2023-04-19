@@ -15,4 +15,10 @@ export class BookingController{
 
     res.json(await this.bookingService.BookProcedure(clientId, typeId, serviceId, date))
   }
+
+  GetClientBookings = async (req : any, res : any) => {
+    const userId = req.params.id;
+
+    res.json(await this.bookingService.GetClientBookings(userId));
+  }
 }
