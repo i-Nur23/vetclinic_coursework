@@ -47,7 +47,7 @@ export const Appointments = () => {
         passive.length !== 0
           ?
           <div>
-            <p className='text-lg'>Прошедшие записи</p>
+            <p className='text-lg underline mb-3 mt-3'>Прошедшие записи</p>
             <ul>
               {
                 passive.map(book => <PassiveAppointmentListItem item={book}/>)

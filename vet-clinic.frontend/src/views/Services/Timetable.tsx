@@ -2,13 +2,16 @@ import {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
 import {TimeHandler} from "../../utils/TimeHandler";
 import {current} from "@reduxjs/toolkit";
+import {DateHandler} from "../../utils/DateHandler";
+import './TimeTable.css'
 
 export const Timetable = ({id} : {id : string}) => {
 
-  const [hours, setHours] = useState([]);
+  const [stringHours, setStringHours] = useState([]);
+  const [floatHours, setFloatHours] = useState([])
   const [bookings, setBookings] = useState([]);
   const [times, setTimes] = useState<Array<Array<any>>>([]);
-  const [nowTime, setNowTime] = useState<Date>();
+  const [nowTime, setNowTime] = useState<Date>(new Date());
   const [week, setWeek] = useState<Date[]>([])
 
   const WORK_START = 8;
@@ -25,14 +28,19 @@ export const Timetable = ({id} : {id : string}) => {
         }
 
         setTimes(times);
-        setNowTime(new Date());
         setWeek(allDaysOfWeek())
 
 
         const resData = await DoctorApi.GetDoctorBookingTimes(id);
         if (resData.ok){
-          setHours(resData.doctor.hours);
-          setBookings(resData.doctor.hours);
+          setStringHours(resData.doctor.hours.workHours);
+          setFloatHours(resData.doctor.hours.workHours.map((h : string | null) => {
+            if (!h) return  h
+
+            return h.split('-').map(x => TimeHandler.toTimeNumber(x))
+
+          }));
+          setBookings(resData.doctor.bookings);
         }
       }
     )()
@@ -49,24 +57,23 @@ export const Timetable = ({id} : {id : string}) => {
     currentDate.setDate((currentDate.getDate() - ( currentDate.getDay() - 1 ) ));
 
     for (let i = 0; i < 6; i++) {
-      week.push(currentDate
-        //`${('0' + currentDate.getDate()).slice(-2)}.${('0' + (currentDate.getMonth() + 1)).slice(-2)}`
-      );
+      week.push(new Date(currentDate));
 
       currentDate.setDate(currentDate.getDate() +1);
     }
 
     return week;
+
   }
 
 
   return(
-      <table className='border-collapse border w-full'>
+      <table className='border-collapse border-2 border-black w-full'>
         <thead>
           <tr>
             {
               week.map(day =>
-                <th className='font-normal border py-3'>
+                <th className='font-normal border-2 border-black p-3 h-12 w-1/6'>
                   {('0' + day.getDate()).slice(-2)}.{('0' + (day.getMonth() + 1)).slice(-2)}
                 </th>
               )
@@ -75,13 +82,43 @@ export const Timetable = ({id} : {id : string}) => {
         </thead>
         <tbody>
         {
-          week.map((day, index) => {
-            const [hour, min] = times[index][1].split(':');
+          times.map((day, index) => {
+            const stringTime = times[index][1];
+            const numberTime = times[index][0];
+            const [hour, min] = stringTime.split(':');
 
+            let row = [];
+            let date = new Date(week[0].getTime());
+
+            for (let i = 0; i < 6; i++){
+              date.setHours(hour, min);
+
+              if (date.getTime() < nowTime.getTime()){
+                row.push(null)
+                date.setDate(date.getDate() + 1);
+                continue;
+              }
+
+              if (
+                floatHours[index] == null ||
+                floatHours[index] > numberTime ||
+                floatHours[index] <= numberTime
+              ){
+                row.push('Записи нет')
+                date.setDate(date.getDate() + 1);
+                continue;
+              }
+
+              row.push(stringTime);
+              date.setDate(date.getDate() + 1);
+            }
 
             return(
-              <tr>
-
+              <tr className='text-center'>
+                {row.map(cell => !cell ?
+                  <td className='border-2 border-black p-3 h-12 bg-gray-300'></td>
+                  :
+                  <td className='border-2 border-black p-3 h-12'>{cell}</td>)}
               </tr>
             )
           })
