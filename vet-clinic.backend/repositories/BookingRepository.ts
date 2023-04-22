@@ -11,7 +11,7 @@ export class BookingRepository{
       date : date
     })
 
-    new_book.save();
+    await new_book.save();
 
     return new_book._id;
   }
@@ -23,7 +23,7 @@ export class BookingRepository{
       .sort('date')
       .exec();
 
-    const bookingsLocalTime = bookings.map(booking =>
+    /*const bookingsLocalTime = bookings.map(booking =>
     {
       if (booking.date != undefined){
         booking.date.setTime(booking.date.getTime() - booking.date.getTimezoneOffset() *
@@ -33,7 +33,9 @@ export class BookingRepository{
     })
 
 
-    return bookingsLocalTime;
+    return bookingsLocalTime;*/
+
+    return bookings
 
   }
 
@@ -44,7 +46,7 @@ export class BookingRepository{
       .sort('-date')
       .exec();
 
-    const bookingsLocalTime = bookings.map(booking =>
+    /*const bookingsLocalTime = bookings.map(booking =>
     {
       if (booking.date != undefined){
         booking.date.setTime(booking.date.getTime() -  booking.date.getTimezoneOffset() *
@@ -53,13 +55,38 @@ export class BookingRepository{
       return booking;
     })
 
-    return bookingsLocalTime;
+    return bookingsLocalTime;*/
+
+    return bookings
 
   }
 
   GetDoctorBookings = async (id: string) => {
-    return Booking
+    const bookings = await Booking
       .find({doctorId : id})
       .exec();
+
+    return bookings;
+
+  }
+
+  BookAppointment = async (
+    clientId: Types.ObjectId,
+    doctorId: Types.ObjectId,
+    typeId: Types.ObjectId,
+    serviceId: Types.ObjectId,
+    date: Date
+  ) => {
+    const new_book = new Booking({
+      clientId : clientId,
+      doctorId : doctorId,
+      typeId : typeId,
+      serviceId : serviceId,
+      date : date
+    })
+
+    await new_book.save();
+
+    return new_book._id;
   }
 }

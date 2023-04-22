@@ -3,3 +3,16 @@ table td.crossed
     background-image: linear-gradient(to bottom right, transparent calc(50% - 1px), #d1d1d1, transparent calc(50% + 1px)),
     linear-gradient(to top right, transparent calc(50% - 1px), #d1d1d1, transparent calc(50% + 1px));
 }
+
+/*table{
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    border: solid black 1px;
+    background: white;
+}*/
+

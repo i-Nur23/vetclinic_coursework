@@ -1,12 +1,17 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
 import {TimeHandler} from "../../utils/TimeHandler";
 import {current} from "@reduxjs/toolkit";
 import {DateHandler} from "../../utils/DateHandler";
 import './TimeTable.css'
 import {ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/24/solid";
+import {Alert, Snackbar} from "@mui/material";
+import {useSelector} from "react-redux";
+import {RootState} from "../../store/store";
+import {BookingAPI} from "../../api/BookingAPI";
+import {useNavigate} from "react-router-dom";
 
-export const Timetable = ({id} : {id : string}) => {
+export const Timetable = ({docId, typeId, serviceId} : {docId : string, typeId : string, serviceId : string,}) => {
 
   const [stringHours, setStringHours] = useState([]);
   const [floatHours, setFloatHours] = useState([])
@@ -16,10 +21,12 @@ export const Timetable = ({id} : {id : string}) => {
   const [week, setWeek] = useState<Date[]>([]);
   const [weeksCount, setWeekCount] = useState<number>(3);
   const [weekNumber, setWeekNumber] = useState<number>(1);
+  const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
 
   const WORK_START = 8;
   const WORK_END = 18;
-
+  const userId = useSelector((state : RootState) => state.id);
+  const navigate = useNavigate();
 
   useEffect(() => {
     (
@@ -34,7 +41,7 @@ export const Timetable = ({id} : {id : string}) => {
         setWeek(allDaysOfWeek());
 
 
-        const resData = await DoctorApi.GetDoctorBookingTimes(id);
+        const resData = await DoctorApi.GetDoctorBookingTimes(docId);
         if (resData.ok){
           setStringHours(resData.doctor.hours.workHours);
           setFloatHours(resData.doctor.hours.workHours.map((h : string | null) => {
@@ -79,19 +86,31 @@ export const Timetable = ({id} : {id : string}) => {
     setWeek(allDaysOfWeek());
   },[weekNumber])
 
-  const BookAppointment = async () => {
-    
+  const BookAppointment = async (date : Date | undefined) => {
+    if (date == undefined){
+      setIsToastOpen(true);
+      return;
+    }
+
+
+    const resData = await BookingAPI.BookAppointment(userId, docId, typeId, serviceId, date);
+
+    if (!resData.ok){
+      setIsToastOpen(true);
+    } else {
+      navigate('/client/bookings')
+    }
   }
 
   return(
     <div>
       <div className='overflow-auto' style={{height : '60vh'}}>
-        <table className='border-collapse border-2 border-black w-full'>
-          <thead className='sticky'>
+        <table className='w-full'>
+          <thead>
           <tr>
             {
               week.map(day =>
-                <th className='font-normal border-2 border-black p-3 h-12 w-1/6'>
+                <th className='border-2 border-black font-normal p-3 h-12 w-1/6'>
                   {('0' + day.getDate()).slice(-2)}.{('0' + (day.getMonth() + 1)).slice(-2)}
                 </th>
               )
@@ -107,14 +126,20 @@ export const Timetable = ({id} : {id : string}) => {
 
               let row = [];
               let date = new Date(week[0].getTime());
+              let _date : Date;
+
+              if (! (nowTime.getDay() == 0 || nowTime.getDay() == 6 && nowTime.getHours() >= 18)){
+                date.setDate(date.getDate()  - 1)
+              }
+
               date.setHours(hour, min, 0, 0);
 
               for (let i = 0; i < 6; i++) {
-
+                date.setDate(date.getDate() + 1);
+                _date = new Date(date.getTime());
                 if (date.getTime() < nowTime.getTime() ||
                   (date.getTime() - nowTime.getTime()) / (1000 * 60 * 60 * 24) > 14) {
                   row.push(null)
-                  date.setDate(date.getDate() + 1);
                   continue;
                 }
 
@@ -124,19 +149,15 @@ export const Timetable = ({id} : {id : string}) => {
                   floatHours[i][1] <= numberTime
                 ) {
                   row.push({type : 0, text : ''})
-                  date.setDate(date.getDate() + 1);
                   continue;
                 }
 
-
-                if (bookings.filter(b => b.date.getDate() == date.getDate()).length != 0){
+                if (bookings.filter(b => new Date(b.date)?.getTime() == date.getTime()).length != 0){
                   row.push({type : 1, text : stringTime})
-                  date.setDate(date.getDate() + 1);
                   continue;
                 }
 
-                row.push({type : 2, text : stringTime});
-                date.setDate(date.getDate() + 1);
+                row.push({type : 2, text : stringTime, date : _date});
               }
 
               return (
@@ -145,11 +166,11 @@ export const Timetable = ({id} : {id : string}) => {
                     {
                       if (!cell) return <td className='border-2 border-black p-3 h-12 crossed'></td>
                       if (cell.type == 0) return <td className='border-2 border-black p-3 h-12 bg-gray-100'></td>
-                      if (cell.type == 1) return <td className='border-2 border-black p-3 h-12 bg-gray-100 text-gray-500'>{cell.text}</td>
+                      if (cell.type == 1) return <td className='border-2 border-black p-3 h-12 bg-gray-400 text-gray-700'>{cell.text}</td>
                       if (cell.type == 2) return (
                       <td
                         className='border-2 border-black p-3 h-12 bg-green-400 text-green-800 cursor-pointer hover:bg-green-600 hover:text-black'
-                        onClick={BookAppointment}
+                        onClick={() => BookAppointment(cell.date)}
                       >
                         {cell.text}
                       </td>)
@@ -186,6 +207,12 @@ export const Timetable = ({id} : {id : string}) => {
               <div></div>
         }
       </div>
+
+      <Snackbar open={isToastOpen} autoHideDuration={4000} onClose={() => setIsToastOpen(false)}>
+        <Alert onClose={() => setIsToastOpen(false)} severity="error">
+          Ошибка записи
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

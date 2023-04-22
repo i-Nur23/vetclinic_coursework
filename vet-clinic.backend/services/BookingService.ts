@@ -105,4 +105,22 @@ export class BookingService{
 
   }
 
+  BookAppointment = async (
+    userId: Types.ObjectId,
+    doctorId: Types.ObjectId,
+    typeId: Types.ObjectId,
+    serviceId: Types.ObjectId,
+    date : Date
+    ) => {
+    const clientId = await this.accountRepository.getClientId(userId);
+
+    if (clientId == null){
+      return {ok : false};
+    }
+
+    const result = await this.bookingRepository.BookAppointment(clientId, doctorId, typeId, serviceId, date);
+
+    return {ok : result != null}
+
+  }
 }

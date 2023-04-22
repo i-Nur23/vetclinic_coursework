@@ -53,7 +53,7 @@ export const TimeChoice = () => {
           {
             doctors.map((doc : any) =>
               <Tab.Panel>
-                <Timetable id={doc._id}/>
+                <Timetable docId={doc._id} serviceId={serviceId} typeId={typeId}/>
               </Tab.Panel>
             )
           }
