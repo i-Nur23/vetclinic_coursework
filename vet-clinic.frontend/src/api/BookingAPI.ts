@@ -47,4 +47,10 @@ export class BookingAPI extends Base {
 
     return response.data;
   }
+
+  static DeleteBookings = async (bookingId : string) => {
+    const url =  `${this.baseURL}/bookings/${bookingId}`
+
+    await axios.delete(url);
+  }
 }

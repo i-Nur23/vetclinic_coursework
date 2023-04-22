@@ -31,4 +31,10 @@ export class BookingController{
 
     res.json(await this.bookingService.BookAppointment(userId, doctorId, typeId, serviceId, date))
   }
+
+  DeleteBookings = async (req: any, res: any) => {
+    const bookingId = req.params.bookingId;
+    await this.bookingService.deleteBooking(bookingId)
+    res.json({})
+  }
 }

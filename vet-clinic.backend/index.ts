@@ -142,6 +142,7 @@ app.get('/doctors/times/:id', (req : any, res : any) => doctorController.GetDoct
 
 app.post('/bookings/procedure', (req : any, res : any) => bookingController.BookProcedure(req, res))
 app.get('/bookings/:id', (req : any, res : any) => bookingController.GetClientBookings(req, res))
+app.delete('/bookings/:bookingId', (req : any, res : any) => bookingController.DeleteBookings(req, res))
 app.post('/bookings/', (req : any, res : any) => bookingController.BookAppointment(req, res))
 
 app.listen(port, () => {

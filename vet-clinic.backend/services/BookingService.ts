@@ -123,4 +123,9 @@ export class BookingService{
     return {ok : result != null}
 
   }
+
+  deleteBooking  = async (bookingId: Types.ObjectId) => {
+    await this.bookingRepository.DeleteBooking(bookingId);
+
+  }
 }

@@ -26,6 +26,18 @@ export const Appointments = () => {
     )()
   },[])
 
+  const refresh = () => {
+    if (id != null){
+      BookingAPI.AllClientBookings(id)
+        .then(response => {
+          if (response.ok){
+            setActive(response.bookings.upcoming);
+            setPassive(response.bookings.past);
+          }
+        })
+    }
+  }
+
 
   return(
     <div className='container px-20'>
@@ -37,7 +49,7 @@ export const Appointments = () => {
             <p className='text-lg underline mb-3'>Активные записи</p>
             <ul>
               {
-                active.map(book => <ActiveAppointmentListItem item={book}/>)
+                active.map(book => <ActiveAppointmentListItem booking={book} refresh={() => refresh()}/>)
               }
             </ul>
           </div>

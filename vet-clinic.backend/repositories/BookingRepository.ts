@@ -89,4 +89,11 @@ export class BookingRepository{
 
     return new_book._id;
   }
+
+  DeleteBooking = (bookingId: Types.ObjectId) => {
+    Booking
+      .deleteOne({_id : bookingId})
+      .exec();
+
+  }
 }
