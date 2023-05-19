@@ -52,7 +52,8 @@ export class BookingService{
           serviceId : book.serviceId?.toString(),
           doctor : undefined,
           type : undefined,
-          service : undefined
+          service : undefined,
+          client : undefined,
         }
 
       if (book.doctorId != undefined){
@@ -67,6 +68,11 @@ export class BookingService{
           const s = service.services_list.find(x => x._id?.toString() === book.serviceId?.toString())
           _book.service = s?.name;
         }
+      }
+
+      if (book.clientId != undefined){
+        const client = await this.clientRepository.getById(book.clientId.toString());
+        _book.client = client;
       }
 
       return _book;
@@ -127,5 +133,15 @@ export class BookingService{
   deleteBooking  = async (bookingId: Types.ObjectId) => {
     await this.bookingRepository.DeleteBooking(bookingId);
 
+  }
+
+  GetFutureBookings = async () => {
+    try {
+      var rawBookings = await this.bookingRepository.GetAllUpcomingBookings();
+      var bookings = await this.GetExtendedBookings(rawBookings)
+      return {ok : true, bookings : bookings}
+    } catch (e) {
+      return {ok : false}
+    }
   }
 }

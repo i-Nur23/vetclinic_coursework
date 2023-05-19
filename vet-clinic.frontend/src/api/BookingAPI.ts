@@ -53,4 +53,14 @@ export class BookingAPI extends Base {
 
     await axios.delete(url);
   }
+
+  static AllFutureBookings  = async () => {
+    const url =  `${this.baseURL}/bookings/future`
+
+    await axios.get(url);
+
+    const response = await axios.get(url);
+
+    return response.data;
+  }
 }

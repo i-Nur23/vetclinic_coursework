@@ -20,6 +20,7 @@ import {ManagerHome, ScheduleBuilder, ServiceListControl} from "./views/Manager"
 import {BookingToProcedure, ServicesList, TimeChoice} from "./views/Services";
 import {AllDoctors} from "./views/Doctor";
 import {Appointments} from "./views/Client/Appointments";
+import {AddNewClient, AddPet, RegistratorHome, UpcomingBookings} from "./views/Registrator";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,10 +37,10 @@ const router = createBrowserRouter(
           </Route>
         <Route path="services">
           <Route index element={<ServicesList/>}/>
-          <Route element={<ProtectedRoutes role={Level.Client}/>}>
+          {/*<Route element={<ProtectedRoutes role={Level.Client}/>}>*/}
             <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
             <Route path=':combinedId' element={<TimeChoice/>} />
-          </Route>
+          {/*</Route>*/}
         </Route>
         <Route path="doctors" element={<AllDoctors/>}/>
       </Route>
@@ -60,6 +61,17 @@ const router = createBrowserRouter(
             <Route path='services' element={<ServiceListControl/>}/>
           </Route>
         </Route>
+        <Route element={<ProtectedRoutes role={Level.Register}/>}>
+          <Route path='registrator'>
+            <Route path='home' element={<RegistratorHome/>}/>
+            <Route path='appointments' element={<UpcomingBookings/>}/>
+            <Route path='new_client' element={<AddNewClient/>}/>
+            <Route path='book' element={<RegistratorHome/>}/>
+            <Route path='add_pet' element={<AddPet/>}/>
+          </Route>
+        </Route>
+
+
       </Route>
     </Route>
 

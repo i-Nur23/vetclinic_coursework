@@ -7,6 +7,11 @@ export class BookingController{
     this.bookingService = bookingService;
   }
 
+  GetFutureBookings = async (req : any, res : any) => {
+    console.log("dsogbjfa")
+    res.json(await this.bookingService.GetFutureBookings())
+  }
+
   BookProcedure = async (req: any, res: any) => {
     const clientId = req.body.id;
     const typeId = req.body.type;

@@ -26,7 +26,7 @@ export const WorkerLogin = () =>{
                   navigate('admin/home')
                   break;
                 case(Level.Register):
-                  navigate('register/home')
+                  navigate('registrator/home')
                   break;
                 case(Level.Manager):
                   navigate('manager/home')
@@ -72,6 +72,10 @@ export const WorkerLogin = () =>{
       else if (answer.data.role == 'Менеджер') {
         dispatch(authorize( {level: Level.Manager, id: answer.data.id}))
         navigate('manager/home')
+      }
+      else if (answer.data.role == 'Регистратор') {
+        dispatch(authorize( {level: Level.Register, id: answer.data.id}))
+        navigate('registrator/home')
       }
     } else {
       setMessage("Аккаунт не найден")

@@ -19,7 +19,8 @@ export interface BookingExtended {
   serviceId : String | undefined,
   doctor : String | undefined,
   service : String | undefined,
-  type : String | undefined
+  type : String | undefined,
+  client : any
 }
 
 export const Booking = mongoose.model('Booking', BookingSchema)

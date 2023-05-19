@@ -1,4 +1,4 @@
-import {Types} from "mongoose";
+import {Schema, Types} from "mongoose";
 import {Booking} from "../models/Booking";
 
 export class BookingRepository{
@@ -19,7 +19,7 @@ export class BookingRepository{
   GetUpcomingBookingsByClient = async (clientId : Types.ObjectId, date : Date) => {
 
     const bookings = await Booking
-      .find({clientId : clientId, date : {$gt : date.getTime() + date.getTimezoneOffset() * 60000}})
+      .find({clientId : clientId, date : {$gt : date.getTime()}})
       .sort('date')
       .exec();
 
@@ -42,7 +42,7 @@ export class BookingRepository{
   GetPastBookingsByClient = async (clientId : Types.ObjectId, date : Date) => {
 
     var bookings = await Booking
-      .find({clientId : clientId, date : {$lte : date.getTime() + date.getTimezoneOffset() * 60000}})
+      .find({clientId : clientId, date : {$lte : date.getTime()}})
       .sort('-date')
       .exec();
 
@@ -95,5 +95,12 @@ export class BookingRepository{
       .deleteOne({_id : bookingId})
       .exec();
 
+  }
+
+  async GetAllUpcomingBookings() {
+    return await Booking
+      .find({date : {$gt : (new Date()).getTime()}})
+      .sort('date')
+      .exec();
   }
 }
