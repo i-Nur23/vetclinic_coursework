@@ -1,4 +1,5 @@
 import mongoose, {Types} from "mongoose";
+import {IClient} from "./Client";
 
 var Schema = mongoose.Schema;
 
@@ -25,6 +26,23 @@ export interface IPet{
   nickname: String,
   birthDate: Date
   image: String
+}
+
+export interface IPetExtended{
+  _id : Types.ObjectId,
+  cardNumber: Number,
+  type: String,
+  breed: String,
+  nickname: String,
+  birthDate: Date
+  image: String,
+  owner : {
+    _id : Types.ObjectId,
+    name : string,
+    surName : string,
+    phone : string,
+    email : string
+  }
 }
 
 export const Pet = mongoose.model('Pet', PetSchema)

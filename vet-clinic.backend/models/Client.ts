@@ -16,7 +16,6 @@ export interface IClient{
   surName: string,
   email: string,
   phone: string,
-  pets: [string]
 }
 
 export const Client = mongoose.model('Client', ClientSchema)

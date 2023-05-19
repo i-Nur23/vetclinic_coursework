@@ -59,5 +59,12 @@ export class PetRepository extends BaseRepository implements IPetRepository{
     return path
   }
 
+  getAll = async () => {
+    return Pet
+      .find()
+      .exec()
+
+  }
+
 
 }

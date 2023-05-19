@@ -58,6 +58,7 @@ export class ClientController{
     res.json({ok : true})
 
    } catch (e) {
+    console.log(e)
     res.json({ok : false, message : 'Ошибка добавления'})
    }
   }
@@ -69,4 +70,8 @@ export class ClientController{
    await this.clientService.removePet(userId, petId);
 
  }
+
+  getAllClients = async (req: any, res: any) => {
+    res.json(await this.clientService.getAll())
+  }
 }

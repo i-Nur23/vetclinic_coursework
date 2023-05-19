@@ -13,9 +13,9 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
   getAll = async () => {
     /*this.connect();*/
 
-    var clients = Client
+    var clients = await Client
       .find()
-      .populate<{ pets: IPet[] }>({path: 'pets', model: Pet})
+      //.populate<{ pets: IPet[] }>({path: 'pets', model: Pet})
       .exec();
 
     return clients;
@@ -97,5 +97,11 @@ export class ClientRepository extends BaseRepository implements IClientRepositor
         { $pull: { pets: petId } }
       )
       .exec();
+  }
+
+  findByPetId = async (petId : Types.ObjectId) => {
+    return await Client
+      .findOne({pets : petId})
+      .exec()
   }
 }

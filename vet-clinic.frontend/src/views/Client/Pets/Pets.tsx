@@ -2,11 +2,11 @@ import React, {Fragment, useEffect, useRef, useState} from "react";
 import {ClientApi} from "../../../api/ClientApi";
 import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
-import {AddingDialog} from "./AddingDialog";
+import {AddingDialog} from "../../../components/Dialogs/AddingDialog";
 import {Dialog, Transition} from "@headlessui/react";
 import './style.css'
 import {AgeCalculator} from "../../../utils/AgeCalculator";
-import {DeleteDialog} from "./DeleteDialog";
+import {DeleteDialog} from "../../../components/Dialogs/DeleteDialog";
 
 export const Pets = () => {
   const [pets, setPets] = useState<any[]>([]);

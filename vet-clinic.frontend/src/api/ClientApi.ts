@@ -83,4 +83,13 @@ export class ClientApi extends Base{
     axios.delete(url);
 
   }
+
+  static getAllClients = async () => {
+    var url = `${this.baseURL}/client/all`;
+
+    var response = await axios.get(url);
+
+    return response.data
+
+  }
 }

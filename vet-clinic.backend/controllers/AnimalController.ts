@@ -1,11 +1,15 @@
 import { AnimalService } from "../services/AnimalService";
+import {PetService} from "../services/PetService";
+import {IPet} from "../models/Pet";
 
 export class AnimalController {
 
     AnimalService : AnimalService;
+    PetService : PetService;
 
-    constructor (AnimalService : AnimalService){
+    constructor (AnimalService : AnimalService, PetService : PetService){
         this.AnimalService = AnimalService;
+        this.PetService = PetService
     }
 
     getAll = async (req : any, res : any) => {
@@ -53,6 +57,10 @@ export class AnimalController {
         var typeId = req.query.typeId;
         await this.AnimalService.deleteBreed(typeId, id);
         res.json();
+    }
+
+    getAllPets = async (req : any, res : any) => {
+        res.json(await this.PetService.getAllPets())
     }
 
 }

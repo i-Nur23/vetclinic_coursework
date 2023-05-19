@@ -27,6 +27,7 @@ import {BookingRepository} from "./repositories/BookingRepository";
 import {BookingService} from "./services/BookingService";
 import {BookingController} from "./controllers/BookingController";
 import {EmailService} from "./services/EmailService";
+import {PetService} from "./services/PetService";
 const bodyParser = require('body-parser');
 
 
@@ -58,12 +59,13 @@ var clientService = new ClientService(clientRepo, accountRepo, petRepo);
 var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo, emailService);
 var doctorService = new DoctorService(docRepo, accountRepo, serviceRepo, bookingRepo);
 var animalService = new AnimalService(animalRepo);
+var petService = new PetService(petRepo, clientRepo);
 var bookingService = new BookingService(accountRepo, bookingRepo, serviceRepo, clientRepo, docRepo);
 
 var clientController = new ClientController(clientService);
 var accountController = new AccountController(accountService);
 var doctorController = new DoctorController(doctorService);
-var animalController = new AnimalController(animalService);
+var animalController = new AnimalController(animalService, petService);
 var serviceController = new ServiceController(serviceRepo);
 var bookingController = new BookingController(bookingService);
 
@@ -77,9 +79,6 @@ const petStorage = multer.diskStorage({
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
         cb(null, uuidv4() + '-' + fileName)
     }
-});
-var uploadPet = multer({
-    storage: petStorage,
 });
 
 const docStorage = multer.diskStorage({
@@ -102,11 +101,14 @@ var uploadDoc = multer({
 
 
 
+app.get('/client/all',(req : any, res : any) => clientController.getAllClients(req, res))
 app.get('/client/:id', (req : any, res : any) => clientController.get(req, res))
 app.patch('/client/:id', (req : any, res : any) => clientController.changeInfo(req, res))
 app.get('/client/:id/pets', (req : any, res : any) => clientController.getPets(req, res))
 app.post('/client/:id/pets', uploadPet.single('image'), (req : any, res : any) => clientController.addPet(req, res))
 app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientController.removePet(req, res))
+
+app.get('/pets/all', (req : any, res  :any) => animalController.getAllPets(req, res))
 
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))

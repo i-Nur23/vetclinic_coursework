@@ -8,4 +8,5 @@ export default interface IClientRepository{
   getPets(id: any): Promise<any>;
   addPet(id : string, petId : Types.ObjectId) : Promise<any>;
   removePet(clientId: string, petId: Types.ObjectId): Promise<void>;
+  findByPetId(petId : Types.ObjectId) : Promise<any>
 }

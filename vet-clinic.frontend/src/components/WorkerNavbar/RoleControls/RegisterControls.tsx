@@ -6,7 +6,7 @@ export const RegisterControls = () => {
       <li className="nav-item ">
         <a
           className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-          href="applications"
+          href="appointments"
         >
           <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">Записи на услуги</span>
         </a>
@@ -21,10 +21,18 @@ export const RegisterControls = () => {
       </li>
       <li className="nav-item">
         <a
-          className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
+          className="mx-2 px-3 py-2 my-auto flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
           href="book"
         >
-          <i className="leading-lg text-black opacity-75"></i><span className="">Запись</span>
+          <i className="leading-lg text-black opacity-75"></i><span className="my-auto">Запись</span>
+        </a>
+      </li>
+      <li className="nav-item my-auto">
+        <a
+          className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
+          href="add_pet"
+        >
+          <i className="leading-lg text-black opacity-75"></i><span className="my-auto">Карточки питомцев</span>
         </a>
       </li>
     </ul>

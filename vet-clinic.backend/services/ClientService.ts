@@ -22,7 +22,8 @@ export class ClientService implements IClientService {
   }
 
   getAll = async () => {
-    return await this.clientRepository.getAll()
+    var clients = await this.clientRepository.getAll()
+    return {ok : true, data: clients}
   }
 
   getClient = async (id : string) => {
@@ -90,13 +91,10 @@ export class ClientService implements IClientService {
 
     var petId = await this.petRepository.addPet(pet);
 
-    var userId = (await this.accountRepository.getById(id)).userId;
-
-    this.clientRepository.addPet(userId, petId)
+    this.clientRepository.addPet(id, petId)
   }
 
-  removePet = async (userId: string, petId: Types.ObjectId) => {
-    var clientId = (await this.accountRepository.getById(userId)).userId;
+  removePet = async (clientId: string, petId: Types.ObjectId) => {
 
     var filepath = await this.petRepository.getPathToImage(petId);
 

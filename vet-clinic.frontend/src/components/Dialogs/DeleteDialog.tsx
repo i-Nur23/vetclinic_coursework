@@ -1,11 +1,11 @@
 import {Dialog} from "@headlessui/react";
 import React from "react";
-import {ClientApi} from "../../../api/ClientApi";
+import {PetAPI} from "../../api/PetAPI";
 
 export const DeleteDialog = (props : any) => {
   const HandleDelete = async () => {
-    await ClientApi.DeletePet(props.userId, props.petId);
-    props.close()
+    PetAPI.deletePet(props.pet._id, props.pet.owner._id)
+      .then( _ => props.close());
   }
 
   return(

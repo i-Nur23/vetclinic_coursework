@@ -6,4 +6,5 @@ export default interface IPetRepository{
   addPet(pet : IPet) : Promise<any>
   remove(petId: Types.ObjectId): Promise<any>;
   getPathToImage(petId: Types.ObjectId): Promise<any>;
+  getAll(): Promise<any>;
 }

@@ -20,7 +20,7 @@ export const WorkerLogin = () =>{
   useEffect( () => {
         (
           async () => {
-            if (level > 2){
+            if (level >= 2){
               switch (level){
                 case(Level.Admin):
                   navigate('admin/home')

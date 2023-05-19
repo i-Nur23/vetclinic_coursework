@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
-import {ClientApi} from "../../../api/ClientApi";
+import {ClientApi} from "../../api/ClientApi";
 
 
 export const AddingDialog = (props:any) => {
