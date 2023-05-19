@@ -7,4 +7,5 @@ export default interface IAccountRepository{
   changeLoginAndPassword(id: string, login: string, password : string): Promise<boolean>;
   getAllWorkers(): Promise<any>;
   deleteAccount(accId: any): Promise<any>;
+  findClientNumber(): Promise<Number>;
 }

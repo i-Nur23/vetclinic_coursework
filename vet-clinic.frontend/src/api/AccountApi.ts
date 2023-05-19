@@ -40,4 +40,28 @@ export class AccountApi extends Base{
     var response = await axios.get(url);
     return response.data;
   }
+
+  static generateNewClient = async (
+                             name: string,
+                             surName : string,
+                             email : string,
+                             phone : string
+  ) : Promise<any> => {
+    var url = `${this.baseURL}/account/gen_client`
+
+    var body = {
+      name : name,
+      surname : surName,
+      email : email,
+      phone : phone
+    }
+
+    var response = await axios.post(url, body, {
+      headers : {
+        "Content-Type" : "application/json"
+      }
+    });
+
+    return response.data;
+  }
 }

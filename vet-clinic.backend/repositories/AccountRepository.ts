@@ -7,6 +7,12 @@ import {Manager, IManager} from "../models/Manager";
 import {Register, IRegister} from "../models/Register";
 
 export class AccountRepository extends BaseRepository implements IAccountRepository{
+  findClientNumber = async () => {
+    return await Account
+      .find({type : {$eq : "Клиент"}})
+      .count()
+      .exec()
+  }
 
   constructor(db : string) {
     super(db);

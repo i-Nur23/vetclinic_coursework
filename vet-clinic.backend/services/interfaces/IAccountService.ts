@@ -6,4 +6,5 @@ export default interface IAccountService{
                             phone : string,
                             role : string) :Promise<any>
   deleteAccount(accId: any): Promise<any>;
+  genClient(name : string, surname: string, email : string, phone : string): Promise<any>;
 }

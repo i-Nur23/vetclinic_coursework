@@ -26,6 +26,7 @@ import mongoose from "mongoose";
 import {BookingRepository} from "./repositories/BookingRepository";
 import {BookingService} from "./services/BookingService";
 import {BookingController} from "./controllers/BookingController";
+import {EmailService} from "./services/EmailService";
 const bodyParser = require('body-parser');
 
 
@@ -52,8 +53,9 @@ var animalRepo = new AnimalRepository(mongoDB);
 var serviceRepo = new ServiceRepository(mongoDB);
 var bookingRepo = new BookingRepository();
 
+var emailService = new EmailService();
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
-var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo);
+var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo, emailService);
 var doctorService = new DoctorService(docRepo, accountRepo, serviceRepo, bookingRepo);
 var animalService = new AnimalService(animalRepo);
 var bookingService = new BookingService(accountRepo, bookingRepo, serviceRepo, clientRepo, docRepo);
@@ -108,6 +110,7 @@ app.delete('/client/:userId/pets/:petId', (req : any, res : any) => clientContro
 
 app.get('/account', (req : any, res : any) => accountController.find(req, res))
 app.post('/account', (req : any, res : any) => accountController.create(req, res))
+app.post('/account/gen_client', (req : any, res : any) => accountController.genClient(req, res) )
 
 app.post('/doctor/:id', uploadDoc.single('image'),(req : any, res : any) => doctorController.addInfo(req, res))
 app.patch('/doctor/:id', (req : any, res : any) => doctorController.changeInfo(req, res))

@@ -85,4 +85,16 @@ export class AccountController{
 
     res.json({ok : true})
   }
+
+  genClient = async (req: any, res: any) => {
+    await this.accountService.genClient(
+      req.body.name,
+      req.body.surname,
+      req.body.email,
+      req.body.phone
+    );
+
+    res.json({ok : true})
+
+  }
 }

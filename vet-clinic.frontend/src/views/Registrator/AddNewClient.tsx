@@ -4,15 +4,19 @@ import {AccountApi} from "../../api/AccountApi";
 import {authorize} from "../../store/slicers/authSlice";
 import {Level} from "../../utils/Level";
 import {useNavigate} from "react-router-dom";
+import {AlertColor, Snackbar} from "@mui/material";
+import {SnackbarLeftBottom} from "../../components/Snackbars";
 
 export  const AddNewClient = () => {
   const [message, setMessage] = useState< string >(' ')
   const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
-  const [login, setLogin] = useState< string >('')
-  const [password, setPassword] = useState< string >('')
   const [phone, setPhone] = useState<string>('')
   const [email, setEmail] = useState< string >('')
+
+  const [severety, setSeverety] = useState<AlertColor>("success")
+  const [text, setText] = useState("Добавление успешно")
+  const [open, setOpen] = useState(false);
 
   const setValue = (e : FormEvent, action : any) => {
     var inputs = document.getElementsByClassName('required');
@@ -45,14 +49,21 @@ export  const AddNewClient = () => {
       return;
     }
 
-    navigate('/workers/registrator/home')
+    try{
+      await AccountApi.generateNewClient(name, surName, email, phone);
+      setSeverety("success")
+      setText("Добавление успешно")
+      setOpen(true);
+      setName('')
+      setSurName('')
+      setEmail('')
+      setPhone('')
 
-    /*var answer = await AccountApi.createAccount(login, password, name, surName, email, phone, 'Клиент');
-    if (answer.ok){
-      navigate('.');
-    } else {
-      setMessage(answer.message)
-    }*/
+    } catch (e) {
+      setSeverety("error")
+      setText("Ошибка при добавлении")
+      setOpen(true);
+    }
   }
 
   return(<div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
@@ -85,7 +96,7 @@ export  const AddNewClient = () => {
       </span>
       <input
         value={email}
-        className="bg-transparent form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
+        className="bg-transparent form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 w-4/5 disabled:bg-gray-200"
         onChange={e => setValue(e, setEmail)}
         onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
       />
@@ -101,28 +112,6 @@ export  const AddNewClient = () => {
         onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
       />
     </div>
-    <div className='flex'>
-      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
-        Логин
-      </span>
-      <input
-        value={login}
-        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
-        onChange={e => setValue(e, setLogin)}
-        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-      />
-    </div>
-    <div className='flex'>
-      <span className='inline-block align-bottom mt-2 text-gray-400 mx-2 w-1/5'>
-        Пароль
-      </span>
-      <input
-        value={password}
-        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required w-4/5 disabled:bg-gray-200"
-        onChange={e => setValue(e, setPassword)}
-        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-      />
-    </div>
     <div>
       <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
         {message}
@@ -131,5 +120,7 @@ export  const AddNewClient = () => {
     <button className="bg-black rounded-lg p-4 w-full text-white" onClick={() => Handle()}>
       Сохранить
     </button>
+
+    <SnackbarLeftBottom severety={severety} text={text} open={open} setOpen={setOpen}/>
   </div>)
 }

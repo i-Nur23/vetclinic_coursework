@@ -5,6 +5,8 @@ import IDoctorRepository from "../repositories/interfaces/IDoctorRepository";
 import IRegisterRepository from "../repositories/interfaces/IRegisterRepository";
 import IManagerRepository from "../repositories/interfaces/IManagerRepository";
 import fs from "fs";
+import {EmailService} from "./EmailService";
+import * as crypto from "crypto";
 
 export class AccountService implements IAccountService{
   accountRepository : IAccountRepository
@@ -12,19 +14,22 @@ export class AccountService implements IAccountService{
   doctorRepository : IDoctorRepository
   registerRepository : IRegisterRepository
   managerRepository : IManagerRepository
+  emailService : EmailService
 
   constructor(
     accountRepository : IAccountRepository,
     clientRepository: IClientRepository,
     doctorRepository : IDoctorRepository,
     managerRepository : IManagerRepository,
-    registerRepository : IRegisterRepository
+    registerRepository : IRegisterRepository,
+    emailService : EmailService
     ) {
     this.accountRepository = accountRepository
     this.clientRepository = clientRepository
     this.doctorRepository = doctorRepository
     this.managerRepository = managerRepository
     this.registerRepository = registerRepository
+    this.emailService = emailService
   }
 
   findAccount = async (login: string, password: string): Promise<any> => {
@@ -161,8 +166,28 @@ export class AccountService implements IAccountService{
     }
 
     await this.accountRepository.deleteAccount(accId);
+  }
 
+  genClient = async (name: string, surname: string, email: string, phone: string) => {
+    var chars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var charAmount = chars.length;
+    var buffer = new Uint8Array(8);
+    crypto.getRandomValues(buffer);
 
+    var password = Object.keys(buffer).map((elem : any) => chars.charAt((buffer[elem] % charAmount) + 1)).join("");
 
+    var newClientNumber = await this.accountRepository.findClientNumber();
+    var login = `client_${newClientNumber}`;
+
+    try {
+      var insertedId = await this.clientRepository.createClient(name, surname, email, phone);
+      this.accountRepository.createAccount(login, password, "Клиент", insertedId)
+      if (email !== ''){
+        this.emailService.createEmailForGeneratedClient(login, password, email);
+      }
+
+    } catch (e) {
+      console.log(e)
+    }
   }
 }

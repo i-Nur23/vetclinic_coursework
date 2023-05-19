@@ -77,6 +77,7 @@ export const ServicesList = () => {
           </Disclosure>
         ))
       }
+
       <Snackbar open={isToastOpen} autoHideDuration={4000} onClose={() => setIsToastOpen(false)}>
         <Alert onClose={() => setIsToastOpen(false)} severity="error">
           Вы не авторизованы
