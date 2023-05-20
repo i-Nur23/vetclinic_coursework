@@ -86,4 +86,20 @@ export class DoctorController{
 
     res.json(result)
   }
+
+  GetDoctorsAppointments = async (req: any, res: any) => {
+    var userId = req.params.userId;
+
+    var result = await this.doctorService.getAllAppointments(userId);
+
+    res.json(result)
+  }
+
+  GetCurrentAppointment = async (req  :any, res : any) => {
+    var userId = req.params.userId;
+
+    var result = await this.doctorService.getCurrentAppointment(userId);
+
+    res.json(result)
+  }
 }

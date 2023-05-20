@@ -11,12 +11,25 @@ export class BookingAPI extends Base {
     body.append('service', service);
     body.append('date', date);
 
-    console.log(date);
-    console.log(body);
-
     const response = await axios.post(url, body, {headers : {
         'Content-Type' : 'application/json'
     }})
+
+    return response.data;
+  }
+
+  static BookProcedureClient = async (clientId : string, typeId: string, serviceId: string, date: Date) => {
+    const url =  `${this.baseURL}/bookings/procedure/client`
+
+    let body : any = new FormData();
+    body.append('id', clientId)
+    body.append('type', typeId);
+    body.append('service', serviceId);
+    body.append('date', date);
+
+    const response = await axios.post(url, body, {headers : {
+        'Content-Type' : 'application/json'
+      }})
 
     return response.data;
   }
@@ -25,6 +38,23 @@ export class BookingAPI extends Base {
     const url =  `${this.baseURL}/bookings`
 
     console.log(date);
+
+    let body : any = new FormData();
+    body.append('userId', id);
+    body.append('doctorId', doctor);
+    body.append('typeId', type);
+    body.append('serviceId', service);
+    body.append('date', date);
+
+    const response = await axios.post(url, body, {headers : {
+        'Content-Type' : 'application/json'
+      }})
+
+    return response.data;
+  }
+
+  static BookAppointmentClient = async (id : string | null, doctor : string, type : string, service : string, date : Date) => {
+    const url =  `${this.baseURL}/bookings/client`
 
     let body : any = new FormData();
     body.append('userId', id);
@@ -63,4 +93,6 @@ export class BookingAPI extends Base {
 
     return response.data;
   }
+
+
 }

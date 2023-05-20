@@ -10,8 +10,9 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {BookingAPI} from "../../api/BookingAPI";
 import {useNavigate} from "react-router-dom";
+import {Level} from "../../utils/Level";
 
-export const Timetable = ({docId, typeId, serviceId} : {docId : string, typeId : string, serviceId : string,}) => {
+export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string, typeId : string, serviceId : string, clientId : string}) => {
 
   const [stringHours, setStringHours] = useState([]);
   const [floatHours, setFloatHours] = useState([])
@@ -22,6 +23,8 @@ export const Timetable = ({docId, typeId, serviceId} : {docId : string, typeId :
   const [weeksCount, setWeekCount] = useState<number>(3);
   const [weekNumber, setWeekNumber] = useState<number>(1);
   const [isToastOpen, setIsToastOpen] = useState<boolean>(false);
+
+  const level = useSelector((state : RootState) => state.level);
 
   const WORK_START = 8;
   const WORK_END = 18;
@@ -93,12 +96,28 @@ export const Timetable = ({docId, typeId, serviceId} : {docId : string, typeId :
     }
 
 
-    const resData = await BookingAPI.BookAppointment(userId, docId, typeId, serviceId, date);
+    let resData;
+
+    if (clientId === undefined){
+      resData = await BookingAPI.BookAppointment(userId, docId, typeId, serviceId, date);
+    } else {
+      resData = await BookingAPI.BookAppointmentClient(clientId, docId, typeId, serviceId, date);
+    }
+
 
     if (!resData.ok){
       setIsToastOpen(true);
     } else {
-      navigate('/client/bookings')
+      if (clientId === undefined){
+        navigate('/client/bookings')
+      } else {
+        if (level === Level.Register){
+          navigate('/workers/registrator/book')
+        } else if (level === Level.Doctor){
+          navigate('/workers/doctor/home')
+        }
+
+      }
     }
   }
 

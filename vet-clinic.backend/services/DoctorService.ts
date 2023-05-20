@@ -5,6 +5,8 @@ import fs from "fs";
 import {ServiceRepository} from "../repositories/ServiceRepository";
 import {BookingRepository} from "../repositories/BookingRepository";
 import {DoctorRepository} from "../repositories/DoctorRepository";
+import {Types} from "mongoose";
+import IClientRepository from "../repositories/interfaces/IClientRepository";
 
 export class DoctorService implements IDoctorService {
 
@@ -12,15 +14,18 @@ export class DoctorService implements IDoctorService {
   accountRepository : IAccountRepository
   serviceRepository : ServiceRepository
   bookingRepository : BookingRepository
+  clientRepository : IClientRepository
 
   constructor(doctorRepository : IDoctorRepository,
               accountRepository : IAccountRepository,
               serviceRepository : ServiceRepository,
-              bookingRepository : BookingRepository) {
+              bookingRepository : BookingRepository,
+              clientRepository : IClientRepository) {
     this.doctorRepository = doctorRepository
     this.accountRepository = accountRepository
     this.serviceRepository = serviceRepository
     this.bookingRepository = bookingRepository
+    this.clientRepository = clientRepository
   }
 
 
@@ -137,6 +142,68 @@ export class DoctorService implements IDoctorService {
     }
 
     return {ok : true, doctor : {_id : id, hours : docTimes, bookings : docBookings}}
+  }
+
+  getAllAppointments = async (userId: string) => {
+
+    var account = await this.accountRepository.getById(userId);
+
+    if (account === null) return  {ok:false, message: 'Аккаунт не найден'}
+
+    var docId = account.userId;
+
+    var extendedAppointments : any[];
+    var appointments = await this.bookingRepository.GetDoctorUpcomingBookings(docId);
+
+    extendedAppointments = appointments.map(async (app : any) => {
+      var type = await this.serviceRepository.getTypeById(app.typeId)
+      var client = await this.clientRepository.getById(app.clientId)
+      var services_list = type?.services_list;
+      var service =  services_list?.find(async (service: any) => service._id === app.serviceId)
+
+      var extendedApp = {
+        _id: app._id,
+        type: type?.type,
+        service: service?.name,
+        client: client,
+        time : `${app.date.getHours()}:${('0' + app.date.getMinutes()).slice(-2)}`
+      }
+
+      return extendedApp
+    })
+
+
+    return {ok : true, data : await Promise.all(extendedAppointments)}
+
+  }
+
+  getCurrentAppointment = async (userId: string) => {
+    var account = await this.accountRepository.getById(userId);
+
+    if (account === null) return  {ok:false, message: 'Аккаунт не найден'}
+
+    var docId = account.userId;
+
+    var currentAppointment : any = await this.bookingRepository.getCurrentAppointment(docId);
+
+    if (currentAppointment === null) return null;
+
+    var type = await this.serviceRepository.getTypeById(currentAppointment.typeId)
+    var client = await this.clientRepository.getById(currentAppointment.clientId)
+    var services_list = type?.services_list;
+    var service =  services_list?.find(async (service: any) => service._id === currentAppointment.serviceId)
+
+    var currentApp = {
+      _id: currentAppointment._id,
+      docId : currentAppointment.doctorId,
+      typeId : currentAppointment.typeId,
+      type: type?.type,
+      service: service?.name,
+      client: client,
+      time : `${currentAppointment.date.getHours()}:${('0' + currentAppointment.date.getMinutes()).slice(-2)}`
+    }
+
+    return currentApp;
 
   }
 }

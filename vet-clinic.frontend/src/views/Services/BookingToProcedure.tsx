@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {DateHandler} from "../../utils/DateHandler";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
@@ -16,6 +16,7 @@ export const BookingToProcedure = () => {
   const {combinedId} = useParams();
   const id = useSelector((state : RootState) => state.id)
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     var splittedParams = combinedId?.split('_');
@@ -29,10 +30,20 @@ export const BookingToProcedure = () => {
   const handleBooking = async (date: Date) => {
     if (id != null){
       date.setHours(23, 59, 59);
-      const response = await BookingAPI.BookProcedure(id , typeId, serviceId, date);
+      let response;
+      if (location.state.clientId === undefined) {
+        response = await BookingAPI.BookProcedure(id , typeId, serviceId, date);
+      } else {
+        response = await BookingAPI.BookProcedureClient(location.state.clientId , typeId, serviceId, date);
+      }
 
       if (response.ok){
-        navigate('/client/bookings')
+        if (location.state.clientId === undefined){
+          navigate('/client/bookings')
+        } else {
+          navigate('/workers/registrator/book')
+        }
+
       } else {
         setOpen(true);
       }

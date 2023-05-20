@@ -9,10 +9,11 @@ import {RootState} from "../../store/store";
 import {Level} from "../../utils/Level";
 import {Alert, Snackbar} from "@mui/material";
 
-export const ServicesList = () => {
+export const ServicesList = (props : any) => {
   const [services, setServices] = useState([]);
   const [isToastOpen, setIsToastOpen] = useState(false)
   const [choosenTypeId, setChoosenTypeId] = useState('')
+  const [clientId, setClientId] = useState();
   const level = useSelector((state : RootState) => state.level)
   const navigate = useNavigate();
   const location = useLocation();
@@ -25,6 +26,7 @@ export const ServicesList = () => {
         setServices(services);
         if (location != undefined && location.state != undefined) {
           setChoosenTypeId(location.state.typeId);
+          setClientId(location.state.clientId);
         }
 
       }
@@ -41,10 +43,10 @@ export const ServicesList = () => {
   },[services])
 
   const handleClick = (typeId  : string, serviceId : string) => {
-    if (level != Level.Client){
+    if (level != Level.Client && !(level == Level.Register && location.state.clientId != undefined)){
       setIsToastOpen(true);
     } else {
-      navigate( `procedure/${typeId}_${serviceId}`)
+      navigate( `procedure/${typeId}_${serviceId}`,{state : {clientId : clientId}})
     }
   }
 
@@ -79,6 +81,7 @@ export const ServicesList = () => {
                           :
                           <Link
                             to={`${service_group._id}_${service._id}`}
+                            state={{clientId : clientId}}
                             className='hover:underline'
                           >
                             Смотреть расписание

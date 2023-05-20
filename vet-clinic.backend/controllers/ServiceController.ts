@@ -60,4 +60,11 @@ export class ServiceController {
 
     res.json(services);
   }
+
+  getServicesByType = async (req: any, res: any) => {
+    var service_types = await this.serviceRepository.getTypeById(req.params.typeId);
+
+    res.json(service_types?.services_list)
+
+  }
 }

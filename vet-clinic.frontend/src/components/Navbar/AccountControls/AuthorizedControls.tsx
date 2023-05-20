@@ -4,20 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { ExitItem } from "./MenuItems";
 import {Level} from "../../../utils/Level";
-import {AdminActions, ClientActions, DoctorActions} from "./ActionsLists";
+import {ClientActions, DoctorActions} from "./ActionsLists";
 
 export const AuthorizedControls = () => {
   const authLevel = useSelector((state: RootState) => state.level)
-
-  /*const ChosenItem = () => {
-    if (authLevel == Level.Client){
-      return <ClientActions/>;
-    } else if (authLevel == Level.Doctor){
-      return <DoctorActions/>
-    }
-
-    return <AdminActions/>
-  }*/
 
   return(
     <div className="flex justify-between gap-6">

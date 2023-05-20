@@ -57,7 +57,7 @@ var bookingRepo = new BookingRepository();
 var emailService = new EmailService();
 var clientService = new ClientService(clientRepo, accountRepo, petRepo);
 var accountService = new AccountService(accountRepo, clientRepo, docRepo, manRepo, regRepo, emailService);
-var doctorService = new DoctorService(docRepo, accountRepo, serviceRepo, bookingRepo);
+var doctorService = new DoctorService(docRepo, accountRepo, serviceRepo, bookingRepo, clientRepo);
 var animalService = new AnimalService(animalRepo);
 var petService = new PetService(petRepo, clientRepo);
 var bookingService = new BookingService(accountRepo, bookingRepo, serviceRepo, clientRepo, docRepo);
@@ -131,6 +131,7 @@ app.delete('/animals/:id', (req :any, res : any) => animalController.deleteType(
 app.delete('/breeds/:id', (req :any, res : any) => animalController.deleteBreed(req, res))
 
 app.get('/services/types', (req :any, res : any) => serviceController.getTypes(req, res))
+app.get('/services/by_type/:typeId', (req :any, res : any) => serviceController.getServicesByType(req, res))
 app.get('/services/specs', (req :any, res : any) => serviceController.getSpecs(req, res))
 app.get('/services', (req :any, res : any) => serviceController.getAll(req, res))
 app.get('/available_services', (req :any, res : any) => serviceController.getAvailable(req, res))
@@ -144,11 +145,15 @@ app.get('/doctors', (req : any, res : any) => doctorController.GetAllDoctors(req
 app.get('/doctors/times', (req : any, res : any) => doctorController.GetAllDoctorsWithTime(req, res))
 app.patch('/doctors/times/:id', (req : any, res : any) => doctorController.SetDoctorTime(req, res))
 app.get('/doctors/times/:id', (req : any, res : any) => doctorController.GetDoctorHours(req, res))
+app.get('/doctors/appointments/current/:userId', (req : any, res : any) => doctorController.GetCurrentAppointment(req, res))
+app.get('/doctors/appointments/:userId', (req : any, res : any) => doctorController.GetDoctorsAppointments(req, res))
 
+app.post('/bookings/procedure/client', (req : any, res : any) => bookingController.BookProcedureClient(req, res))
 app.post('/bookings/procedure', (req : any, res : any) => bookingController.BookProcedure(req, res))
 app.get('/bookings/future', (req : any, res : any) => bookingController.GetFutureBookings(req, res))
 app.get('/bookings/:id', (req : any, res : any) => bookingController.GetClientBookings(req, res))
 app.delete('/bookings/:bookingId', (req : any, res : any) => bookingController.DeleteBookings(req, res))
+app.post('/bookings/client', (req : any, res : any) => bookingController.BookAppointmentClient(req, res))
 app.post('/bookings/', (req : any, res : any) => bookingController.BookAppointment(req, res))
 
 app.listen(port, () => {

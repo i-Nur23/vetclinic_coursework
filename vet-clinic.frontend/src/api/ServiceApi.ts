@@ -79,4 +79,12 @@ export class ServiceApi extends Base {
 
     return response.data
   }
+
+  static getTypeServices = async (typeId: string) => {
+    var url = `${this.baseURL}/services/by_type/${typeId}`;
+
+    var response = await axios.get(url);
+
+    return response.data
+  }
 }

@@ -1,6 +1,6 @@
 import { Tab } from "@headlessui/react";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import {DoctorApi} from "../../api/DoctorApi";
 import {Timetable} from "./Timetable";
 
@@ -8,12 +8,11 @@ export const TimeChoice = () => {
   const[typeId, setTypeId] = useState('');
   const [serviceId, setServiceId] = useState('');
   const [doctors, setDoctors] = useState([]);
+  const location = useLocation();
 
   function classNames(...classes : any) {
     return classes.filter(Boolean).join(' ')
   }
-
-
 
   const {combinedId} = useParams();
 
@@ -53,7 +52,7 @@ export const TimeChoice = () => {
           {
             doctors.map((doc : any) =>
               <Tab.Panel>
-                <Timetable docId={doc._id} serviceId={serviceId} typeId={typeId}/>
+                <Timetable clientId={location.state.clientId} docId={doc._id} serviceId={serviceId} typeId={typeId}/>
               </Tab.Panel>
             )
           }

@@ -103,4 +103,25 @@ export class BookingRepository{
       .sort('date')
       .exec();
   }
+
+  async GetDoctorUpcomingBookings(docId: Types.ObjectId) {
+    const bookings = await Booking
+      .find({doctorId : docId, date : {$gt : (new Date()).getTime()}})
+      .exec();
+
+    return bookings;
+  }
+
+  async getCurrentAppointment(docId: Types.ObjectId) {
+    var currentTime = new Date();
+    var halfHourBackTime = new Date();
+    halfHourBackTime.setMinutes(currentTime.getMinutes() - 30);
+
+
+    const bookings = Booking
+      .findOne({doctorId : docId, date : {$lt : currentTime.getTime(), $gt : halfHourBackTime.getTime()}})
+      .exec();
+
+    return bookings;
+  }
 }
