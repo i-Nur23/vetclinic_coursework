@@ -3,7 +3,7 @@ import {ServiceApi} from "../../api/ServiceApi";
 import {Disclosure} from "@headlessui/react";
 import {ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
 import {ServicePanel} from "../Manager/ServicePanel";
-import {Link, useNavigate} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
 import {Level} from "../../utils/Level";
@@ -12,17 +12,33 @@ import {Alert, Snackbar} from "@mui/material";
 export const ServicesList = () => {
   const [services, setServices] = useState([]);
   const [isToastOpen, setIsToastOpen] = useState(false)
+  const [choosenTypeId, setChoosenTypeId] = useState('')
   const level = useSelector((state : RootState) => state.level)
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     (
       async () => {
+
         var services = await ServiceApi.getAvailableServices();
         setServices(services);
+        if (location != undefined && location.state != undefined) {
+          setChoosenTypeId(location.state.typeId);
+        }
+
       }
     )()
   },[])
+
+  useEffect(() => {
+    if (location != undefined && location.state != undefined){
+      var typeId =  location.state.typeId;
+      const element = document.getElementById(typeId)
+      element?.scrollIntoView({block : "center", behavior : "smooth"})
+
+    }
+  },[services])
 
   const handleClick = (typeId  : string, serviceId : string) => {
     if (level != Level.Client){
@@ -36,9 +52,9 @@ export const ServicesList = () => {
     <div className='container px-20'>
       {
         services.map((service_group : any) => (
-          <Disclosure>
+          <Disclosure defaultOpen={choosenTypeId === service_group._id}>
             {({ open }) => (
-              <div className='text-center'>
+              <div className='text-center' id={service_group._id}>
                 <Disclosure.Button className="flex w-full rounded justify-between hover:bg-blue-50 px-5 py-8 font-medium focus:outline-none">
                   <span>{service_group.type}</span>
                   <ChevronDownIcon

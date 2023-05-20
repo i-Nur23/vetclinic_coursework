@@ -8,18 +8,23 @@ import {ServiceApi} from "../../api/ServiceApi";
 const Home = () => {
 
   const [types, setTypes] = useState([]);
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     (
      async () => {
-        var data = await ServiceApi.getServiceTypes();
-        console.log(data);
-        setTypes(data);
+        ServiceApi.getServiceTypes()
+          .then(data => {
+            setTypes(data)
+            setLoaded(true);
+
+          });
+
       }
     )()
   },[])
 
-  return(
+  return !loaded ? <center><h2>Загрузка...</h2></center> : (
     <div className="container px-9">
       <div className="container">
         <div>
@@ -28,7 +33,7 @@ const Home = () => {
             <h2 className="text-center text-3xl absolute top-1/2" style={{width:"100%"}}>
               Добро пожаловать в ветеринарную клинику "Питомец"
             </h2>
-            <Link to="intro" smooth={true} className="bg-transparent absolute bottom-0 left-1/2 m-auto">
+            <Link to="intro" offset={-70} smooth={true} className="bg-transparent absolute bottom-0 left-1/2 m-auto">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className=" bg-transparent m-auto animate-bounce w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
               </svg>
@@ -55,12 +60,19 @@ const Home = () => {
           </p>
         </div>
         <div className="mt-24">
-          <p className="text-center text-3xl mb-10">Наши <a className="text-gray-700 hover:text-black hover:underline">услуги</a></p>
+          <p className="text-center text-3xl mb-10">Наши <a className="text-gray-700 hover:text-black hover:underline" href="/services">
+            услуги
+          </a></p>
           <div className="grid grid-cols-4 gap-4">
             {
-              types.map( (type : any) => (
-                <SpecIcons typeId = {type._id} >{type.type}</SpecIcons>
-              ))
+              types.map( (_type : any) => {
+
+                console.log(_type)
+
+                return (
+                  <SpecIcons typeId={_type._id}>{_type.type}</SpecIcons>
+                )
+              })
             }
           </div>
         </div>
