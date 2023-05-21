@@ -70,7 +70,7 @@ export const Profile = () => {
 
     var answer = await ClientApi.changeClient(userId,login, name, surName, email);
     if (answer.ok){
-
+      setIsDisabled(true);
     } else {
       setMessage(answer.message)
     }

@@ -53,15 +53,6 @@ const Navbar = () => {
                     <div className=""></div>
                   </a>
                 </li>
-                <li>
-                  <a
-                    className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-                    href="#pablo"
-                  >
-                    <i className="leading-lg text-black opacity-75"></i><span className="">Отзывы</span>
-                    <div className=""></div>
-                  </a>
-                </li>
               </ul>
             </div>
             <div className="flex justify-end" style={{width: '25%'}}>

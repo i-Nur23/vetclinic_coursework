@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import { ExitItem } from "./MenuItems";
 import {Level} from "../../../utils/Level";
-import {ClientActions, DoctorActions} from "./ActionsLists";
+import {ClientActions} from "./ActionsLists";
 
 export const AuthorizedControls = () => {
   const authLevel = useSelector((state: RootState) => state.level)

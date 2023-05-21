@@ -6,9 +6,6 @@ export const ClientActions = () => {
       <DefaultItem href="/client/profile">
         Профиль
       </DefaultItem>
-      <DefaultItem href="/client/pets">
-        Мои питомцы
-      </DefaultItem>
       <DefaultItem href="/client/bookings">
         Мои записи
       </DefaultItem>

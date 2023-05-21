@@ -11,6 +11,10 @@ import {PetRepository} from "./repositories/PetRepository";
 const express = require('express');
 const cors = require('cors')
 const multer = require('multer')
+
+/*import express from 'express';
+import cors from 'cors';
+import multer from 'multer';*/
 import { v4 as uuidv4 } from 'uuid';
 import {DoctorRepository} from "./repositories/DoctorRepository";
 import {ManagerRepository} from "./repositories/ManagerRepository";
@@ -22,7 +26,7 @@ import { AnimalService } from "./services/AnimalService";
 import { AnimalController } from "./controllers/AnimalController";
 import {ServiceRepository} from "./repositories/ServiceRepository";
 import {ServiceController} from "./controllers/ServiceController";
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 import {BookingRepository} from "./repositories/BookingRepository";
 import {BookingService} from "./services/BookingService";
 import {BookingController} from "./controllers/BookingController";
@@ -35,10 +39,10 @@ const bodyParser = require('body-parser');
 const app = express()
 const port = 3000
 
-app.use(express.json({extended : true}))
+app.use(express.json({"extended" : true}))
 app.use('/public',express.static('public'));
 
-var mongoDB = 'mongodb://127.0.0.1/veterenary_clinic';
+var mongoDB = 'mongodb://mongo:27017/veterenary_clinic';
 mongoose.connect(mongoDB);
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;

@@ -31,17 +31,14 @@ const router = createBrowserRouter(
           <Route element={<ProtectedRoutes role={Level.Client}/>}>
             <Route path='client'>
               <Route path='profile' element={<Profile/>}/>
-              <Route path='pets' element={<Pets/>}/>
               <Route path='bookings' element={<Appointments/>}/>
             </Route>
           </Route>
         <Route path="services">
           <Route index element={<ServicesList/>}/>
-          {/*<Route element={<ProtectedRoutes role={Level.Client}/>}>*/}
             <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
             <Route path=':combinedId' element={<TimeChoice/>} />
-          {/*</Route>*/}
-        </Route>
+          </Route>
         <Route path="doctors" element={<AllDoctors/>}/>
       </Route>
       <Route path="workers" element={<WorkerApp/>}>
