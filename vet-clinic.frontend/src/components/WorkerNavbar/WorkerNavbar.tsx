@@ -1,7 +1,5 @@
 import {Link, redirect} from "react-router-dom";
-import logo from "../../assets/images/homepage/logo.png";
 import {Level} from "../../utils/Level";
-import {AuthorizedControls, UnauthorizedControls} from "../Navbar/AccountControls";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../store/store";

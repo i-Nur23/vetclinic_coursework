@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import {Link, NavLink, redirect} from "react-router-dom";
+import React from 'react'
+import {Link} from "react-router-dom";
 import logo from '../../assets/images/homepage/logo.png'
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";
@@ -29,29 +29,29 @@ const Navbar = () => {
             >
               <ul className="flex flex-col lg:flex-row list-none lg:m-auto">
                 <li className="nav-item ">
-                  <a
+                  <Link
                     className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-                    href="/"
+                    to="/"
                   >
                     <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">О нас</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="/">
-                  <a
+                  <Link
                     className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-                    href="/doctors"
+                    to="/doctors"
                   >
                     <i className="leading-lg text-black opacity-75"></i><span className="">Наши специалисты</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="nav-item">
-                  <a
+                  <Link
                     className="mx-2 px-3 py-2 flex items-center uppercase leading-snug text-black border-b-2 border-b-blue-200 hover:border-b-black"
-                    href="/services"
+                    to="/services"
                   >
                     <i className="leading-lg text-black opacity-75"></i><span className="">Услуги</span>
                     <div className=""></div>
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>

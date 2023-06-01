@@ -1,16 +1,10 @@
-import {BaseRepository} from "./BaseRepository";
 import {AnimalType} from "../models/AnimalType";
 import {Breed, IBreed} from "../models/Breed";
 import { Schema, Types } from "mongoose";
 
-export class AnimalRepository extends BaseRepository{
-
-  constructor(db : string) {
-    super(db);
-  }
+export class AnimalRepository{
 
   getAll = async () => {
-    /*this.connect()*/
 
     var listOfAnimals = AnimalType
       .find()
@@ -21,7 +15,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   addBreed = async (name : string) => {
-    /*this.connect();*/
 
     var newBreed = new Breed({
       name: name
@@ -33,7 +26,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   addBreedToType = async (typeId : string, breedId : Types.ObjectId) => {
-    /*this.connect();*/
 
     AnimalType
       .findOneAndUpdate(
@@ -44,7 +36,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   addType = async (name : string) => {
-    /*this.connect()*/
 
 
     var newAnimalType = new AnimalType({
@@ -59,7 +50,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   findType = async (name : string) => {
-    /*this.connect()*/
 
     var type =  AnimalType
       .findOne({type : name})
@@ -69,7 +59,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   findTypeById = async (id : string) => {
-    /*this.connect()*/
 
     var type =  AnimalType
       .findById(id)
@@ -79,7 +68,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   findBreed = async (typeId : string, name : string) => {
-    /*this.connect()*/
 
     var type = await this.findTypeById(typeId);
 
@@ -111,7 +99,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   changeTypeName = async (typeId : string, newName : string) => {
-    /*this.connect();*/
 
     AnimalType
       .findByIdAndUpdate(typeId, {type : newName})
@@ -119,7 +106,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   changeBreedName = async (breedId : string, newName : string) => {
-    /*this.connect();*/
 
     Breed
       .findByIdAndUpdate(breedId, {name : newName})
@@ -127,7 +113,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   deleteBreed = async (typeId  : Types.ObjectId, breedId : Types.ObjectId) => {
-    /*this.connect();*/
 
     Breed
       .findByIdAndDelete(breedId)
@@ -141,7 +126,6 @@ export class AnimalRepository extends BaseRepository{
   }
 
   deleteType = async (typeId : string) => {
-    /*this.connect()*/
 
     var animalType = await AnimalType
       .findById(typeId)

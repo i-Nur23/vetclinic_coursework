@@ -6,7 +6,6 @@ import {AgeCalculator} from "../../utils/AgeCalculator";
 import {PetAPI} from "../../api/PetAPI";
 import {Dialog, Transition} from "@headlessui/react";
 import {DeleteDialog} from "../../components/Dialogs/DeleteDialog";
-import {EditDialog} from "../../components/Dialogs";
 import {SnackbarLeftBottom} from "../../components/Snackbars";
 import {MonthsCalculator} from "../../utils/MonthsCalculator";
 
@@ -111,8 +110,6 @@ const onTypeChanged = (_type : any) => {
     if (_type._id !== type._id){
       setBreed(null);
     }
-
-    console.log(_type.breeds)
     setBreeds(_type.breeds);
     if (_type.breeds.length != 0){
       setBreed(_type.breeds[0])

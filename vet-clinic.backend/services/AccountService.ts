@@ -53,8 +53,8 @@ export class AccountService implements IAccountService{
       insertedId = await this.managerRepository.createManager(name, surName, email, phone);
     }
 
-    await this.accountRepository.createAccount(login, password, role, insertedId);
-    return {ok: true, id: insertedId}
+    var accId = await this.accountRepository.createAccount(login, password, role, insertedId);
+    return {ok: true, id: accId}
 
   }
 

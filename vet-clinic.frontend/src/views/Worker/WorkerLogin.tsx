@@ -5,8 +5,6 @@ import React, {FormEvent, useEffect, useState} from "react";
 import {AccountApi} from "../../api/AccountApi";
 import {authorize} from "../../store/slicers/authSlice";
 import {Level} from "../../utils/Level";
-import {ClientApi} from "../../api/ClientApi";
-
 export const WorkerLogin = () =>{
   const dispatch = useDispatch<AppDispatch>()
 
@@ -60,7 +58,6 @@ export const WorkerLogin = () =>{
 
     var answer = await AccountApi.getAccount(login, password);
     if (answer.isFound && answer.data.role != 'Клиент'){
-      console.log(answer.data)
       if (answer.data.role == 'admin'){
         dispatch(authorize( {level: Level.Admin, id: answer.data.id}))
         navigate('admin/home')

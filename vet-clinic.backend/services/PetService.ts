@@ -34,14 +34,9 @@ export class PetService {
           email : _owner?.email
         }
       }
-
       return _pet
     })
 
     return Promise.all(_pets)
-
   }
-
-
-
 }

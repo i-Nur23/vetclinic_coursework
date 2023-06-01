@@ -1,5 +1,5 @@
 import {CustomListbox} from "../../components/Listbox";
-import React, {FormEvent, Fragment, useEffect, useState} from "react";
+import React, { Fragment, useEffect, useState} from "react";
 import {AccountApi} from "../../api/AccountApi";
 import './style.css';
 import {Transition} from "@headlessui/react";
@@ -31,17 +31,6 @@ export const UsersList = () => {
       }
     )();
   },[]);
-
-  /*useEffect( () => {
-    (
-      async () => {
-        var workers = await AccountApi.GetAllWorkers();
-        setAllWorkers(workers);
-        setSelectedWorkers(workers);
-        searchChange()
-      }
-    )();
-  },[isEditOpen]);*/
 
   useEffect( () => {
       searchChange();
@@ -124,7 +113,6 @@ export const UsersList = () => {
                 <button className='hover:bg-blue-300 rounded-lg p-4 ease-in-out duration-200'
                         onClick={() => {
                           setSelectedUser(w);
-                          console.log(w)
                           setIsEditOpen(true);
                         }}>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="black" className="w-6 h-6 control">

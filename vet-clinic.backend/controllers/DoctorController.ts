@@ -10,7 +10,9 @@ export class DoctorController{
   addInfo = async (req : any, res : any) => {
     var id = req.params.id;
     var spec = req.body.spec;
-    var image = req.file.filename
+    if (req.file !== undefined){
+      var image = req.file.filename;
+    }
 
     await this.doctorService.addDocInfo(id, spec, image);
 

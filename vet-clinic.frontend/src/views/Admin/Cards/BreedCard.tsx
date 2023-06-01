@@ -15,14 +15,13 @@ export const BreedCard = (props : any) => {
     if (!response.ok){
       props.showMessage(response.message);
     } else {
-      props.refresh();
+      props.refresh(false);
     }
   }
 
-  const handleBreedDeleting = async (breed : any) => {
-    await AnimalApi.deleteBreed(props.typeId, breed._id)
-
-    props.refresh()
+  const handleBreedDeleting = (breed : any) => {
+    AnimalApi.deleteBreed(props.typeId, breed._id)
+      .then(props.refresh(true))
   }
 
   return(

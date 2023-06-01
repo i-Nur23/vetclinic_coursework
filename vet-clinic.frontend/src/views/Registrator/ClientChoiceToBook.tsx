@@ -22,7 +22,7 @@ export const ClientChoiceToBook = () => {
         <center className='text-xl'>Выберите клиента: </center>
         <ClientsCombobox initList={clients} selected={client} setSelected={setClient}/>
         <Link
-          to={'/services'}
+          to={'services'}
           state={{clientId : client?._id}}
           className='w-full bg-blue-200 text-center text-blue-700 hover:bg-blue-300 p-2 rounded-lg'>
           Далее

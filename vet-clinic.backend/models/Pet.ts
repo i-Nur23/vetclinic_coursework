@@ -1,5 +1,4 @@
 import mongoose, {Types} from "mongoose";
-import {IClient} from "./Client";
 
 var Schema = mongoose.Schema;
 

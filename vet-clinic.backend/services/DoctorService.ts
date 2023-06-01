@@ -4,8 +4,6 @@ import IAccountRepository from "../repositories/interfaces/IAccountRepository";
 import fs from "fs";
 import {ServiceRepository} from "../repositories/ServiceRepository";
 import {BookingRepository} from "../repositories/BookingRepository";
-import {DoctorRepository} from "../repositories/DoctorRepository";
-import {Types} from "mongoose";
 import IClientRepository from "../repositories/interfaces/IClientRepository";
 
 export class DoctorService implements IDoctorService {
@@ -38,7 +36,12 @@ export class DoctorService implements IDoctorService {
     }
 
   addDocInfo = async (id : string, spec: string, image: string) => {
-    await this.doctorRepository.addDocInfo(id, spec, image)
+
+    var docAcc = await this.accountRepository.getById(id);
+
+    var docId = docAcc.userId;
+
+    await this.doctorRepository.addDocInfo(docId, spec, image)
   }
 
   changeDocInfo = async (accId : string, userId : string, login : string, password : string, name : string, surName : string,
@@ -98,8 +101,6 @@ export class DoctorService implements IDoctorService {
     }
 
     var filepath = await this.doctorRepository.getPathToImage(userId);
-
-    console.log(filepath)
 
     fs.unlink('public/doctors/'+filepath, (err:any) => console.log(err));
 

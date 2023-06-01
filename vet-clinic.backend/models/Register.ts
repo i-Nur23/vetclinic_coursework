@@ -9,11 +9,4 @@ var RegisterSchema = new Schema({
   email: String,
 })
 
-export interface IRegister{
-  name: string,
-  surName: string,
-  phone: string,
-  email : string
-}
-
 export const Register = mongoose.model('Register', RegisterSchema)

@@ -41,7 +41,7 @@ export const DoctorAppointments = () => {
               <Link
                 to={'new'}
                 state={{docId : currentAppointment.docId, typeId : currentAppointment.typeId, clientId : currentAppointment.client._id}}
-                className='hover:underline text-gray-300 hover:text-black'
+                className='hover:underline text-gray-700 hover:text-black'
               >
                 Записать на следующую дату
               </Link>
@@ -95,13 +95,13 @@ export const DoctorAppointments = () => {
       <p className='font-semibold mt-14'>Предстящие записи</p>
       <ul>
         {
-          appointments.map(appointment =>
+          appointments.length !== 0 ? appointments.map(appointment =>
             <li className='py-3 border-b flex flex-col gap-2'>
               <p>Услуга: {appointment.service}, {appointment.type}</p>
               <p>Клиент: {appointment.client.name} {appointment.client.surName}</p>
               <p>Время: {appointment.time}</p>
             </li>
-          )
+          ) : <p>Записей нет</p>
         }
       </ul>
     </div>

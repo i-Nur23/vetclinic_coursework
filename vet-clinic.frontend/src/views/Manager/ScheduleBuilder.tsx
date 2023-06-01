@@ -1,5 +1,5 @@
 import {Disclosure} from "@headlessui/react";
-import {ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
+import {ChevronDownIcon} from "@heroicons/react/24/solid";
 import {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
 import {DoctorTimetable} from "./DoctorTimetable";
@@ -21,7 +21,6 @@ export const ScheduleBuilder = () => {
     setTimeout(() => DoctorApi.GetAllForTimesheet().then(
       docs => {
         setDoctors(docs);
-        console.log(docs);
       }
     ), 1000);
   }

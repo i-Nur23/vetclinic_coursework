@@ -37,8 +37,6 @@ export class BookingAPI extends Base {
   static BookAppointment = async (id : string | null, doctor : string, type : string, service : string, date : Date) => {
     const url =  `${this.baseURL}/bookings`
 
-    console.log(date);
-
     let body : any = new FormData();
     body.append('userId', id);
     body.append('doctorId', doctor);

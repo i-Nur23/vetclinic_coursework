@@ -11,13 +11,12 @@ const Footer = () => {
                 <p className="text-white">прос. Ямашева д.130</p>
               </div>
               <div className="flex">
-                <p className="text-white m-auto">Project made by <a href="https://github.com/i-Nur23" style={{ color: "white" }}>
-                  Ainur Iskhakov
-                </a></p>
+                <p className="text-white m-auto">Ветеринарная клиника "Питомец", 2023</p>
               </div>
             </div>
           </div>
-        </footer>)
+        </footer>
+    )
 }
 
 export default Footer

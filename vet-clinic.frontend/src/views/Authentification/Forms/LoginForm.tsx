@@ -1,13 +1,15 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import '@tailwindcss/forms'
 import {AccountApi} from "../../../api/AccountApi";
 import {useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store/store";
 import {authorize} from "../../../store/slicers/authSlice";
 import {Level} from "../../../utils/Level";
 
-export const LoginForm = ({onChange} : any) => {
+export const LoginForm = () => {
+
+  const authLevel = useSelector((state: RootState) => state.level)
 
   const dispatch = useDispatch<AppDispatch>()
 
@@ -16,6 +18,12 @@ export const LoginForm = ({onChange} : any) => {
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
   const [password, setPassword] = useState< string >('')
+
+  useEffect(() => {
+    if (authLevel == Level.Client){
+      navigate("/")
+    }
+  },[])
 
   const Handle = async () => {
 
@@ -38,7 +46,6 @@ export const LoginForm = ({onChange} : any) => {
 
     var answer = await AccountApi.getAccount(login, password);
     if (answer.isFound){
-      console.log(answer.data)
       if (answer.data.role == 'admin'){
         dispatch(authorize( {level: Level.Admin, id: answer.data.id}))
       }
@@ -66,41 +73,45 @@ export const LoginForm = ({onChange} : any) => {
     setMessage(' ')
   }
 
-  return(<div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
-    <p className='text-center text-2xl'>Вход</p>
-    <input
-      value={login}
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      placeholder="Логин"
-      onChange={e => setValue(e, setLogin)}
-      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
-    <input
-      className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
-      placeholder="Пароль"
-      value={password}
-      type="password"
-      onChange={e => setValue(e, setPassword)}
-      onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
-      onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
-    />
-    <button className="bg-gray-200 rounded-lg p-4" onClick={() => Handle()}>
-      Войти
-    </button>
-    <div>
-      <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
-        {message}
-      </p>
-    </div>
-    <div className="flex justify-between">
-      <p>
-        Ещё нет учетной записи?
-      </p>
-      <button className="underline" onClick={onChange}>
-        Зарегестрироваться
+  return(
+    <div className='container pt-18'>
+    <div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
+      <p className='text-center text-2xl'>Вход</p>
+      <input
+        value={login}
+        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
+        placeholder="Логин"
+        onChange={e => setValue(e, setLogin)}
+        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+      />
+      <input
+        className="form-input mx-2 border-b-2 border-0 focus:border-black focus:ring-0 invalid:border-red-700 required"
+        placeholder="Пароль"
+        value={password}
+        type="password"
+        onChange={e => setValue(e, setPassword)}
+        onInvalid={e => (e.target as HTMLInputElement).setCustomValidity('Заполните это поле')}
+        onInput={e => (e.target as HTMLInputElement).setCustomValidity('')}
+      />
+      <button className="bg-gray-200 rounded-lg p-4" onClick={() => Handle()}>
+        Войти
       </button>
+      <div>
+        <p className="text-red-700 font-light" style={{minHeight:'2em'}}>
+          {message}
+        </p>
+      </div>
+      <div className="flex justify-between">
+        <p>
+          Ещё нет учетной записи?
+        </p>
+        <button className="underline" onClick={() => navigate('/auth/registration')}>
+          Зарегестрироваться
+        </button>
+      </div>
     </div>
-  </div>)
+    </div>
+  )
 }
 

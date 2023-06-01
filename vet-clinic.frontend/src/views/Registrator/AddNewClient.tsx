@@ -1,8 +1,5 @@
-import React, {FormEvent, useEffect, useState} from "react";
-import {ClientApi} from "../../api/ClientApi";
+import React, {FormEvent, useState} from "react";
 import {AccountApi} from "../../api/AccountApi";
-import {authorize} from "../../store/slicers/authSlice";
-import {Level} from "../../utils/Level";
 import {useNavigate} from "react-router-dom";
 import {AlertColor, Snackbar} from "@mui/material";
 import {SnackbarLeftBottom} from "../../components/Snackbars";
@@ -48,6 +45,7 @@ export  const AddNewClient = () => {
       setMessage('Это поля обязательны к заполнению')
       return;
     }
+
 
     try{
       await AccountApi.generateNewClient(name, surName, email, phone);

@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export const DoctorHome = () => {
   return(
@@ -6,12 +7,12 @@ export const DoctorHome = () => {
       <p className='text-center text-2xl'>Действия</p>
       <ul>
         <li className="nav-item ">
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="appointments"
+            to="/workers/doctor/appointments"
           >
             <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">Приемы</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

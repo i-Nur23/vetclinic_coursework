@@ -1,5 +1,4 @@
-import React, {JSXElementConstructor} from 'react';
-import Navbar from "./components/Navbar";
+import React from 'react';
 import Footer from "./components/Footer/Footer";
 import {Outlet} from "react-router-dom";
 import {WorkerNavbar} from "./components/WorkerNavbar";

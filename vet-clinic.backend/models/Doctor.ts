@@ -9,16 +9,9 @@ var DoctorSchema = new Schema({
   email: String,
   spec: String,
   image: String,
-  workHours: [String]
+  workHours: [String],
+  oldWorkHours : [String],
+  changeDate : Date
 })
-
-export interface IDoctor{
-  name: string,
-  surName: string,
-  phone: string,
-  email : string,
-  spec: string,
-  image: string
-}
 
 export const Doctor = mongoose.model('Doctor', DoctorSchema)

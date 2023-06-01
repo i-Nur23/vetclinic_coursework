@@ -1,5 +1,4 @@
 import React, {FormEvent, useState} from "react";
-import {ClientApi} from "../../api/ClientApi";
 import {Dialog} from "@headlessui/react";
 
 export const EditDialog = (props : {pet : any, close : Function}) => {

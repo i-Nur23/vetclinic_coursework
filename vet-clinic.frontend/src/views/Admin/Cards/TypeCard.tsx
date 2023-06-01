@@ -17,13 +17,12 @@ export const TypeCard = (props : any) => {
     if (!response.ok){
       props.showMessage(response.message);
     } else {
-      props.refresh();
+      props.refresh(false);
     }
   }
 
-
   const handleTypeDeleting = (type : any) => {
-    AnimalApi.deleteType(type._id).then(res => props.refresh())
+    AnimalApi.deleteType(type._id).then(res => props.refresh(true))
   }
 
   return(

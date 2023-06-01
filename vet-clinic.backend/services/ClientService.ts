@@ -1,10 +1,9 @@
 import IClientService from './interfaces/IClientService'
 import IClientRepository from "../repositories/interfaces/IClientRepository";
 import IAccountRepository from "../repositories/interfaces/IAccountRepository";
-
 import { IPet } from '../models/Pet';
 import IPetRepository from "../repositories/interfaces/IPetRepository";
-import {Schema, Types} from "mongoose";
+import {Types} from "mongoose";
 
 const fs = require('fs')
 
@@ -78,7 +77,7 @@ export class ClientService implements IClientService {
 
     if (account == null) return {ok:false, message: 'Аккаунт не найден'};
 
-    var client = await this.clientRepository.getById(account.userId)
+    var client = await this.clientRepository.getById(account.userId);
 
     var result = (client == null || client.pets.length == 0) ? {ok:false, message: 'Животных не найдено'} : {ok: true, data: client.pets}
 
@@ -97,8 +96,6 @@ export class ClientService implements IClientService {
   removePet = async (clientId: string, petId: Types.ObjectId) => {
 
     var filepath = await this.petRepository.getPathToImage(petId);
-
-    console.log(filepath)
 
     fs.unlink('public/pets/'+filepath, (err:any) => console.log(err));
 

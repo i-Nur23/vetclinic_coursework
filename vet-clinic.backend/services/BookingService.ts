@@ -35,7 +35,7 @@ export class BookingService{
     if (isClientId){
       clientId = userId
     } else {
-      clientId = await this.accountRepository.getClientId(userId)
+      clientId = await this.accountRepository.getClientId(userId);
 
       if (clientId == null){
         return {ok : false};

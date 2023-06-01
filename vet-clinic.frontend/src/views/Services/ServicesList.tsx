@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {ServiceApi} from "../../api/ServiceApi";
 import {Disclosure} from "@headlessui/react";
-import {ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
-import {ServicePanel} from "../Manager/ServicePanel";
+import {ChevronDownIcon} from "@heroicons/react/24/solid";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../store/store";

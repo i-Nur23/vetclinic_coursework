@@ -1,17 +1,10 @@
-import {BaseRepository} from "./BaseRepository";
-import IAccountRepository from "./interfaces/IAccountRepository";
 import IPetRepository from "./interfaces/IPetRepository";
 import {IPet, Pet} from "../models/Pet";
 import {Types} from "mongoose";
 
-export class PetRepository extends BaseRepository implements IPetRepository{
-
-  constructor(db : string) {
-    super(db);
-  }
+export class PetRepository implements IPetRepository{
 
   getMaxCardNumber = async ()  => {
-   /*this.connect();*/
 
     var number = 0;
 
@@ -26,7 +19,6 @@ export class PetRepository extends BaseRepository implements IPetRepository{
   }
 
   addPet = async (pet: IPet) => {
-    /*this.connect();*/
 
     var newPet = new Pet({
       cardNumber: pet.cardNumber,
@@ -43,7 +35,6 @@ export class PetRepository extends BaseRepository implements IPetRepository{
   }
 
   remove = async (petId: Types.ObjectId) => {
-    /*this.connect()*/
 
     Pet
       .findByIdAndDelete(petId)
@@ -65,6 +56,4 @@ export class PetRepository extends BaseRepository implements IPetRepository{
       .exec()
 
   }
-
-
 }

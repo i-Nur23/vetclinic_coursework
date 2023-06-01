@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
+import docPlaceholder from "../../assets/images/placeholders/docPlaceholder.png"
 
 export const AllDoctors = () => {
 
@@ -21,7 +22,7 @@ export const AllDoctors = () => {
           doctors.map( (doc : any) =>
             <div className='mb-10 flex justify-center' key={doc._id}>
               <div className='mx-auto'>
-              <img className='h-44 object-fill rounded-lg' src={`http://localhost:3000/public/doctors/${doc.image}`}/>
+              <img className='h-44 object-fill rounded-lg' src={doc.image !== undefined ? `http://localhost:3000/public/doctors/${doc.image}` : docPlaceholder}/>
               <p className='text-semibold text-lg'>{doc.surName} {doc.name}</p>
               <p className='text-gray-400'> Врач-{doc.spec}</p>
               </div>

@@ -16,7 +16,6 @@ export const BookCurrentClient = () => {
   useEffect(() => {
     (
       async () => {
-        console.log(location.state)
         var locState = location.state;
         setDocId(locState.docId);
         setClientId(locState.clientId);

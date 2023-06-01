@@ -14,5 +14,4 @@ export class TimeHandler{
     var minutes = splittedTime[1] == '00' ? 0 : 5;
     return parseFloat(`${hours}.${minutes}`)
   }
-
 }

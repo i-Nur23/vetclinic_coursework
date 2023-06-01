@@ -1,7 +1,7 @@
 import { Disclosure } from "@headlessui/react";
 import {ChangeEvent, useEffect, useState} from "react";
 import {ServiceApi} from "../../api/ServiceApi";
-import {CheckIcon, ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
+import {ChevronDownIcon, PlusIcon} from "@heroicons/react/24/solid";
 import {ServicePanel} from "./ServicePanel";
 
 export const ServiceListControl = () => {

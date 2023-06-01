@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export const ManagerHome = () => {
   return(
@@ -6,20 +7,20 @@ export const ManagerHome = () => {
       <p className='text-center text-2xl'>Действия</p>
       <ul>
         <li className="nav-item ">
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="services"
+            to="/workers/manager/services"
           >
             <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">Перечень услуг</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="schedule"
+            to="/workers/manager/schedule"
           >
             <i className="leading-lg text-black opacity-75"></i><span className="">Составление расписания</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

@@ -1,13 +1,9 @@
 import { Menu, Transition } from '@headlessui/react'
 import { Fragment} from 'react'
-import { useSelector } from "react-redux";
-import { RootState } from "../../../store/store";
 import { ExitItem } from "./MenuItems";
-import {Level} from "../../../utils/Level";
 import {ClientActions} from "./ActionsLists";
 
 export const AuthorizedControls = () => {
-  const authLevel = useSelector((state: RootState) => state.level)
 
   return(
     <div className="flex justify-between gap-6">

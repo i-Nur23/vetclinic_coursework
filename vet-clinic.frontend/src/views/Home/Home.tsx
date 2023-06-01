@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import dogWithVet from "../../assets/images/homepage/doghome.jpg"
 import vets from "../../assets/images/homepage/veterinarians-holding-dog.jpg"
-import {Link, animateScroll} from 'react-scroll';
+import {Link} from 'react-scroll';
 import {SpecIcons} from "./SpecIcons";
 import {ServiceApi} from "../../api/ServiceApi";
 
@@ -66,8 +66,6 @@ const Home = () => {
           <div className="grid grid-cols-4 gap-4">
             {
               types.map( (_type : any) => {
-
-                console.log(_type)
 
                 return (
                   <SpecIcons typeId={_type._id}>{_type.type}</SpecIcons>

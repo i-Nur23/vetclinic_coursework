@@ -1,4 +1,4 @@
-import {Schema, Types} from "mongoose";
+import {Types} from "mongoose";
 import {Booking} from "../models/Booking";
 
 export class BookingRepository{
@@ -23,18 +23,6 @@ export class BookingRepository{
       .sort('date')
       .exec();
 
-    /*const bookingsLocalTime = bookings.map(booking =>
-    {
-      if (booking.date != undefined){
-        booking.date.setTime(booking.date.getTime() - booking.date.getTimezoneOffset() *
-          60000);
-      }
-      return booking;
-    })
-
-
-    return bookingsLocalTime;*/
-
     return bookings
 
   }
@@ -45,17 +33,6 @@ export class BookingRepository{
       .find({clientId : clientId, date : {$lte : date.getTime()}})
       .sort('-date')
       .exec();
-
-    /*const bookingsLocalTime = bookings.map(booking =>
-    {
-      if (booking.date != undefined){
-        booking.date.setTime(booking.date.getTime() -  booking.date.getTimezoneOffset() *
-          60000);
-      }
-      return booking;
-    })
-
-    return bookingsLocalTime;*/
 
     return bookings
 
@@ -105,8 +82,12 @@ export class BookingRepository{
   }
 
   async GetDoctorUpcomingBookings(docId: Types.ObjectId) {
+    var today = new Date();
+    var tomorrow = new Date();
+    tomorrow.setDate(today.getDate() + 1);
+
     const bookings = await Booking
-      .find({doctorId : docId, date : {$gt : (new Date()).getTime()}})
+      .find({doctorId : docId, date : {$gt : today.getTime(), $lt : tomorrow.getTime()}})
       .exec();
 
     return bookings;

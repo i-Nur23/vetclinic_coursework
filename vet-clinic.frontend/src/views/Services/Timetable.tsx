@@ -1,8 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {DoctorApi} from "../../api/DoctorApi";
 import {TimeHandler} from "../../utils/TimeHandler";
-import {current} from "@reduxjs/toolkit";
-import {DateHandler} from "../../utils/DateHandler";
 import './TimeTable.css'
 import {ArrowLeftIcon, ArrowRightIcon} from "@heroicons/react/24/solid";
 import {Alert, Snackbar} from "@mui/material";
@@ -14,8 +12,9 @@ import {Level} from "../../utils/Level";
 
 export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string, typeId : string, serviceId : string, clientId : string}) => {
 
-  const [stringHours, setStringHours] = useState([]);
-  const [floatHours, setFloatHours] = useState([])
+  const [currentHours, setCurrentHours] = useState([]);
+  const [oldHours, setOldHours] = useState([]);
+  const [changeDate, setChangeDate] = useState<Date>(new Date());
   const [bookings, setBookings] = useState<any[]>([]);
   const [times, setTimes] = useState<Array<Array<any>>>([]);
   const [nowTime, setNowTime] = useState<Date>(new Date());
@@ -46,13 +45,36 @@ export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string
 
         const resData = await DoctorApi.GetDoctorBookingTimes(docId);
         if (resData.ok){
-          setStringHours(resData.doctor.hours.workHours);
-          setFloatHours(resData.doctor.hours.workHours.map((h : string | null) => {
-            if (!h) return  h
+          var today = new Date();
+          today.setDate(today.getDate() + 16);
+          setChangeDate(today);
+          //setStringHours(resData.doctor.hours.workHours);
 
-            return h.split('-').map(x => TimeHandler.toTimeNumber(x))
+          if (resData.doctor.hours.oldWorkHours.length === 0){
+            setOldHours(resData.doctor.hours.workHours.map((h : string | null) => {
+              if (!h) return  h
 
-          }));
+              return h.split('-').map(x => TimeHandler.toTimeNumber(x))
+
+            }));
+          } else {
+            setChangeDate(new Date(resData.doctor.hours.changeDate));
+
+            setOldHours(resData.doctor.hours.oldWorkHours.map((h : string | null) => {
+              if (!h) return  h
+
+              return h.split('-').map(x => TimeHandler.toTimeNumber(x))
+
+            }));
+
+            setCurrentHours(resData.doctor.hours.workHours.map((h : string | null) => {
+              if (!h) return  h
+
+              return h.split('-').map(x => TimeHandler.toTimeNumber(x))
+
+            }));
+          }
+
           setBookings(resData.doctor.bookings);
         }
       }
@@ -62,7 +84,6 @@ export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string
   const allDaysOfWeek = () => {
     let currentDate = new Date();
     currentDate.setDate(currentDate.getDate() + 7 * (weekNumber - 1));
-    console.log(currentDate);
     let week = [];
 
     if (currentDate == undefined){
@@ -98,7 +119,11 @@ export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string
 
     let resData;
 
-    if (clientId === undefined){
+    if (level === Level.Unauthozized){
+      setIsToastOpen(true);
+      return;
+    } else if (clientId === undefined){
+
       resData = await BookingAPI.BookAppointment(userId, docId, typeId, serviceId, date);
     } else {
       resData = await BookingAPI.BookAppointmentClient(clientId, docId, typeId, serviceId, date);
@@ -116,14 +141,13 @@ export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string
         } else if (level === Level.Doctor){
           navigate('/workers/doctor/home')
         }
-
       }
     }
   }
 
   return(
     <div>
-      <div className='overflow-auto' style={{height : '60vh'}}>
+      <div className='overflow-auto'>
         <table className='w-full'>
           <thead>
           <tr>
@@ -162,14 +186,27 @@ export const Timetable = ({docId, typeId, serviceId, clientId} : {docId : string
                   continue;
                 }
 
-                if (
-                  floatHours[i] == null ||
-                  floatHours[i][0] > numberTime ||
-                  floatHours[i][1] <= numberTime
-                ) {
-                  row.push({type : 0, text : ''})
-                  continue;
+                if (date < changeDate){
+                  if (
+                    oldHours[i] == null ||
+                    oldHours[i][0] > numberTime ||
+                    oldHours[i][1] <= numberTime
+                  ) {
+                    row.push({type : 0, text : ''})
+                    continue;
+                  }
+                } else {
+                  if (
+                    currentHours[i] == null ||
+                    currentHours[i][0] > numberTime ||
+                    currentHours[i][1] <= numberTime
+                  ) {
+                    row.push({type : 0, text : ''})
+                    continue;
+                  }
                 }
+
+
 
                 if (bookings.filter(b => new Date(b.date)?.getTime() == date.getTime()).length != 0){
                   row.push({type : 1, text : stringTime})

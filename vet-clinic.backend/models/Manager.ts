@@ -9,11 +9,4 @@ var ManagerSchema = new Schema({
   email: String,
 })
 
-export interface IManager{
-  name: string,
-  surName: string,
-  phone: string,
-  email : string
-}
-
 export const Manager = mongoose.model('Manager', ManagerSchema)

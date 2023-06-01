@@ -1,16 +1,10 @@
-import mongoose, {Types} from "mongoose";
 import {Doctor} from "../models/Doctor";
-import {BaseRepository} from "./BaseRepository";
 import IDoctorRepository from "./interfaces/IDoctorRepository";
 
-export class DoctorRepository extends BaseRepository implements IDoctorRepository{
-  constructor(db : string) {
-    super(db);
-  }
+export class DoctorRepository implements IDoctorRepository{
 
   changeInfo = async (id: string, name: string, surName: string, email: string, phone: string, spec: string) => {
     try {
-      /*this.connect();*/
 
       var updatedDoc = await Doctor
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone, spec : spec})
@@ -29,7 +23,6 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
 
   changeInfoAndPhoto = async (id: string, name: string, surName: string, email: string, phone: string, spec: string, image: string) => {
     try {
-      /*this.connect();*/
 
       var updatedManager = await Doctor
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone, spec : spec, image : image})
@@ -47,7 +40,6 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   createDoc = async (name: string, surName: string, email: string, phone: string) => {
-    /*this.connect();*/
 
     var newDoc = new Doctor({name: name, surName: surName, email: email, phone : phone})
 
@@ -57,7 +49,6 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   addDocInfo = async ( id : string , spec: string, image: string) => {
-    /*this.connect();*/
 
     Doctor
       .updateOne({_id : id}, {spec : spec, image : image})
@@ -65,7 +56,6 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   getById(id: string): Promise<any> {
-    //this.connect()
 
     return Doctor
       .findById(id)
@@ -82,7 +72,6 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   delete = async (userId: any) => {
-    /*this.connect()*/
 
     await Doctor
       .findByIdAndDelete(userId)
@@ -99,10 +88,9 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   }
 
   getAllWithTimes = async () => {
-    this.connect();
     var doctors = Doctor
       .find()
-      .select('name surName spec workHours')
+      .select('name surName spec workHours oldWorkHours changeDate')
       .exec()
 
     return doctors;
@@ -110,14 +98,21 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
 
   setTimeTable = async (id: string, timeTable: [string | null]) => {
     try{
-      this.connect();
+
       var doc = await Doctor
-        .updateOne({_id : id}, {workHours : timeTable}, {new : true})
+        .findById(id)
         .exec()
 
-      console.log(doc)
+      var oldTime = doc?.workHours;
+      var changeDate = new Date();
+      changeDate.setDate(changeDate.getDate() + 14)
+      changeDate.setUTCHours(20, 50, 50);
 
-      return (doc != null)
+      var doc_upd = await Doctor
+        .updateOne({_id : id}, {workHours : timeTable, oldWorkHours : oldTime, changeDate : changeDate}, {new : true})
+        .exec()
+
+      return (doc_upd != null)
     } catch {
       return false;
     }
@@ -135,7 +130,7 @@ export class DoctorRepository extends BaseRepository implements IDoctorRepositor
   GetDocTimes = async (id: string) => {
     return Doctor
       .findById(id)
-      .select('-_id workHours')
+      .select('-_id workHours oldWorkHours changeDate')
       .exec()
 
   }

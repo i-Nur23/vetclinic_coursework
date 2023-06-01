@@ -11,11 +11,4 @@ var AccountSchema = new Schema({
   userId: {type: Schema.Types.ObjectId}
 })
 
-export interface IAccount{
-  login: string,
-  password: string,
-  type: string,
-  userId: string
-}
-
 export const Account = mongoose.model('Account', AccountSchema)

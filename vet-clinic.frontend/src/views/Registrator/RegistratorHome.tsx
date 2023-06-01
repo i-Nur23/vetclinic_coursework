@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 export const RegistratorHome = () => {
   return(
@@ -6,36 +7,36 @@ export const RegistratorHome = () => {
       <p className='text-center text-2xl'>Действия</p>
       <ul>
         <li className="nav-item ">
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="appointments"
+            to="/workers/registrator/appointments"
           >
             <p className="text-lg leading-lg text-black opacity-75 "></p><span className="">Записи на услуги</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="new_client"
+            to="/workers/registrator/new_client"
           >
             <i className="leading-lg text-black opacity-75"></i><span className="">Добавление клиентов</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="book"
+            to="/workers/registrator/book"
           >
             <i className="leading-lg text-black opacity-75"></i><span className="">Запись</span>
-          </a>
+          </Link>
         </li>
         <li>
-          <a
+          <Link
             className="p-5 flex items-center uppercase leading-snug text-black border-b-2 hover:border-b-black"
-            href="add_pet"
+            to="/workers/registrator/add_pet"
           >
             <i className="leading-lg text-black opacity-75"></i><span className="">Карточки питомцев</span>
-          </a>
+          </Link>
         </li>
       </ul>
     </div>

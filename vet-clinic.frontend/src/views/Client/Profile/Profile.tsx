@@ -2,15 +2,12 @@ import {useSelector} from "react-redux";
 import {RootState} from "../../../store/store";
 import React, {FormEvent, useEffect, useState} from "react";
 import {ClientApi} from "../../../api/ClientApi";
-import {AccountApi} from "../../../api/AccountApi";
-
 export const Profile = () => {
   const userId = useSelector((state : RootState) => state.id);
   const [message, setMessage] = useState< string >(' ')
   const [name, setName] = useState< string >('')
   const [surName, setSurName] = useState< string >('')
   const [login, setLogin] = useState< string >('')
-  const [password, setPassword] = useState< string >('')
   const [email, setEmail] = useState< string >('')
   const [isDisabled, setIsDisabled] = useState< boolean >(true)
 
@@ -20,7 +17,6 @@ export const Profile = () => {
       async () => {
 
         var response = await ClientApi.getClient(userId);
-        console.log(response)
         if (response.ok){
           var client = response.data;
 
@@ -28,7 +24,6 @@ export const Profile = () => {
           setSurName(client.surName);
           setEmail(client.email);
           setLogin(client.login);
-          setPassword(client.password);
         }
       }
     )();

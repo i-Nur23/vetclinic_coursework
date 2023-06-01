@@ -5,14 +5,12 @@ import reportWebVitals from './reportWebVitals';
 import {createBrowserRouter, createRoutesFromElements, Route, RouterProvider} from "react-router-dom";
 import './index.css'
 import Home from "./views/Home";
-import Authentification from "./views/Authentification";
 import {Provider} from "react-redux";
 import {persistor, store} from './store/store';
 import {PersistGate} from 'redux-persist/integration/react';
 import {ProtectedRoutes} from "./utils/ProtectedRoutes";
 import {Level} from "./utils/Level";
 import {Profile} from './views/Client/Profile'
-import {Pets} from "./views/Client/Pets";
 import WorkerApp from "./WorkerApp";
 import {WorkerLogin} from "./views/Worker/WorkerLogin";
 import {AddUsers, AdminCatalog, AdminHome, UsersList} from "./views/Admin";
@@ -21,13 +19,16 @@ import {BookingToProcedure, ServicesList, TimeChoice} from "./views/Services";
 import {AllDoctors, BookCurrentClient, DoctorAppointments, DoctorHome} from "./views/Doctor";
 import {Appointments} from "./views/Client/Appointments";
 import {AddNewClient, AddPet, ClientChoiceToBook, RegistratorHome, UpcomingBookings} from "./views/Registrator";
+import {LoginForm} from "./views/Authentification/Forms/LoginForm";
+import {RegistrateForm} from "./views/Authentification/Forms/RegistrateForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
       <Route path="/" element={<ClientApp/>}>
         <Route index element={<Home/>}/>
-        <Route path="auth" element={<Authentification/>}/>
+        <Route path="auth/entry" element={<LoginForm/>}/>
+        <Route path="auth/registration" element={<RegistrateForm/>}/>
           <Route element={<ProtectedRoutes role={Level.Client}/>}>
             <Route path='client'>
               <Route path='profile' element={<Profile/>}/>
@@ -63,7 +64,14 @@ const router = createBrowserRouter(
             <Route path='home' element={<RegistratorHome/>}/>
             <Route path='appointments' element={<UpcomingBookings/>}/>
             <Route path='new_client' element={<AddNewClient/>}/>
-            <Route path='book' element={<ClientChoiceToBook/>}/>
+            <Route path='book'>
+              <Route index element={<ClientChoiceToBook/>}/>
+              <Route path='services'>
+                <Route index element={<ServicesList/>}/>
+                <Route path='procedure/:combinedId' element={<BookingToProcedure/>} />
+                <Route path=':combinedId' element={<TimeChoice/>} />
+              </Route>
+            </Route>
             <Route path='add_pet' element={<AddPet/>}/>
           </Route>
         </Route>

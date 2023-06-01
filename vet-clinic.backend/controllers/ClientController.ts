@@ -1,5 +1,3 @@
-import {Request, Response} from "express";
-
 import IClientService from "../services/interfaces/IClientService";
 import {IPet} from "../models/Pet";
 

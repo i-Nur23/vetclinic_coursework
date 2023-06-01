@@ -32,7 +32,7 @@ export  const UpcomingBookings = () => {
         {
           bookings.map((b: any) => (
             <li className='p-3 border-b flex justify-between'>
-              <div className='flex gap-3 divide-x'>
+              <div className='grid grid-cols-2 w-3/5 gap-3 divide-x'>
                 <div className='flex flex-col px-3'>
                   <p>Услуга: {b.service}</p>
                   <p>Время: {(new Date(b.date)).getDate()}.{('0' + (new Date(b.date)).getMonth()).slice(-2)}.{(new Date(b.date)).getFullYear()}

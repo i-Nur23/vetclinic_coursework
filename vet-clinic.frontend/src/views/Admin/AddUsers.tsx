@@ -12,15 +12,6 @@ export const AddUsers = () => {
     'Менеджер'
   ]
 
-  /*const specs = [
-    'Терапевт',
-    'Лаборант',
-    'Офтальмолог',
-    'Стоматолог',
-    'Дерматолог',
-    'Грумер',
-  ]*/
-
   const [specs, setSpecs] = useState([])
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
@@ -76,7 +67,7 @@ export const AddUsers = () => {
 
     var answer = await AccountApi.createAccount(login, password, name, surName, email, phone, role);
     if (answer.ok){
-      if (role == 'Врач'){
+      if (role === 'Врач'){
           DoctorApi.SetDocInfo(answer.id, spec, image);
       }
 

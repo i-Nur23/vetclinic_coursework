@@ -1,6 +1,5 @@
 import { AnimalService } from "../services/AnimalService";
 import {PetService} from "../services/PetService";
-import {IPet} from "../models/Pet";
 
 export class AnimalController {
 

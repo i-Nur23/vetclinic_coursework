@@ -8,7 +8,6 @@ export class BookingController{
   }
 
   GetFutureBookings = async (req : any, res : any) => {
-    console.log("dsogbjfa")
     res.json(await this.bookingService.GetFutureBookings())
   }
 

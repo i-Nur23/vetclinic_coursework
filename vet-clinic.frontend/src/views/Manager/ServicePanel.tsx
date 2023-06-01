@@ -5,6 +5,7 @@ import {ServiceApi} from "../../api/ServiceApi";
 export const ServicePanel = (props : {service : any, typeId : string}) => {
 
   const [name, setName] = useState<string>('');
+  const [oldName, setOldName] = useState<string>('')
   const [price, setPrice] = useState<number>(0);
   const [isActive, setActivity] = useState<boolean>()
   const [id, setId] = useState<string>('');
@@ -12,6 +13,7 @@ export const ServicePanel = (props : {service : any, typeId : string}) => {
 
   useEffect(() => {
     setName(props.service.name);
+    setOldName(props.service.name);
     setPrice(props.service.price);
     setActivity(props.service.isActive);
     setId(props.service._id);
@@ -27,12 +29,15 @@ export const ServicePanel = (props : {service : any, typeId : string}) => {
 
   const handleChanging = async () => {
     var data = await ServiceApi.ChangeInfo(typeId, id, name, price);
-    console.log(data.ok);
+    if (data.ok){
+      setOldName(name);
+    } else {
+      setName(oldName);
+    }
   }
 
   const handleArchiving = async () => {
     var data = await ServiceApi.Archive(typeId, id);
-    console.log(data.ok);
     if (data.ok){
       setActivity(!isActive);
     }

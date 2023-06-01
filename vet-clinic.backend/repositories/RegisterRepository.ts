@@ -1,16 +1,10 @@
-import {BaseRepository} from "./BaseRepository";
 import IRegisterRepository from "./interfaces/IRegisterRepository";
 import {Register} from "../models/Register";
 import {Manager} from "../models/Manager";
-import {Doctor} from "../models/Doctor";
 
-export class RegisterRepository extends BaseRepository implements IRegisterRepository{
-  constructor(db : string) {
-    super(db);
-  }
+export class RegisterRepository implements IRegisterRepository{
 
   createRegister = async (name: string, surName: string, email: string, phone: string) => {
-    /*this.connect();*/
 
     var newReg = new Register({name: name, surName: surName, email: email, phone : phone})
 
@@ -20,7 +14,6 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
   }
 
   getById = async (id: string) => {
-    /*this.connect()*/
 
     var register = Register
       .findById(id)
@@ -32,7 +25,6 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
 
   changeInfo = async (id: string, name: string, surName: string, email: string, phone: string) => {
     try {
-      /*this.connect();*/
 
       var updatedRegister = await Register
         .updateOne({_id: id}, {name: name, surName: surName, email: email, phone: phone})
@@ -50,7 +42,6 @@ export class RegisterRepository extends BaseRepository implements IRegisterRepos
   }
 
   delete = async (userId: any) => {
-    /*this.connect()*/
 
     await Manager
       .findByIdAndDelete(userId)

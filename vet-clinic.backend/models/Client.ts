@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-//import {IPet} from "./Pet";
 
 var Schema = mongoose.Schema;
 

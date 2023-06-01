@@ -1,12 +1,12 @@
-import React,{FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { AccountApi } from "../../../api/AccountApi";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../store/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../store/store";
 import {authorize} from "../../../store/slicers/authSlice";
 import {Level} from "../../../utils/Level";
 
-export const RegistrateForm = ({onChange} : any) => {
+export const RegistrateForm = () => {
 
   const [message, setMessage] = useState< string >(' ')
   const [login, setLogin] = useState< string >('')
@@ -17,8 +17,15 @@ export const RegistrateForm = ({onChange} : any) => {
   const [phone, setPhone] = useState<string>('')
 
   const dispatch = useDispatch<AppDispatch>()
+  const authLevel = useSelector((state: RootState) => state.level)
 
   const navigate = useNavigate();
+
+  useEffect(()=> {
+    if (authLevel == Level.Client){
+      navigate("/")
+    }
+  },[])
 
   const setValue = (e : FormEvent, action : any) => {
     var inputs = document.getElementsByClassName('required');
@@ -59,7 +66,9 @@ export const RegistrateForm = ({onChange} : any) => {
     }
   }
 
-  return(<div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
+  return(
+    <div className='container pt-18'>
+    <div className='flex flex-col gap-6 p-2 justify-between w-1/3 h-3/5 top-1/2 m-auto shadow-zinc-600 rounded-lg'>
     <p className='text-center text-2xl'>Создание учетной записи</p>
     <input
       value={name}
@@ -117,9 +126,10 @@ export const RegistrateForm = ({onChange} : any) => {
       <p>
         Уже есть учетная запись?
       </p>
-      <button className="underline" onClick={onChange}>
+      <button className="underline" onClick={() => navigate('/auth/entry')}>
         Войти
       </button>
     </div>
-  </div>)
+  </div>
+    </div>)
 }

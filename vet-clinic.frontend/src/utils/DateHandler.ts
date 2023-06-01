@@ -15,8 +15,6 @@ export class DateHandler {
         arrOfDays.push({date : date, day : dayOfWeek, month : DateHandler.months[date.getMonth()]});
       }
     }
-
     return arrOfDays;
-
   }
 }

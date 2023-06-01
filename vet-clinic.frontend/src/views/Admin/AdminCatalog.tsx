@@ -1,5 +1,4 @@
 import React, {FormEvent, Fragment, useEffect, useState} from "react";
-import {AccountApi} from "../../api/AccountApi";
 import {AnimalApi} from "../../api/AnimalApi";
 import {Dialog, Transition} from "@headlessui/react";
 import {TypeCard, BreedCard} from "./Cards";
@@ -9,7 +8,6 @@ export const AdminCatalog = () => {
   const [typesList, setTypesList] = useState([])
   const [breedsList, setBreedsList] = useState<any[] | null>(null)
   const [selectedType, setSelectedType] = useState<any>()
-  const [selectedBreed, setSelectedBreed] = useState()
   const [type, setType] = useState('')
   const [breed, setBreed] = useState('')
   const [message, setMessage] = useState('')
@@ -18,24 +16,39 @@ export const AdminCatalog = () => {
   useEffect( () => {
     (
       async () => {
-        await refreshTypeList();
+        await getAllAnimals();
       }
     )();
   },[]);
 
-  const refreshTypeList = async () => {
+  const getAllAnimals = async () => {
     var animals = await AnimalApi.getAll();
-    console.log(animals)
     setTypesList(animals);
   }
 
-  const refreshBreedList = async () => {
-    var animals = await AnimalApi.getAll();
-    setTypesList(animals);
+  const refreshTypeList = async (typeId : string, isDelete : boolean) => {
+    if (isDelete){
+      if (typeId === selectedType?._id){
+        setBreedsList(null);
+      }
+      var animals = typesList.filter((a : any) => a._id !== typeId)
+      setTypesList(animals);
+    } else {
+      await getAllAnimals();
+    }
+  }
 
-    var prevSelectedType = animals.find((animal : any) => animal._id == selectedType._id); 
+  const refreshBreedList = async (breedId : string, isDelete : boolean ) => {
 
-    setBreedsList(prevSelectedType.breeds);
+    if (isDelete && breedsList !== null){
+      var breeds = breedsList.filter((b : any) => b._id !== breedId)
+      setBreedsList(breeds);
+    } else {
+      var animals = await AnimalApi.getAll();
+      setTypesList(animals);
+      var prevSelectedType = animals.find((animal : any) => animal._id == selectedType._id);
+      setBreedsList(prevSelectedType.breeds);
+    }
   }
 
   const setValue = (e : FormEvent, action : any) => {
@@ -94,95 +107,100 @@ export const AdminCatalog = () => {
 
 
   const handleTypeChoosing = async (type : any) => {
-
-    console.log(type)
     setSelectedType(type);
     
     setBreedsList(type.breeds);
   }
 
   return(
-    <div className='container px-14 h-96'>
+    <div className='container px-14 h-72'>
       <div className='grid grid-cols-2 gap-x-10 h-full'>
-        <div className='overflow-auto'>
+        <div>
           <div className="text-center"><h2>Виды</h2></div>
-          <ul>
-            {
-              typesList.map((animal : any) => (
-                <li className='hover:bg-gray-50' onClick={(e : FormEvent) => handleTypeChoosing(animal)}>
-                    <TypeCard 
-                      animal = {animal} 
-                      refresh={
-                        async () => await refreshTypeList()} 
-                      showMessage={
-                        (mes : string) => {
-                          setMessage(mes);
-                          setDialog(true);
+          <div className='overflow-auto h-96'>
+            <ul>
+              {
+                typesList.map((animal: any) => (
+                    <li className='hover:bg-gray-50' key={animal._id}
+                        onClick={(e: FormEvent) => handleTypeChoosing(animal)}>
+                      <TypeCard
+                        animal={animal}
+                        refresh={
+                          async (isDelete: boolean) => await refreshTypeList(animal._id, isDelete)}
+                        showMessage={
+                          (mes: string) => {
+                            setMessage(mes);
+                            setDialog(true);
+                          }
                         }
-                      }
-                    />
-                </li>
-              )
-              )
-            }
-            <li>
-              <div className='flex justify-between border-b-2 border-gray-400 p-4 '>
-                <input
-                  className='rounded-lg border-gray-400 w-1/2'
-                  type = 'text'
-                  value = {type}
-                  placeholder='Новый вид'
-                  onChange={(e : FormEvent) => setValue(e, setType)}
-                />
-                <button className='bg-white hover:bg-gray-200 p-2 ease-in-out duration-150 rounded-lg' onClick={handleAddingType}>
-                  Добавить
-                </button>
-              </div>
-            </li>
-          </ul>
+                      />
+                    </li>
+                  )
+                )
+              }
+              <li>
+                <div className='flex justify-between border-b-2 border-gray-400 p-4 '>
+                  <input
+                    className='rounded-lg border-gray-400 w-1/2'
+                    type='text'
+                    value={type}
+                    placeholder='Новый вид'
+                    onChange={(e: FormEvent) => setValue(e, setType)}
+                  />
+                  <button className='bg-white hover:bg-gray-200 p-2 ease-in-out duration-150 rounded-lg'
+                          onClick={handleAddingType}>
+                    Добавить
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div className='overflow-auto'>
-        <div className="text-center"><h2>Породы</h2></div>
-          {
-            breedsList != null ? (
-                <ul>
-                  {
-                    breedsList.map((breed : any) => (
-                        <li>
-                            <BreedCard 
-                              typeId = {selectedType._id}
-                              breed = {breed} 
+        <div>
+          <div className="text-center"><h2>Породы</h2></div>
+          <div className='overflow-auto h-96'>
+            {
+              breedsList != null ? (
+                  <ul>
+                    {
+                      breedsList.map((breed: any) => (
+                          <li key={breed._id}>
+                            <BreedCard
+                              typeId={selectedType._id}
+                              breed={breed}
                               refresh={
-                                async () => await refreshBreedList()} 
+                                async (isDelete: boolean) => await refreshBreedList(breed._id, isDelete)}
                               showMessage={
-                                (mes : string) => {
+                                (mes: string) => {
                                   setMessage(mes);
                                   setDialog(true);
                                 }
                               }
                             />
-                        </li>
+                          </li>
+                        )
                       )
-                    )
-                  }
-                  <li>
-                    <div className='flex justify-between border-b-2 border-gray-400 p-4 '>
-                      <input
-                        className='rounded-lg border-gray-400 w-1/2'
-                        type = 'text'
-                        value = {breed}
-                        placeholder='Новая порода'
-                        onChange={(e : FormEvent) => setValue(e, setBreed)}
-                      />
-                      <button className='bg-white hover:bg-gray-200 p-2 ease-in-out duration-150 rounded-lg' onClick={handleAddingBreed}>
-                        Добавить
-                      </button>
-                    </div>
-                  </li>
-                </ul>
-            ) :
-              null
-          }
+                    }
+                    <li>
+                      <div className='flex justify-between border-b-2 border-gray-400 p-4 '>
+                        <input
+                          className='rounded-lg border-gray-400 w-1/2'
+                          type='text'
+                          value={breed}
+                          placeholder='Новая порода'
+                          onChange={(e: FormEvent) => setValue(e, setBreed)}
+                        />
+                        <button className='bg-white hover:bg-gray-200 p-2 ease-in-out duration-150 rounded-lg'
+                                onClick={handleAddingBreed}>
+                          Добавить
+                        </button>
+                      </div>
+                    </li>
+                  </ul>
+                ) :
+                null
+            }
+          </div>
         </div>
       </div>
 

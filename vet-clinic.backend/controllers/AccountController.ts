@@ -1,12 +1,9 @@
 import IAccountService from "../services/interfaces/IAccountService";
-
 export class AccountController{
   accountService : IAccountService
-
   constructor(accountService : IAccountService) {
     this.accountService = accountService
   }
-
   find = async (req : any, res : any) => {
     var login = req.query.login;
     var password = req.query.password;
@@ -16,7 +13,6 @@ export class AccountController{
     }
 
     if (login == 'admin' && password == 'admin'){
-      console.log('It\'s admin');
       res.json({isFound : true, data: {role: 'admin', id:'0'} })
       return;
     }
@@ -24,7 +20,6 @@ export class AccountController{
     var account = await this.accountService.findAccount(login, password)
 
     if (account == null){
-      console.log('Account wasn\'t found')
       res.json({isFound : false})
       return;
     }
@@ -32,7 +27,6 @@ export class AccountController{
   }
 
   create = (req: any, res:any) => {
-    console.log('Here')
 
     var login = req.query.login;
     var password = req.query.password;
@@ -69,8 +63,6 @@ export class AccountController{
     var email = req.body.email;
     var phone = req.body.phone;
     var role = req.body.role;
-
-    console.log(req.body)
 
     var response = await this.accountService.changeWorkerInfo(accId, userId, login, password, name, surName, email, phone, role)
 

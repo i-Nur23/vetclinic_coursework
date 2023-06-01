@@ -13,13 +13,4 @@ var ServiceSchema = new Schema({
   }]
 })
 
-export interface IService{
-  type: string,
-  services_list: [{
-    name: string,
-    price: number,
-    isActive: boolean
-  }]
-}
-
 export const Service = mongoose.model('Service', ServiceSchema)
